@@ -31,8 +31,8 @@ class place:
             yPos = player.yPos + y * 50 - (player.y % 50)
 
             if key in self.map_dic:
-               self.map_dic[key].y = yPos
-               self.map_dic[key].x = xPos
+               #self.map_dic[key].y = yPos
+               #self.map_dic[key].x = xPos
                self.map_dic[key].draw(screen)
 
             else:

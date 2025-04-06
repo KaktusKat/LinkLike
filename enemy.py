@@ -22,13 +22,13 @@ class enemy(sprite):
          self.ha -= 1
       self.x += 1
       self.y += 1
-      if self.isHit(player,True):
+      if self.isHit(player):
          self.x -= 1
          self.y -= 1
          return
       self.x -= 2
       self.y -= 2
-      if self.isHit(player,True):
+      if self.isHit(player):
          self.x += 1
          self.y += 1
          return

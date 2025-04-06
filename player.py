@@ -70,7 +70,7 @@ class player(sprite):
       img = self.image[self.image_index]
       if self.flip:
          img = pygame.transform.flip(img,False,True)
-      screen.blit(img,(self.xPos,self.yPos))
+      screen.blit(img, self.xPos, self.yPos)
    
    def checkMove(self,movex,movey,place):
       print('----------------------------------')
@@ -83,9 +83,9 @@ class player(sprite):
                thing = place.map_dic[key]
                if thing.stuff == "tree":
                   print(' T', end='')
-                  if thing.isHit(self, True):
-                     self.x -= movex
-                     self.y -= movey
+                  #if thing.isHit(self):
+                  #   self.x -= movex
+                  #   self.y -= movey
                else:
                   print(' _', end='')
          print()

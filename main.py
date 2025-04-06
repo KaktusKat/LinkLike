@@ -5,11 +5,14 @@ from player import player
 from tool   import tool
 from enemy  import enemy
 from place import place 
+from screen import screen
 
 width  = 500
-hight  = 500
+height = 500
 pygame.init()
-screen = pygame.display.set_mode((width,hight))
+
+screen = screen(width, height)
+
 pygame.display.set_caption("linkLike")
 clock = pygame.time.Clock()
 keys  = []
@@ -41,11 +44,13 @@ for i in range(2):
 running = True
 while running:
    hammer = pygame.image.load("war_hammar.png")
-   screen.blit(hammer,(100,100))
+   #screen.blit(hammer,(100,100))
    a += 1   
    keys = pygame.key.get_pressed()
-   screen.fill((9,110,000))
+
+   screen.clear(gob.x, gob.y)
    place.create(screen,gob,enemy_list)
+
    gob.update(keys,screen,place)
    gob.weponChange(keys)
    gob.draw(screen)

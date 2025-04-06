@@ -24,9 +24,9 @@ class sprite:
       img = self.image[self.image_index]
       if self.flip:
          img = pygame.transform.flip(img,False,True)
-      screen.blit(img,(self.x,self.y))
+      screen.blit(img, self.x, self.y)
 
-   def isHit(self, other, player = False):
+   def isHit(self, other):
 
       if self == other:
          return False
@@ -34,12 +34,8 @@ class sprite:
       top_x = self.x + self.w
       top_y = self.y + self.h
 
-      if not player:
-         other_top_x = other.x + other.w
-         other_top_y = other.y + other.h
-      else:
-         other_top_x = other.xPos + other.w
-         other_top_y = other.yPos + other.h
+      other_top_x = other.x + other.w
+      other_top_y = other.y + other.h
 
       return (other.x < top_x) and (other_top_x > self.x) and \
              (other.y < top_y) and (other_top_y > self.y)
