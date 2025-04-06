@@ -44,7 +44,7 @@ class player(sprite):
          a+=1
       if keys[pygame.K_a]:
          self.x -= 1.5
-         self.checkMove(1.5,0,place)
+         self.checkMove(-1.5,0,place)
          a+=1
       if a > 0:
          self.move()
@@ -73,13 +73,14 @@ class player(sprite):
       screen.blit(img,(self.xPos,self.yPos))
    
    def checkMove(self,movex,movey,place):
-      for x in range(-5,5):
-         for y in range(-5,5):
+      for x in range(-1, 1):
+         for y in range(-1, 1):
             X   = x + self.x//50
             Y   = y + self.y//50
-            key = X + Y*100000
+            key = place.genKeyC(X, Y)
             if key in place.map_dic:
-               if place.map_dic[key].isHit(self, True):
+               thing = place.map_dic[key]
+               if thing.stuff == "tree" and thing.isHit(self, True):
                   print(movex,movey)
                   self.x -= movex
                   self.y -= movey

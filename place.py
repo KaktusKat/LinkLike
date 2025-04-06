@@ -4,8 +4,15 @@ from tile import tile
 from enemy import enemy
 
 class place:
+
    def __init__(self,map_list):
        self.map_dic = map_list
+
+   def genKeyC(self, cell_x, cell_y):
+       return cell_x + cell_y * 100000
+
+   def genKeyP(self, x, y):
+       return self.genKeyC(x // 50, y // 50)
     
    def create(self, screen, player, enemy_list):
 
@@ -18,7 +25,7 @@ class place:
             
             map_x = x + player.x // 50
             map_y = y + player.y // 50
-            key   = map_x + map_y * 100000
+            key   = self.genKeyC(map_x, map_y)
 
             xPos = player.xPos + x * 50 - (player.x % 50)
             yPos = player.yPos + y * 50 - (player.y % 50)
@@ -31,7 +38,7 @@ class place:
             else:
                self.map_dic[key] = random.randint(0, 2)
                if self.map_dic[key] == TREE:
-                  t = tile(["tree.png"],xPos,yPos,50,50)
+                  t = tile(["tree.png"],xPos,yPos,50,50, stuff = "tree")
                   self.map_dic[key] = t
                   self.map_dic[key].draw(screen)
 
@@ -43,7 +50,7 @@ class place:
                   else:
                      self.map_dic[key] = EMPTY
                if self.map_dic[key] == EMPTY:
-                     t = tile(["grass.png"],xPos,yPos,50,50)
+                     t = tile(["grass.png"],xPos,yPos,50,50, stuff = "grass")
                      self.map_dic[key] = t
                      self.map_dic[key].draw(screen)
               
