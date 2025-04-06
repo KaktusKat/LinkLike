@@ -73,16 +73,20 @@ class player(sprite):
       screen.blit(img,(self.xPos,self.yPos))
    
    def checkMove(self,movex,movey,place):
-      for x in range(-1, 1):
-         for y in range(-1, 1):
+      print('----------------------------------')
+      for y in range(-2, 3):
+         for x in range(-2, 3):
             X   = x + self.x//50
             Y   = y + self.y//50
             key = place.genKeyC(X, Y)
             if key in place.map_dic:
                thing = place.map_dic[key]
-               if thing.stuff == "tree" and thing.isHit(self, True):
-                  print(movex,movey)
-                  self.x -= movex
-                  self.y -= movey
-       
-      
+               if thing.stuff == "tree":
+                  print(' T', end='')
+                  if thing.isHit(self, True):
+                     self.x -= movex
+                     self.y -= movey
+               else:
+                  print(' _', end='')
+         print()
+
