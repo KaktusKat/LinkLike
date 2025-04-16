@@ -49,6 +49,7 @@ while running:
    keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
+   print(gob.x,gob.y)
    place.create(screen,gob,enemy_list)
 
    gob.update(keys,screen,place)

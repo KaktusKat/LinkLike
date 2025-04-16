@@ -70,7 +70,7 @@ class player(sprite):
       img = self.image[self.image_index]
       if self.flip:
          img = pygame.transform.flip(img,False,True)
-      screen.blit(img, self.xPos, self.yPos)
+      screen.blit(img, self.x, self.y)
    
    def checkMove(self,movex,movey,place):
       print('----------------------------------')

@@ -11,6 +11,7 @@ class screen:
       self.screen.fill((9,110,0))
       self.pos_x = x - (self.width//2)
       self.pos_y = y - (self.height//2)
+      
 
    def blit(self, image, x, y):
       self.screen.blit(image, (x - self.pos_x, y - self.pos_y))
