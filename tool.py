@@ -12,12 +12,13 @@ class tool(sprite):
       self.dX       = 1
       self.dY       = 1
       self.kback    = kback
+      self.angle    = 0
 
    def attack(self,user):
       if self.t < self.Aspeed:
          return
-      u_y         = user.yPos+user.h/2
-      u_x         = user.xPos+user.w/2
+      u_y         = user.y+user.h/2
+      u_x         = user.x+user.w/2
       Mpos        = pygame.mouse.get_pos()
       self.angle  = math.atan2(Mpos[1]-u_y,Mpos[0]-u_x)
       angle        = ((180*self.angle)/math.pi)
@@ -41,8 +42,8 @@ class tool(sprite):
       self.y = -100
 
    def draw(self,screen,user):
-      u_y     = user.yPos+user.h/2
-      u_x     = user.xPos+user.w/2
+      u_y     = 250+user.h/2
+      u_x     = 250+user.w/2
       self.dX = u_x+self.distance*math.cos(self.angle)
       self.dY = u_y+self.distance*math.sin(self.angle)
       img = self.Rwepon

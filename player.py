@@ -18,6 +18,7 @@ class player(sprite):
       mousePress = pygame.mouse.get_pressed()
       if mousePress[0]:
          self.tool[self.wep].attack(self)
+         print("do")
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x
          Ry       = Mpos[1] - self.y
@@ -81,9 +82,9 @@ class player(sprite):
                thing = place.map_dic[key]
                if thing.stuff == "tree":
                   print(' T', end='')
-                  #if thing.isHit(self):
-                  #   self.x -= movex
-                  #   self.y -= movey
+                  if thing.isHit(self):
+                     self.x -= movex
+                     self.y -= movey
                else:
                   print(' _', end='')
          print()

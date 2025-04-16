@@ -23,12 +23,12 @@ class place:
       for x in range(-5, 5):
          for y in range(-5, 5):
             
-            map_x = x + player.x // 50
-            map_y = y + player.y // 50
+            map_x = x + player.x // 58
+            map_y = y + player.y // 58
             key   = self.genKeyC(map_x, map_y)
 
-            xPos = player.x + x * 50 - (player.x % 50)
-            yPos = player.y + y * 50 - (player.y % 50)
+            xPos = player.x + x * 58 - (player.x % 58)
+            yPos = player.y + y * 58 - (player.y % 58)
 
             if key in self.map_dic:
                #self.map_dic[key].y = yPos
@@ -38,7 +38,7 @@ class place:
             else:
                self.map_dic[key] = random.randint(0, 2)
                if self.map_dic[key] == TREE:
-                  t = tile(["tree.png"],xPos,yPos,50,50, stuff = "tree")
+                  t = tile(["tree.png"],xPos,yPos,58,58, stuff = "tree")
                   self.map_dic[key] = t
                   self.map_dic[key].draw(screen)
 
@@ -50,7 +50,7 @@ class place:
                   else:
                      self.map_dic[key] = EMPTY
                if self.map_dic[key] == EMPTY:
-                     t = tile(["grass.png"],xPos,yPos,50,50, stuff = "grass")
+                     t = tile(["grass.png"],xPos,yPos,58,58, stuff = "grass")
                      self.map_dic[key] = t
                      self.map_dic[key].draw(screen)
               

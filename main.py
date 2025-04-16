@@ -9,8 +9,8 @@ from enemy  import enemy
 from place import place 
 from screen import screen
 
-width  = 500
-height = 500
+width  = 510
+height = 510
 pygame.init()
 
 screen = screen(width, height)
@@ -51,7 +51,6 @@ while running:
    keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
-   print(gob.x,gob.y)
    place.create(screen,gob,enemy_list)
 
    gob.update(keys,screen,place)
