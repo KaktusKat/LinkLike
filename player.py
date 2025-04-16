@@ -3,13 +3,11 @@ from sprite import sprite
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,tool,x,y):
+   def __init__(self,img,posX,posY,w,h,tool):
       super().__init__(img,posX,posY,w,h)
       self.tool   = tool
       self.b      = False
       self.t      = -10
-      self.xPos   = x
-      self.yPos   = y
       self.wep    = 0
       self.a      = 0
 

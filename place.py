@@ -27,8 +27,8 @@ class place:
             map_y = y + player.y // 50
             key   = self.genKeyC(map_x, map_y)
 
-            xPos = player.xPos + x * 50 - (player.x % 50)
-            yPos = player.yPos + y * 50 - (player.y % 50)
+            xPos = player.x + x * 50 - (player.x % 50)
+            yPos = player.y + y * 50 - (player.y % 50)
 
             if key in self.map_dic:
                #self.map_dic[key].y = yPos

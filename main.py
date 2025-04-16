@@ -33,7 +33,7 @@ battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword]
-gob        = player(["gob.png","gobmove.png"],250,250,54,48,wepon,250,250)
+gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon)
 
 
 enemy_list = []

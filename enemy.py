@@ -38,11 +38,11 @@ class enemy(sprite):
          self.x += 1
          self.y += 1
          return
-      if self.x < player.xPos:
+      if self.x < player.x:
          self.x += 1
       else:
          self.x -= 1
-      if self.y < player.yPos:
+      if self.y < player.y:
          self.y += 1
       else:
          self.y -= 1
