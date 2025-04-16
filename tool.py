@@ -48,5 +48,5 @@ class tool(sprite):
       img = self.Rwepon
       if self.flip:
          img = pygame.transform.flip(img,False,True)
-      screen.blit(img,(self.dX-img.get_width()/2,self.dY-img.get_height()/2))
+      screen.blit(img, self.dX-img.get_width()/2, self.dY-img.get_height()/2)
 
