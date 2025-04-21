@@ -17,8 +17,7 @@ class player(sprite):
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
       if mousePress[0]:
-         self.tool[self.wep].attack(self)
-         print("do")
+         self.tool[self.wep].attack(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x
          Ry       = Mpos[1] - self.y

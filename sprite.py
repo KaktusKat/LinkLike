@@ -24,6 +24,7 @@ class sprite:
       img = self.image[self.image_index]
       if self.flip:
          img = pygame.transform.flip(img,False,True)
+         print("hi")
       screen.blit(img, self.x, self.y)
 
    def isHit(self, other):
