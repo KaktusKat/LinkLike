@@ -31,14 +31,14 @@ class place:
             yPos = player.y + y * 58 - (player.y % 58)
 
             if key in self.map_dic:
-               #self.map_dic[key].y = yPos
-               #self.map_dic[key].x = xPos
                self.map_dic[key].draw(screen)
 
             else:
                self.map_dic[key] = random.randint(0, 2)
                if self.map_dic[key] == TREE:
-                  t = tile(["tree.png"],xPos,yPos,58,58, stuff = "tree")
+                  t = tile(["tree.png"],xPos,yPos,58,58, soild = True)
+                  if xPos == 0 and yPos == 0: 
+                     t = tile(["grass.png"],xPos,yPos,58,58, soild = True)
                   self.map_dic[key] = t
                   self.map_dic[key].draw(screen)
 
@@ -49,8 +49,8 @@ class place:
                      self.map_dic[key] = EMPTY
                   else:
                      self.map_dic[key] = EMPTY
-               if self.map_dic[key] == EMPTY:
-                     t = tile(["grass.png"],xPos,yPos,58,58, stuff = "grass")
+               if self.map_dic[key] == EMPTY or (xPos == 0 and yPos == 0):
+                     t = tile(["grass.png"],xPos,yPos,58,58, soild = False)
                      self.map_dic[key] = t
                      self.map_dic[key].draw(screen)
               

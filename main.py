@@ -11,6 +11,7 @@ from screen import screen
 
 width  = 510
 height = 510
+
 pygame.init()
 
 screen = screen(width, height)
@@ -74,7 +75,7 @@ while running:
          i.ha = 0
          e = enemy(["blob.png"],random.randint(0,500),random.randint(0,500),100,60,40,True)
          enemy_list.append(e)
-      enmy.update(gob,noHit,enemy_list,keys)
+      enmy.update(gob,noHit,enemy_list,keys,place)
       noHit = True
       enmy.draw(screen)
 

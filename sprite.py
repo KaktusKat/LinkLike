@@ -1,7 +1,7 @@
 import pygame
 
 class sprite:
-   def __init__(self, img, posX, posY, w, h, count = 1, stuff = ""):
+   def __init__(self, img, posX, posY, w, h, count = 1, soild = False):
       self.x      = posX
       self.y      = posY
       self.image  = []
@@ -13,7 +13,7 @@ class sprite:
       self.flip   = False
       self.num    = count
       self.image_index = 0
-      self.stuff  = stuff
+      self.soild  = soild
 
    def move(self):
       self.image_index += 1
@@ -40,3 +40,17 @@ class sprite:
 
       return (other.x < top_x) and (other_top_x > self.x) and \
              (other.y < top_y) and (other_top_y > self.y)
+
+   def checkMove(self,movex,movey,place):
+      for y in range(-2, 3):
+         for x in range(-2, 3):
+            X   = x + self.x//50
+            Y   = y + self.y//50
+            key = place.genKeyC(X, Y)
+            if key in place.map_dic:
+               thing = place.map_dic[key]
+               if thing.soild:
+                  if thing.isHit(self):
+                     self.x -= movex
+                     self.y -= movey
+

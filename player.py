@@ -70,21 +70,3 @@ class player(sprite):
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
    
-   def checkMove(self,movex,movey,place):
-      print('----------------------------------')
-      for y in range(-2, 3):
-         for x in range(-2, 3):
-            X   = x + self.x//50
-            Y   = y + self.y//50
-            key = place.genKeyC(X, Y)
-            if key in place.map_dic:
-               thing = place.map_dic[key]
-               if thing.stuff == "tree":
-                  print(' T', end='')
-                  if thing.isHit(self):
-                     self.x -= movex
-                     self.y -= movey
-               else:
-                  print(' _', end='')
-         print()
-

@@ -9,7 +9,7 @@ class enemy(sprite):
       self.ha  = ha
       self.big = big
 
-   def update(self,player,move,enemy_list,keys):
+   def update(self,player,move,enemy_list,keys,place):
       if self.ha == 0:
          enemy_list.remove(self)
          return
@@ -41,21 +41,29 @@ class enemy(sprite):
          return
       if self.x < player.x:
          self.x += 1
+         self.checkMove(1,0,place)
       else:
          self.x -= 1
+         self.checkMove(-1,0,place)
       if self.y < player.y:
          self.y += 1
+         self.checkMove(0,1,place)
       else:
          self.y -= 1
+         self.checkMove(0,-1,place)
       self.x += 1
       self.y += 1
       if keys[pygame.K_w]:
          self.y += 1.5
+         self.checkMove(0,1.5,place)
       if keys[pygame.K_s]:
          self.y -= 1.5
+         self.checkMove(0,-1.5,place)
       if keys[pygame.K_d]:
          self.x -= 1.5
+         self.checkMove(-1.5,0,place)
       if keys[pygame.K_a]:
          self.x += 1.5
+         self.checkMove(1.5,0,place)
 
   
