@@ -2,12 +2,13 @@
 
 import random
 import pygame
-from sprite import sprite
-from player import player
-from tool   import tool
-from enemy  import enemy
-from place import place 
-from screen import screen
+from sprite   import sprite
+from player   import player
+from tool     import tool
+from enemy    import enemy
+from place    import place 
+from screen   import screen
+from invetory import invetory
 
 width  = 510
 height = 510
@@ -28,6 +29,7 @@ wepon = []
 wep = 1
 dic = {}
 
+invet      = invetory(0,"wood.png")
 place      = place(dic)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
@@ -52,11 +54,13 @@ while running:
    keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
-   place.create(screen,gob,enemy_list)
+   place.create(screen,gob,enemy_list,war_hammar,keys,invet)
 
    gob.update(keys,screen,place)
    gob.weponChange(keys)
    gob.draw(screen)
+   invet.open(screen,keys,gob,place)
+   invet.make(place,screen,gob)
 
    for enmy in enemy_list:
       for i in enemy_list:

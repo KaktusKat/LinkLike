@@ -6,15 +6,18 @@ from enemy import enemy
 class place:
 
    def __init__(self,map_list):
-       self.map_dic = map_list
+       self.map_dic  = map_list
+       self.treesCut = 0
 
    def genKeyC(self, cell_x, cell_y):
        return cell_x + cell_y * 100000
 
    def genKeyP(self, x, y):
-       return self.genKeyC(x // 50, y // 50)
+       return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list):
+   def create(self, screen, player, enemy_list,tool,keys,invet):
+
+      Mpos   = pygame.mouse.get_pos()
 
       TREE   = 0
       ENEMY  = 1
@@ -23,6 +26,7 @@ class place:
       for x in range(-5, 5):
          for y in range(-5, 5):
             
+
             map_x = x + player.x // 58
             map_y = y + player.y // 58
             key   = self.genKeyC(map_x, map_y)
@@ -31,6 +35,12 @@ class place:
             yPos = player.y + y * 58 - (player.y % 58)
 
             if key in self.map_dic:
+               if tool.attacking:
+                  if self.map_dic[key].isHit(tool) and self.map_dic[key].soild: 
+                     grass = pygame.image.load("stump.png")
+                     self.map_dic[key].image[0] = pygame.transform.scale(grass,(58,58))
+                     self.map_dic[key].soild    = False
+                     self.treesCut += 1
                self.map_dic[key].draw(screen)
 
             else:
@@ -50,7 +60,11 @@ class place:
                   else:
                      self.map_dic[key] = EMPTY
                if self.map_dic[key] == EMPTY or (xPos == 0 and yPos == 0):
-                     t = tile(["grass.png"],xPos,yPos,58,58, soild = False)
+                     t = tile(["grass2.png"],xPos,yPos,58,58, soild = False)
+                     if random.randint(0,2) == 2:
+                        t = tile(["flower.png"],xPos,yPos,58,58, soild = False)
+                     if random.randint(0,2) == 1:
+                        t = tile(["grass.png"],xPos,yPos,58,58, soild = False)
                      self.map_dic[key] = t
                      self.map_dic[key].draw(screen)
               

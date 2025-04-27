@@ -5,19 +5,20 @@ from sprite import sprite
 class tool(sprite):
    def __init__(self,image,x,y,w,h,d,Aspeed,kback=20,ratio = 1):
       super().__init__(image,x,y,w*ratio,h*ratio)
-      self.distance = d
-      self.Aspeed   = Aspeed
-      self.timer    = 0
-      self.t        = Aspeed
-      self.dX       = 1
-      self.dY       = 1
-      self.kback    = kback
-      self.angle    = 0
+      self.distance  = d
+      self.Aspeed    = Aspeed
+      self.timer     = 0
+      self.t         = Aspeed
+      self.dX        = 1
+      self.dY        = 1
+      self.kback     = kback
+      self.angle     = 0
+      self.attacking = False
 
    def attack(self,user,screen):
       if self.t < self.Aspeed:
          return
-      userx,usery = screen.convict(user.x,user.y)
+      userx,usery = screen.convertWTS(user.x,user.y)
       u_y         = usery+user.h/2
       u_x         = userx+user.w/2
       flip        = screen.width/2
@@ -30,12 +31,14 @@ class tool(sprite):
    def use(self,screen,user):
       self.t += 1
       if self.timer > 0:
-         self.x = self.dX-self.image[0].get_width()/2
-         self.y = self.dY-self.image[0].get_height()/2
+         self.attacking = True
+         self.x         = self.dX-self.image[0].get_width()/2
+         self.y         = self.dY-self.image[0].get_height()/2
          self.draw(screen,user)
          self.timer -= 1
          self.t      = 0
          return
+      self.attacking = False
 
    def draw(self,screen,user):
       u_y     = user.y+user.h/2

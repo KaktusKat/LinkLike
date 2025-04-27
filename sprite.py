@@ -24,7 +24,6 @@ class sprite:
       img = self.image[self.image_index]
       if self.flip:
          img = pygame.transform.flip(img,False,True)
-         print("hi")
       screen.blit(img, self.x, self.y)
 
    def isHit(self, other):
@@ -40,6 +39,16 @@ class sprite:
 
       return (other.x < top_x) and (other_top_x > self.x) and \
              (other.y < top_y) and (other_top_y > self.y)
+
+   def isHitC(self, Ox,Oy,Ow,Oh):
+      top_x = self.x + self.w
+      top_y = self.y + self.h
+
+      other_top_x = Ox + Ow
+      other_top_y = Oy + Oh
+
+      return (Ox < top_x) and (other_top_x > self.x) and \
+             (Oy < top_y) and (other_top_y > self.y)
 
    def checkMove(self,movex,movey,place):
       for y in range(-2, 3):
