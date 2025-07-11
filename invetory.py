@@ -24,6 +24,13 @@ class invetory:
       num          = num.render(f"{self.woodNum}",False,(0,0,0))
       screen.blit(num,-40+player.x,-40+player.y)
       screen.blit(self.wood,-90+player.x,-90+player.y)
+      rocks = pygame.image.load("rock_invent.png")
+      rocks = pygame.transform.scale(rocks,(50,50))
+      num2  = pygame.font.SysFont("I don't think this dose anything",40)
+      num2  = num2.render(f"{place.rocksBrocken}",False,(0,0,0))
+      screen.blit(num2,-40+player.x,10+player.y)
+      screen.blit(rocks,-90+player.x,-30+player.y)
+      
 
    def make(self,place,screen,player):
       self.timer  -= 1 

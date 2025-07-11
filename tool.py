@@ -3,14 +3,14 @@ import math
 from sprite import sprite
 
 class tool(sprite):
-   def __init__(self,image,x,y,w,h,d,Aspeed,kback=20,ratio = 1):
+   def __init__(self,image,x,y,w,h,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1):
       super().__init__(image,x,y,w*ratio,h*ratio)
       self.distance  = d
       self.Aspeed    = Aspeed
       self.timer     = 0
       self.t         = Aspeed
-      self.dX        = 1
-      self.dY        = 1
+      self.dX        = dx
+      self.dY        = dy
       self.kback     = kback
       self.angle     = 0
       self.attacking = False

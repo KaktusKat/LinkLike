@@ -62,4 +62,19 @@ class sprite:
                   if thing.isHit(self):
                      self.x -= movex
                      self.y -= movey
+   
+   def checkMoveM(self,movex,movey,maze):
+      print("---------")
+      for oy in range(-1, 2):
+         for ox in range(-1, 2):
+            X   = ox + self.x//58
+            Y   = oy + self.y//58
+            X = int(X)
+            Y = int(Y)
+            print(f"  ({X:2},{Y:2})", end = None)
+            thing = maze.get_cell(X, Y)
+            if thing and thing.isHit(self):
+               self.x -= movex
+               self.y -= movey
+         print()
 

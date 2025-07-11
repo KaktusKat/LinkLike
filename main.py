@@ -9,9 +9,10 @@ from enemy    import enemy
 from place    import place 
 from screen   import screen
 from invetory import invetory
+from maze     import Maze  
 
-width  = 510
-height = 510
+width  = 580
+height = 580
 
 pygame.init()
 
@@ -31,13 +32,14 @@ dic = {}
 
 invet      = invetory(0,"wood.png")
 place      = place(dic)
+pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
-wepon += [war_hammar,sword]
+wepon += [war_hammar,sword,pickaxe]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon)
-
+maze       = Maze(60,60)
 
 enemy_list = []
 for i in range(2):
@@ -48,15 +50,16 @@ for i in range(2):
 
 running = True
 while running:
-   hammer = pygame.image.load("war_hammar.png")
+   #hammer = pygame.image.load("war_hammar.png")
    #screen.blit(hammer,(100,100))
    a += 1   
    keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
-   place.create(screen,gob,enemy_list,war_hammar,keys,invet)
+  # place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
+   maze.draw(screen)
 
-   gob.update(keys,screen,place)
+   gob.update(keys,screen,place,maze)
    gob.weponChange(keys)
    gob.draw(screen)
    invet.open(screen,keys,gob,place)

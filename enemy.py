@@ -13,10 +13,13 @@ class enemy(sprite):
       if self.ha == 0:
          enemy_list.remove(self)
          return
-      if self.isHit(player.tool[player.wep]) or (self.a < 0 and self.a > -10):
-         
+      if self.isHit(player.tool[player.wep]) or (self.a < 0 and self.a > -10) and player.tool[player.wep].attacking:
+         x = self.x
+         y = self.y
          self.x = self.x+player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
          self.y = self.y+player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
+         self.checkMove(0,self.y-y,place)
+         self.checkMove(self.x-x,0,place)
          self.a += 1
       if self.a == 0:
          self.a = -10

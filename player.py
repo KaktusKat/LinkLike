@@ -11,7 +11,7 @@ class player(sprite):
       self.wep    = 0
       self.a      = 0
 
-   def update(self,keys,screen,place):
+   def update(self,keys,screen,place,maze):
       a          = 0
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
@@ -31,18 +31,26 @@ class player(sprite):
       if keys[pygame.K_w]:
          self.y -= 1.5
          self.checkMove(0,-1.5,place)
+         if not keys[pygame.K_l]:
+            self.checkMoveM(0,-1.5,maze)
          a+=1
       if keys[pygame.K_s]:
          self.y += 1.5
          self.checkMove(0,1.5,place)
+         if not keys[pygame.K_l]:
+            self.checkMoveM(0,1.5,maze)
          a+=1
       if keys[pygame.K_d]:
          self.x += 1.5
          self.checkMove(1.5,0,place)
+         if not keys[pygame.K_l]:
+            self.checkMoveM(1.5,0,maze)
          a+=1
       if keys[pygame.K_a]:
          self.x -= 1.5
          self.checkMove(-1.5,0,place)
+         if not keys[pygame.K_l]:
+            self.checkMoveM(-1.5,0,maze)
          a+=1
       if a > 0:
          self.move()
@@ -61,7 +69,7 @@ class player(sprite):
       if keys[pygame.K_e] and self.a < 0:
          self.wep += 1
          self.a = 100
-      if self.wep == 2:
+      if self.wep == 3:
          self.wep = 0
 
    def draw(self,screen):
