@@ -47,8 +47,9 @@ class place:
 
                   if self.map_dic[key].isHit(tool2) and self.map_dic[key].soild and not self.map_dic[key].breakable: 
                      grass = pygame.image.load("grass.png")
-                     if random.randint(0,20) == 3:
+                     if random.randint(0,1) == 1:
                         grass = pygame.image.load("portal.png")
+                        self.map_dic[key].portal   = True
                      self.map_dic[key].image[0] = pygame.transform.scale(grass,(58,58))
                      self.map_dic[key].soild    = False
                      self.rocksBrocken += 1

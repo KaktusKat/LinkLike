@@ -50,14 +50,17 @@ for i in range(2):
 
 running = True
 while running:
+   print(gob.x,gob.y)
    #hammer = pygame.image.load("war_hammar.png")
    #screen.blit(hammer,(100,100))
    a += 1   
    keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
-  # place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
-   maze.draw(screen)
+   if gob.inPortal(place):
+      maze.draw(screen)
+   else:
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
 
    gob.update(keys,screen,place,maze)
    gob.weponChange(keys)

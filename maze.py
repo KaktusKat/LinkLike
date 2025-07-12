@@ -4,10 +4,10 @@ from tile import tile
 class Maze:
 
    def path(x, y):
-      return tile(["grass.png"],x*58,y*58,58,58, soild = False)
+      return tile(["grass.png"],x*70,y*70,70,70, soild = False)
 
    def wall(x, y):
-      return tile(["caveWall.png"],x*58,y*58,58,58, soild = True)
+      return tile(["caveWall.png"],x*70,y*70,70,70, soild = True)
 
    def get_cell(self, x, y):
       if x < 0 or x >= self.width or y < 0 or y >= self.height:
