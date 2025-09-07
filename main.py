@@ -32,25 +32,25 @@ dic = {}
 
 invet      = invetory(0,"wood.png")
 place      = place(dic)
+sheild     = tool(["sheild.png"],-100,-100,300,168,30,1,ratio = 0.4)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword,pickaxe]
-gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon)
+gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild)
 maze       = Maze(60,60)
 
 enemy_list = []
 for i in range(2):
-   e = enemy(["blob.png"],Ex,Ey,60,54,20)
+   e = enemy(["blob.png","blobAttacking.png"],Ex,Ey,60,54,20)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
 running = True
 while running:
-   print(gob.x,gob.y)
    #hammer = pygame.image.load("war_hammar.png")
    #screen.blit(hammer,(100,100))
    a += 1   
@@ -83,15 +83,17 @@ while running:
       if  not noHit and not enmy.ha == 0 and not enmy.big:
          enmy.ha = 0
          i.ha = 0
-         e = enemy(["blob.png"],random.randint(0,500),random.randint(0,500),100,60,40,True)
+         e = enemy(["blob.png","blobAttacking.png"],random.randint(0,500),random.randint(0,500),100,60,40,True)
          enemy_list.append(e)
       enmy.update(gob,noHit,enemy_list,keys,place)
       noHit = True
       enmy.draw(screen)
 
    for event in pygame.event.get():
-      if event.type == pygame.QUIT:
+      if event.type == pygame.QUIT or gob.health <= 0:
          running = False
+   if gob.health <= 0:
+      running = False
    pygame.display.update()
    clock.tick(80)
 pygame.quit()

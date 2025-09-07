@@ -3,7 +3,7 @@ from sprite import sprite
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,tool):
+   def __init__(self,img,posX,posY,w,h,tool,heath,sheild):
       super().__init__(img,posX,posY,w,h)
       self.tool   = tool
       self.b      = False
@@ -11,14 +11,18 @@ class player(sprite):
       self.wep    = 0
       self.a      = 0
       self.inMaze = False
+      self.health = heath
+      self.sheild = sheild
 
    def update(self,keys,screen,place,maze):
       a          = 0
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
-      if mousePress[0]:
+      if mousePress[0] and not self.sheild.attacking:
          self.tool[self.wep].attack(self,screen)
+      if keys[pygame.K_LSHIFT]:
+         self.sheild.block(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x
          Ry       = Mpos[1] - self.y
@@ -68,7 +72,8 @@ class player(sprite):
          self.image[1] = pygame.transform.flip(self.image[1],True,False)
          self.b = False
       self.tool[self.wep].use(screen,self)
-
+      self.sheild.use(screen,self)     
+ 
    def weponChange(self,keys):
       self.a -= 1
       if keys[pygame.K_e] and self.a < 0:

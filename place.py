@@ -66,7 +66,7 @@ class place:
 
                elif self.map_dic[key] == ENEMY:
                   if random.randint(0, 20) == 1:
-                     e = enemy(["blob.png"],xPos,yPos,60,54,20)
+                     e = enemy(["blob.png","blobAttacking.png"],xPos,yPos,60,54,20)
                      enemy_list.append(e)
                      self.map_dic[key] = EMPTY
                   else:

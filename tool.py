@@ -5,15 +5,16 @@ from sprite import sprite
 class tool(sprite):
    def __init__(self,image,x,y,w,h,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1):
       super().__init__(image,x,y,w*ratio,h*ratio)
-      self.distance  = d
-      self.Aspeed    = Aspeed
-      self.timer     = 0
-      self.t         = Aspeed
-      self.dX        = dx
-      self.dY        = dy
-      self.kback     = kback
-      self.angle     = 0
-      self.attacking = False
+      self.distance   = d
+      self.Aspeed     = Aspeed
+      self.timer      = 0
+      self.t          = Aspeed
+      self.dX         = dx
+      self.dY         = dy
+      self.kback      = kback
+      self.angle      = 0
+      self.attacking  = False
+      self.isblocking = False
 
    def attack(self,user,screen):
       if self.t < self.Aspeed:
@@ -28,15 +29,27 @@ class tool(sprite):
       self.Rwepon = pygame.transform.rotate(self.image[0],-angle)
       self.timer  = 30
 
+   def block(self,user,screen):
+      userx,usery = screen.convertWTS(user.x,user.y)
+      u_y         = usery+user.h/2
+      u_x         = userx+user.w/2
+      flip        = screen.width/2
+      Mpos        = pygame.mouse.get_pos()
+      self.angle  = math.atan2(Mpos[1]-u_y,Mpos[0]-u_x)
+      angle        = ((180*self.angle)/math.pi)
+      self.Rwepon = pygame.transform.rotate(self.image[0],-angle)
+      self.isblocking = True
+
    def use(self,screen,user):
       self.t += 1
-      if self.timer > 0:
+      if self.timer > 0 or self.isblocking:
          self.attacking = True
          self.x         = self.dX-self.image[0].get_width()/2
          self.y         = self.dY-self.image[0].get_height()/2
          self.draw(screen,user)
-         self.timer -= 1
-         self.t      = 0
+         self.timer     -= 1
+         self.t          = 0
+         self.isblocking = False
          return
       self.attacking = False
 

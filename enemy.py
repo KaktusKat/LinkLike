@@ -5,15 +5,27 @@ import pygame
 class enemy(sprite):
    def __init__(self,image,x,y,w,h,ha,big = False):
       super().__init__(image,x,y,w,h)
-      self.a   = -10
-      self.ha  = ha
-      self.big = big
-
+      self.a         = -10
+      self.ha        = ha
+      self.big       = big
+      self.lastmove  = [0,0]
+      self.Kback     = 0
+      self.attack    = 0
+      self.Acooldown = 0
+      self.wait      = 0
+      self.sign      = False  
+      self.attacking = False
+      self.timer     = 0
+ 
    def update(self,player,move,enemy_list,keys,place):
+      hit = False
+      print(self.ha)
+
       if self.ha == 0:
          enemy_list.remove(self)
          return
-      if self.isHit(player.tool[player.wep]) or (self.a < 0 and self.a > -10) and player.tool[player.wep].attacking:
+
+      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
          x = self.x
          y = self.y
          self.x = self.x+player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
@@ -21,52 +33,91 @@ class enemy(sprite):
          self.checkMove(0,self.y-y,place)
          self.checkMove(self.x-x,0,place)
          self.a += 1
+
       if self.a == 0:
          self.a = -10
          self.ha -= 1
-      self.x += 1
-      self.y += 1
-      if self.isHit(player):
-         self.x -= 1
-         self.y -= 1
-         return
-      self.x -= 2
-      self.y -= 2
-      if self.isHit(player):
+
+      if self.isHit(player.sheild) and self.attacking:
+         self.ha       -= 3
+         self.attack = -1
+
+      if self.isHit(player) and self.attacking and self.timer < 0:
          self.x += 1
          self.y += 1
-         return
+         player.health -= 1
+         self.timer = 20
+
+      else:
+         self.lastmove = [0,0]
+
+      if self.Kback == 0:
+         self.lastmove = [0,0]
+
       if self.a < 0 and self.a > -10:
          return
+
       if not move:
          self.x += 1
          self.y += 1
          return
+
       if self.x < player.x:
          self.x += 1
+         self.lastmove[0] = 1 
          self.checkMove(1,0,place)
       else:
          self.x -= 1
+         self.lastmove[0] = -1
          self.checkMove(-1,0,place)
+
       if self.y < player.y:
          self.y += 1
+         self.lastmove[1] = 1
          self.checkMove(0,1,place)
       else:
          self.y -= 1
+         self.lastmove[1] = -1
          self.checkMove(0,-1,place)
+
       self.x += 1
       self.y += 1
+
+      if (abs(self.x - player.x) <= 100 or abs(self.y - player.y) <= 100) and self.Acooldown < 0:
+         self.attack = 10
+         self.image_index = 1
+         if not self.sign:
+            self.wait = 70
+            self.sign = True
+
+      if self.attack > 0 and self.wait < 0:
+         self.attacking = True
+         self.x        += self.lastmove[0]*11
+         self.y        += self.lastmove[1]*11
+         self.attack   -= 1
+         self.Acooldown = 200
+         self.image_index = 0
+         self.sign = False
+      else:
+         self.attacking = False
+
       if keys[pygame.K_w]:
          self.y += 1.5
          self.checkMove(0,1.5,place)
+
       if keys[pygame.K_s]:
          self.y -= 1.5
          self.checkMove(0,-1.5,place)
+
       if keys[pygame.K_d]:
          self.x -= 1.5
          self.checkMove(-1.5,0,place)
+
       if keys[pygame.K_a]:
          self.x += 1.5
          self.checkMove(1.5,0,place)
 
-  
+      self.Acooldown -= 1
+      self.wait -= 1 
+      self.timer -= 1
+      print(self.Kback)
