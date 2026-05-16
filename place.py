@@ -89,6 +89,3 @@ class place:
                         t = tile(["grass.png"],xPos,yPos,58,58, soild = False)
                      self.map_dic[key] = t
                      self.map_dic[key].draw(screen)
-              
-
-               

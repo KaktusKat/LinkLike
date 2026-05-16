@@ -3,25 +3,38 @@ from sprite import sprite
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,tool,heath,sheild):
+   def __init__(self,img,posX,posY,w,h,tool,heath,sheild,spear):
       super().__init__(img,posX,posY,w,h)
-      self.tool   = tool
-      self.b      = False
-      self.t      = -10
-      self.wep    = 0
-      self.a      = 0
-      self.inMaze = False
-      self.health = heath
-      self.sheild = sheild
+      self.tool      = tool
+      self.b         = False
+      self.t         = -10
+      self.wep       = 0
+      self.a         = 0
+      self.inMaze    = False
+      self.health    = heath
+      self.sheild    = sheild
+      self.table     = False
+      self.spearGot  = True
+      self.spear     = spear
 
-   def update(self,keys,screen,place,maze):
+   def update(self,keys,screen,place,maze,invetory):
+      if "spear" in invetory.craftList and self.spearGot:
+         self.tool.append(self.spear)
+         self.spearGot = False
       a          = 0
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
       if mousePress[0] and not self.sheild.attacking:
          self.tool[self.wep].attack(self,screen)
-      if keys[pygame.K_LSHIFT]:
+      if mousePress[2] and self.inMaze:
+         craft = maze.get_cell(int(((Mpos[0]+self.x)//70)-4),int(((Mpos[1]+self.y)//70)-4))
+         if not invetory.window:
+            if self.isHitXY(Mpos[0]+self.x-290,Mpos[1]+self.y-290,1,1,craft):
+               if craft.craft:
+                  self.table   = True
+                  invetory.table = True
+      if keys[pygame.K_LSHIFT] and "sheild" in invetory.craftList:
          self.sheild.block(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x
@@ -60,6 +73,10 @@ class player(sprite):
             self.checkMoveM(-1.5,0,maze)
          else:
             self.checkMove(-1.5,0,place)
+      if keys[pygame.K_r] and self.inMaze:
+         self.inMaze = False
+         self.x      = 0
+         self.y      = 0
          a+=1
       if a > 0:
          self.move()
@@ -79,7 +96,7 @@ class player(sprite):
       if keys[pygame.K_e] and self.a < 0:
          self.wep += 1
          self.a = 100
-      if self.wep == 3:
+      if self.wep == len(self.tool):
          self.wep = 0
 
    def draw(self,screen):

@@ -1,4 +1,5 @@
 import random
+import pygame
 from tile import tile
 
 class Maze:
@@ -7,7 +8,9 @@ class Maze:
       return tile(["grass.png"],x*70,y*70,70,70, soild = False)
 
    def wall(x, y):
-      return tile(["caveWall.png"],x*70,y*70,70,70, soild = True)
+      if random.randint(0,10) == 10:
+         return tile(["spike.png"],x*70,y*70,70,70, soild = True,breakable = False, spike = True)
+      return tile(["caveWall.png"],x*70,y*70,70,70, soild = True,breakable = False)
 
    def get_cell(self, x, y):
       if x < 0 or x >= self.width or y < 0 or y >= self.height:
@@ -21,17 +24,23 @@ class Maze:
       self.height     = (height // 2) * 2 + 1
       self.complexity = complexity
       self.density    = density
+      self.spikes     = 0
 
       self.clear()
       self.boundary()
       self.generate()
 
-   def draw(self,screen):
+   def draw(self,screen,tool):
       """ print map on the console """
       for row in self.map:
          for cell in row:
            cell.draw(screen)
-
+           if cell.spike and tool.attacking and cell.isHit(tool):
+              cell.spike   = False
+              img          = pygame.image.load("caveWall.png")
+              cell.image   = [pygame.transform.scale(img,(70,70))]
+              self.spikes += 1
+ 
    def print(self):
       """ print map on the console """
       for row in self.map:
@@ -102,3 +111,12 @@ class Maze:
                   x = nx
                   y = ny
 
+   def craftSpawn(self):
+      spawning = True
+      while spawning:
+         craft = self.get_cell(0,0)
+         if craft.soild:
+            image = pygame.image.load("craft.png")
+            craft.image = [pygame.transform.scale(image,(craft.w,craft.h))]
+            craft.craft = True
+            spawning = False

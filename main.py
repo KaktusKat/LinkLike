@@ -29,18 +29,20 @@ die = False
 wepon = []
 wep = 1
 dic = {}
+first = True
 
 invet      = invetory(0,"wood.png")
 place      = place(dic)
-sheild     = tool(["sheild.png"],-100,-100,300,168,30,1,ratio = 0.4)
+spear      = tool(["spear.png"],-111,-111,180,30,90,30,5,1)
+sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword,pickaxe]
-gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild)
-maze       = Maze(60,60)
+gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
+maze       = Maze(20,20)
 
 enemy_list = []
 for i in range(2):
@@ -58,14 +60,18 @@ while running:
 
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
-      maze.draw(screen)
+      enemy_list = []
+      maze.draw(screen,pickaxe)
+      if first:
+         maze.craftSpawn()
+         first = False
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
 
-   gob.update(keys,screen,place,maze)
+   gob.update(keys,screen,place,maze,invet)
    gob.weponChange(keys)
    gob.draw(screen)
-   invet.open(screen,keys,gob,place)
+   invet.open(screen,keys,gob,place,maze)
    invet.make(place,screen,gob)
 
    for enmy in enemy_list:
@@ -85,7 +91,7 @@ while running:
          i.ha = 0
          e = enemy(["blob.png","blobAttacking.png"],random.randint(0,500),random.randint(0,500),100,60,40,True)
          enemy_list.append(e)
-      enmy.update(gob,noHit,enemy_list,keys,place)
+      enmy.update(gob,noHit,enemy_list,keys,place,screen)
       noHit = True
       enmy.draw(screen)
 

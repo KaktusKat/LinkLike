@@ -17,15 +17,25 @@ class enemy(sprite):
       self.attacking = False
       self.timer     = 0
  
-   def update(self,player,move,enemy_list,keys,place):
+   def update(self,player,move,enemy_list,keys,place,screen):
+      if player.wep == 3 and player.tool[player.wep].attacking:        # check if it is a spear
+         Xmove = 0
+         Ymove = 0
+         tool  = player.tool[player.wep]
+         if ((-tool.angle)*180/math.pi < 90 and (-tool.angle)*180/math.pi > 0) or ((-tool.angle)*180/math.pi > -90 and (-tool.angle)*180/math.pi < 0):
+            Xmove += tool.Rwepon.get_width()/2
+         if (-tool.angle)*180/math.pi < 0:
+            Ymove += tool.Rwepon.get_height()/2
+         pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(((tool.dX-tool.Rwepon.get_width()/2)-player.x+290)+Xmove,((tool.dY-tool.Rwepon.get_height()/2)-player.y+290)+Ymove,75,75),2)
+         player.tool[player.wep].x = (tool.dX-tool.Rwepon.get_width()/2)+Xmove
+         player.tool[player.wep].y = (tool.dY-tool.Rwepon.get_height()/2)+Ymove
+         player.tool[player.wep].w = 75
+         player.tool[player.wep].h = 75
       hit = False
-      print(self.ha)
-
       if self.ha == 0:
          enemy_list.remove(self)
          return
-
-      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
+      if (self.isHit(player.tool[player.wep],screen,True,player) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
          x = self.x
          y = self.y
          self.x = self.x+player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
@@ -39,7 +49,7 @@ class enemy(sprite):
          self.ha -= 1
 
       if self.isHit(player.sheild) and self.attacking:
-         self.ha       -= 3
+         self.ha    -= 3
          self.attack = -1
 
       if self.isHit(player) and self.attacking and self.timer < 0:
@@ -101,23 +111,22 @@ class enemy(sprite):
       else:
          self.attacking = False
 
-      if keys[pygame.K_w]:
-         self.y += 1.5
-         self.checkMove(0,1.5,place)
+#      if keys[pygame.K_w]:
+ #        self.y += 0.5
+  #       self.checkMove(0,1.5,place)
 
-      if keys[pygame.K_s]:
-         self.y -= 1.5
-         self.checkMove(0,-1.5,place)
+#      if keys[pygame.K_s]:
+ #        self.y -= 0.5
+  #       self.checkMove(0,-1.5,place)
 
-      if keys[pygame.K_d]:
-         self.x -= 1.5
-         self.checkMove(-1.5,0,place)
+#      if keys[pygame.K_d]:
+ #        self.x -= 0.5
+  #       self.checkMove(-1.5,0,place)
 
-      if keys[pygame.K_a]:
-         self.x += 1.5
-         self.checkMove(1.5,0,place)
+#      if keys[pygame.K_a]:
+ #        self.x += 0.5
+  #       self.checkMove(1.5,0,place)
 
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1
-      print(self.Kback)
