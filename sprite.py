@@ -42,8 +42,6 @@ class sprite:
    
    def isHitXYXY(self,playerX,playerY,playerW,playerH, otherX,otherY,otherW,otherH):
 
-#      if self == other:
- #        return False
 
       top_x = playerX + playerW
       top_y = playerY + playerH
@@ -54,7 +52,7 @@ class sprite:
       return (otherX < top_x) and (other_top_x > playerX) and \
              (otherY < top_y) and (other_top_y > playerY)
 
-   def isHit(self, other,screen = 0,draw = False,player = 0):
+   def isHit(self, other):
 
       if self == other:
          return False
@@ -65,9 +63,6 @@ class sprite:
       other_top_x = other.x + other.w
       other_top_y = other.y + other.h
 
-      if draw:
-         pygame.draw.rect(screen.screen,(250,0,0),pygame.Rect((other.x-player.x+290)+150,(other.y-player.y+290),other.w-150,other.h),2)
-         pygame.draw.rect(screen.screen,(250,0,0),pygame.Rect((other.x-player.x+290),(other.y-player.y+290),other.w,other.h),2)
 
       return (other.x < top_x) and (other_top_x > self.x) and \
              (other.y < top_y) and (other_top_y > self.y)

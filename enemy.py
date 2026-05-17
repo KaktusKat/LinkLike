@@ -26,7 +26,6 @@ class enemy(sprite):
             Xmove += tool.Rwepon.get_width()/2
          if (-tool.angle)*180/math.pi < 0:
             Ymove += tool.Rwepon.get_height()/2
-         pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(((tool.dX-tool.Rwepon.get_width()/2)-player.x+290)+Xmove,((tool.dY-tool.Rwepon.get_height()/2)-player.y+290)+Ymove,75,75),2)
          player.tool[player.wep].x = (tool.dX-tool.Rwepon.get_width()/2)+Xmove
          player.tool[player.wep].y = (tool.dY-tool.Rwepon.get_height()/2)+Ymove
          player.tool[player.wep].w = 75
@@ -35,7 +34,7 @@ class enemy(sprite):
       if self.ha == 0:
          enemy_list.remove(self)
          return
-      if (self.isHit(player.tool[player.wep],screen,True,player) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
+      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
          x = self.x
          y = self.y
          self.x = self.x+player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)

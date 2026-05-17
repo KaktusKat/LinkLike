@@ -38,7 +38,6 @@ class invetory:
           self.table  = False
 
    def craft(self,screen,player,place,maze):
-      print(self.craftList)
       self.woodNum = place.treesCut
       num          = pygame.font.SysFont("I don't think this dose anything",40)
       num          = num.render(f"{self.woodNum}",False,(0,0,0))
@@ -178,6 +177,5 @@ class invetory:
       for y in range(3):
          for x in range(3):
             if not recpie[y][x] == self.craftTable[y][x][0][0]:
-               print("no")
                return [[0,0]]
       return outcome
