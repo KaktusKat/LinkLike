@@ -33,7 +33,7 @@ first = True
 
 invet      = invetory(0,"wood.png")
 place      = place(dic)
-spear      = tool(["spear.png"],-111,-111,180,30,90,30,5,1)
+spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1)
 sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
