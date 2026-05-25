@@ -17,7 +17,9 @@ class player(sprite):
       self.spearGot  = True
       self.spear     = spear
 
-   def update(self,keys,screen,place,maze,invetory):
+   def update(self,keys,screen,place,maze,invetory,ballList):
+      if self.health <= 0:
+         return
       if "spear" in invetory.craftList and self.spearGot:
          self.tool.append(self.spear)
          self.spearGot = False
@@ -34,6 +36,14 @@ class player(sprite):
                if craft.craft:
                   self.table   = True
                   invetory.table = True
+      if len(ballList) > 0:
+         delList = []
+         for ball in ballList:
+             if ball.isHit(self):
+                self.health -= 1
+                delList.append(ball)
+         for ball in delList:
+             ballList.remove(ball)
       if keys[pygame.K_LSHIFT] and "sheild" in invetory.craftList:
          self.sheild.block(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:

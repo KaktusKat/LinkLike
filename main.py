@@ -2,14 +2,15 @@
 
 import random
 import pygame
-from sprite   import sprite
-from player   import player
-from tool     import tool
-from enemy    import enemy
-from place    import place 
-from screen   import screen
-from invetory import invetory
-from maze     import Maze  
+from sprite         import sprite
+from player         import player
+from tool           import tool
+from enemy          import enemy
+from place          import place 
+from screen         import screen
+from invetory       import invetory
+from maze           import Maze  
+from corruptedEnemy import corruptedEnemy
 
 width  = 580
 height = 580
@@ -25,11 +26,13 @@ Ex    = 50
 Ey    = 50
 a     = 0
 noHit = True
-die = False
+die   = False
 wepon = []
-wep = 1
-dic = {}
+wep   = 1
+dic   = {}
 first = True
+
+ballList = []
 
 invet      = invetory(0,"wood.png")
 place      = place(dic)
@@ -43,6 +46,7 @@ sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword,pickaxe]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
 maze       = Maze(20,20)
+test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
 for i in range(2):
@@ -68,11 +72,16 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
 
-   gob.update(keys,screen,place,maze,invet)
+   gob.update(keys,screen,place,maze,invet,ballList)
    gob.weponChange(keys)
    gob.draw(screen)
+   test.update(gob,screen,place,ballList)
    invet.open(screen,keys,gob,place,maze)
    invet.make(place,screen,gob)
+
+   if len(ballList) > 0:
+      for ball in ballList:
+          ball.update(gob,screen)
 
    for enmy in enemy_list:
       for i in enemy_list:
