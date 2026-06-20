@@ -20,7 +20,6 @@ class corruptedEnemy(enemy):
 
 
    def update(self,player,screen,place,ballList):
-      print(self.ha)
       if len(ballList) > 0:
          delList = []
          for balls in ballList:
@@ -57,13 +56,13 @@ class corruptedEnemy(enemy):
 
       if self.a == 0:
          self.a = -10
-         if self.corruption > 0:
-            self.corruption -= 1
-            img           = pygame.image.load("halfCorruptedBlob.png")
-            img           = pygame.transform.scale(img,(w,h))
-            self.image[0] = img
-         else: 
-            self.ha -= 1
+#         if self.corruption > 0:
+ #           self.corruption -= 1
+  #          img           = pygame.image.load("halfCorruptedBlob.png")
+   #         img           = pygame.transform.scale(img,(w,h))
+    #        self.image[0] = img
+     #    else: 
+      #      self.ha -= 1
 
       if self.x < player.x:
          if abs(self.x-player.x) <= 150:

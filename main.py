@@ -11,6 +11,8 @@ from screen         import screen
 from invetory       import invetory
 from maze           import Maze  
 from corruptedEnemy import corruptedEnemy
+from biome          import biome
+from tileValues     import tileValues
 
 width  = 580
 height = 580
@@ -29,13 +31,25 @@ noHit = True
 die   = False
 wepon = []
 wep   = 1
-dic   = {}
 first = True
 
 ballList = []
 
+grass      = tileValues(["grass.png"],False,True,58,58)
+grass2     = tileValues(["grass2.png"],False,True,58,58)
+flower     = tileValues(["flower.png"],False,True,58,58)
+tree       = tileValues(["tree.png"],True,True,58,58)
+rock       = tileValues(["rock.png","grass2.png","portal.png"],True,False,58,58)
+sand       = tileValues(["sand.png"],False,True,58,58)
+sand2      = tileValues(["sand2.png"],False,True,58,58)
+sand3      = tileValues(["sand3.png"],False,True,58,58)
+sandRocks  = tileValues(["sandRocks.png","sand2.png","sandportal.png"],True,False,58,58)
+
+forest    = biome("forest",20,1,[[grass,0.2375],[grass2,0.2375],[flower,0.2375],[tree,0.2375],[rock,0.05]])
+sand      = biome("sand",20,1,[[sand,0.3125],[sand2,0.3125],[sand3,0.3125],[sandRocks,0.0625]])
+biomeList = [forest,sand]
 invet      = invetory(0,"wood.png")
-place      = place(dic)
+place      = place(biomeList)
 spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1)
 sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
@@ -70,7 +84,7 @@ while running:
          maze.craftSpawn()
          first = False
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet,biomeList)
 
    gob.update(keys,screen,place,maze,invet,ballList)
    gob.weponChange(keys)
