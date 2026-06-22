@@ -76,7 +76,7 @@ class place:
                      ypos = player.y + keyY * 58 - (player.y % 58)
                      if not key2 in self.map_dic:
                         self.map_dic[key2] = tile(["grass.png"],xpos,ypos,58,58,False,biomeList,justMade = True)
-               for keyX in range(-6,5):
+               for keyX in range(-6,6):
                   for keyY in range(-6,6):
                      map_x = keyX + player.x // 58
                      map_y = keyY + player.y // 58
