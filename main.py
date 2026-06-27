@@ -43,6 +43,7 @@ rock       = tileValues(["rock.png","grass2.png","portal.png"],True,False,58,58)
 sand       = tileValues(["sand.png"],False,True,58,58)
 sand2      = tileValues(["sand2.png"],False,True,58,58)
 sand3      = tileValues(["sand3.png"],False,True,58,58)
+catus      = tileValues(["catus.png"],True,True,58,58)
 sandRocks  = tileValues(["sandRocks.png","sand2.png","sandportal.png"],True,False,58,58)
 
 forest    = biome("forest",20,1,[[grass,0.2375],[grass2,0.2375],[flower,0.2375],[tree,0.2375],[rock,0.05]])
