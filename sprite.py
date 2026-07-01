@@ -106,14 +106,15 @@ class sprite:
       return False
    
    def checkMoveM(self,movex,movey,maze):
-      for oy in range(-1, 2):
-         for ox in range(-1, 2):
-            X   = ox + self.x//70
-            Y   = oy + self.y//70
+      for oy in range(-2, 3):
+         for ox in range(-2, 3):
+            X   = ox + self.x//29
+            Y   = oy + self.y//29
             X = int(X)
             Y = int(Y)
             thing = maze.get_cell(X, Y)
             if thing and thing.soild:
+               print("hi")
                if thing.isHit(self):
                   self.x -= movex
                   self.y -= movey

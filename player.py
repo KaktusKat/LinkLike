@@ -123,8 +123,10 @@ class player(sprite):
           if place.map_dic[key].portal:
              self.x = 70
              self.y = 70
-          if place.map_dic[key].portal or self.inMaze:
+          if place.map_dic[key].portal:
              self.inMaze = True
              return True
+       if self.inMaze:
+          return True
        return False
           

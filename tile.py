@@ -1,23 +1,27 @@
 import pygame
+import random
 from sprite import sprite
 
 class tile(sprite):
-   def __init__(self, img, posX, posY, w, h,soild,biomes = [],breakable = True,portal = False,craft = False,spike = False,justMade = False):
+   def __init__(self, img, posX, posY, w, h,soild,biomes = [],breakable = True,portal = False,craft = False,spike = False,justMade = False,numRow = 0,reducedNoise = False):
        super().__init__(img, posX, posY, w, h, soild=soild)
-       self.breakable = breakable
-       self.portal    = portal
-       self.craft     = False
-       self.spike     = spike
-       self.nextTo     = []
-       self.emptyNear  = 0
-       self.biomeNear  = {}
-       self.nameList   = []
-       self.numbList   = []
-       self.biomes     = biomes
-       self.rarity     = 0
-       self.maxProb    = 0
-       self.biome      = 0
-       self.justMade   = justMade
+       self.numRow       = numRow
+       self.reducedNoise = reducedNoise
+       self.breakable    = breakable
+       self.portal       = portal
+       self.craft        = False
+       self.spike        = spike
+       self.nextTo       = []
+       self.emptyNear    = 0
+       self.biomeNear    = {}
+       self.nameList     = []
+       self.numbList     = []
+       self.biomes       = biomes
+       self.type         = 0
+       self.rarity       = 0
+       self.maxProb      = 0
+       self.biome        = 0
+       self.justMade     = justMade
        a = -1
        for biome in self.biomes:
           a += 1
@@ -56,8 +60,41 @@ class tile(sprite):
          self.prob[biome.name] = prob
       for k in self.prob:
          self.prob[k] /= (sumSizes)
-#      print(self.prob)
       self.maxProb = max(list(dict.values(self.prob)))
 
 
+   def randomPlace(self,img1,img2):
+      if random.randint(0,1) == 1:
+         self.type  = "wall"
+         self.image = [img1]
+         self.soild = True
+      else:
+        self.type  = "empty"
+        self.image = [img2]
+        self.soild = False
+
+   def nebiors(self,tileList,width):
+      posList     = [self.x//29,self.y//29]
+      posList     = [int(posList[0]),int(posList[1])]
+      self.nextTo = []
+      for x in range(-1,2):
+         for y in range(-1,2):
+            self.nextTo.append(tileList[(posList[0]+x)][(posList[1]+y)])
+
+   def reduceNoise(self,backG,block):
+      numWall  = 0
+      numEmpty = 0
+      for tile in self.nextTo:
+         if tile.type == "wall":
+           numWall += 1
+         else:
+           numEmpty += 1
+      self.type   = "empty"
+      self.image  = [backG]
+      self.soild  = False
+      if numWall >= 5:
+         self.type   = "wall"
+         self.image  = [block]
+         self.soild  = True
+                                                                                                                
 

@@ -9,7 +9,7 @@ from enemy          import enemy
 from place          import place 
 from screen         import screen
 from invetory       import invetory
-from maze           import Maze  
+from cave           import Cave
 from corruptedEnemy import corruptedEnemy
 from biome          import biome
 from tileValues     import tileValues
@@ -34,6 +34,7 @@ wep   = 1
 first = True
 
 ballList = []
+tileList = {}
 
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
@@ -60,7 +61,7 @@ axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword,pickaxe]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
-maze       = Maze(20,20)
+cave       = Cave(["caveBackground.png","caveBlock.png"])
 test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
@@ -80,18 +81,15 @@ while running:
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
       enemy_list = []
-      maze.draw(screen,pickaxe)
-      if first:
-         maze.craftSpawn()
-         first = False
+      cave.update(screen,gob,pickaxe)
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet,biomeList)
 
-   gob.update(keys,screen,place,maze,invet,ballList)
+   gob.update(keys,screen,place,cave,invet,ballList)
    gob.weponChange(keys)
    gob.draw(screen)
    test.update(gob,screen,place,ballList)
-   invet.open(screen,keys,gob,place,maze)
+   invet.open(screen,keys,gob,place,cave)
    invet.make(place,screen,gob)
 
    if len(ballList) > 0:
