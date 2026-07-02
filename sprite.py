@@ -114,7 +114,6 @@ class sprite:
             Y = int(Y)
             thing = maze.get_cell(X, Y)
             if thing and thing.soild:
-               print("hi")
                if thing.isHit(self):
                   self.x -= movex
                   self.y -= movey

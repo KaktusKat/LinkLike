@@ -8,9 +8,9 @@ class Cave:
       self.images   = []
       for img in images:
          image = pygame.image.load(img)
-         image = pygame.transform.scale(image,(58,58))
+         image = pygame.transform.scale(image,(29,29))
          self.images.append(image)
-      self.spikes   = 0
+      self.iron     = 0
       self.tileList = {}
 
    def update(self,screen,player,pickaxe):
@@ -42,6 +42,8 @@ class Cave:
           if pickaxe.attacking and tiles.isHit(pickaxe) and tiles.soild:
              tiles.image = [self.images[0]]
              tiles.soild = False
+             if tiles.iron:
+                self.iron += 1
           tiles.draw(screen)
 
    def add(self,new):
@@ -49,7 +51,7 @@ class Cave:
              tile.nebiors(self.tileList,580)
       for i in range(5):
          for tile in new:
-            tile.reduceNoise(self.images[0],self.images[1])
+            tile.reduceNoise(self.images[0],[self.images[1],self.images[2]],["stone","iron"])
             tile.reducedNoise = True
 
    def get_cell(self,x,y):

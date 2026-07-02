@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 import random
 from sprite import sprite
 
@@ -22,6 +23,7 @@ class tile(sprite):
        self.maxProb      = 0
        self.biome        = 0
        self.justMade     = justMade
+       self.iron         = False
        a = -1
        for biome in self.biomes:
           a += 1
@@ -81,7 +83,7 @@ class tile(sprite):
          for y in range(-1,2):
             self.nextTo.append(tileList[(posList[0]+x)][(posList[1]+y)])
 
-   def reduceNoise(self,backG,block):
+   def reduceNoise(self,backG,block,blocks):
       numWall  = 0
       numEmpty = 0
       for tile in self.nextTo:
@@ -94,7 +96,12 @@ class tile(sprite):
       self.soild  = False
       if numWall >= 5:
          self.type   = "wall"
-         self.image  = [block]
+         a           = np.random.choice(blocks,p = [0.95,0.05])
          self.soild  = True
+         if a == "stone":
+            self.image = [block[0]]
+         else:
+            self.image = [block[1]]
+            self.iron  = True
                                                                                                                 
 

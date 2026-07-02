@@ -61,7 +61,7 @@ axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 wepon += [war_hammar,sword,pickaxe]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
-cave       = Cave(["caveBackground.png","caveBlock.png"])
+cave       = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
