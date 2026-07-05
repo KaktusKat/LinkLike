@@ -6,11 +6,11 @@ import numpy as np
 
 class place:
 
-   def __init__(self,biomes):
+   def __init__(self,biomes,wood,rock):
        self.map_dic      = {}
        self.map_dic2     = {}
-       self.treesCut     = 0
-       self.rocksBrocken = 0
+       self.wood         = wood
+       self.rock         = rock
        self.images       = {}
        self.prob         = {}
        for biome in biomes:
@@ -50,7 +50,7 @@ class place:
                         grass = pygame.image.load("stump.png")
                         self.map_dic[key].image[0] = pygame.transform.scale(grass,(58,58))
                         self.map_dic[key].soild    = False
-                        self.treesCut += 1
+                        self.wood.amount          += 1
 
                      if self.map_dic[key].isHit(tool2) and self.map_dic[key].soild and not self.map_dic[key].breakable: 
                         if random.randint(0,1) == 1:
@@ -59,7 +59,7 @@ class place:
                         else:
                            self.map_dic[key].image_index = 1
                         self.map_dic[key].soild       = False
-                        self.rocksBrocken += 1
+                        self.rock.amount             += 1
                   self.map_dic[key].draw(screen)
                imaged = True
                if self.map_dic[key].justMade:

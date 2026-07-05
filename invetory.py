@@ -1,7 +1,7 @@
 import pygame
 
 class invetory:
-   def __init__(self,woodNum,wood):
+   def __init__(self,woodNum,wood,itemList,empty):
       self.woodNum     = woodNum
       self.window      = False
       self.wood        = pygame.image.load(wood)
@@ -20,39 +20,37 @@ class invetory:
       self.table       = False
       self.holding     = ["none",0]
       self.first       = True
+      self.itemList    = itemList
       self.Rlistx      = []
       self.Rlisty      = []
       self.craftList   = []
+      self.empty       = empty
       self.craftPickUp = [[0,0]]
-      self.craftTable  = [[[[0,0]],[[0,0]],[[0,0]]],[[[0,0]],[[0,0]],[[0,0]]],[[[0,0]],[[0,0]],[[0,0]]]]
+      self.craftTable  = []
+      for x in range(3):
+         self.craftTable.append([])
+         for y in range(3):
+            self.craftTable[x].append([empty,580-x*50,580-y*50])
 
-   def open(self,screen,keys,player,place,maze):
+   def open(self,screen,keys,player,place,maze,craftRList):
        if keys[pygame.K_q] or self.window or self.table:
           pygame.draw.rect(screen.screen,(81,74,74),(screen.width/2 - 150,screen.height/2 - 150,300,300))
           self.window = True
-          self.craft(screen,player,place,maze)
+          self.craft(screen,player,place,maze,craftRList)
           if player.table:
              self.table = True
        if keys[pygame.K_c]:
           self.window = False
           self.table  = False
 
-   def craft(self,screen,player,place,maze):
-      self.woodNum = place.treesCut
-      num          = pygame.font.SysFont("I don't think this dose anything",40)
-      num          = num.render(f"{self.woodNum}",False,(0,0,0))
-      screen.blit(num,-40+player.x,-40+player.y)
-      screen.blit(self.wood,-90+player.x,-90+player.y)
+   def craft(self,screen,player,place,maze,craftRList):
+      for item in self.itemList:
+         num          = pygame.font.SysFont("I don't think this dose anything",40)
+         num          = num.render(f"{item.amount}",False,(0,0,0))
+         screen.screen.blit(num,(item.x+item.w,item.y+item.h))
+         screen.screen.blit(item.image,(item.x,item.y))
       rocks = pygame.image.load("rock_invent.png")
       rocks = pygame.transform.scale(rocks,(50,50))
-      num2  = pygame.font.SysFont("I don't think this dose anything",40)
-      num2  = num2.render(f"{place.rocksBrocken}",False,(0,0,0))
-      screen.blit(num2,-40+player.x,10+player.y)
-      screen.blit(rocks,-90+player.x,-30+player.y)
-      num3  = pygame.font.SysFont("I don't think this dose anything",40)
-      num3  = num3.render(f"{maze.iron}",False,(0,0,0))
-      screen.blit(num3,90+player.x,-40+player.y)
-      screen.blit(self.iron,90+player.x,-90+player.y)
       num4  = pygame.font.SysFont("I don't think this dose anything",15)
       num4  = num4.render(f"crafted:",False,(0,0,0))
       screen.screen.blit(num4,(320,320))
@@ -65,7 +63,7 @@ class invetory:
             screen.screen.blit(num4,(320,320+y))
       Mpos               = pygame.mouse.get_pos()
       Mpressed           = pygame.mouse.get_pressed()
-      place.treesCut, place.rocksBrocken, maze.iron = self.pickUp(50,50,place,maze,player,[[place.treesCut,["wood",self.wood],-90,-90],[place.rocksBrocken,["rock",rocks],-90,-30],[maze.iron,["iron",self.iron],90,-90]])
+      self.pickUp(50,50,place,maze,player,self.itemList)
       if not self.holding[0] == "none":
          screen.blit(pygame.transform.scale(self.holding[1],(25,25)),Mpos[0]-290+player.x,Mpos[1]-290+player.y) 
       if self.table:
@@ -82,35 +80,33 @@ class invetory:
             for x in range(3):
                X += 1
                Y += 1
-               craftTable  = self.placeItem(self.Rlistx[X],self.Rlisty[Y],50,50,player,[["wood",self.wood],["rock",rocks],["iron",self.iron]])
-               if len(craftTable) == 5:
+               craftTable  = self.placeItem(self.Rlistx[X],self.Rlisty[Y],50,50,player,self.itemList)
+               if not craftTable == "bob":
                   self.craftTable[y][x] = craftTable
+
          for y in range(len(self.craftTable)):
             for x in range(len(self.craftTable[y])):
-               if len(self.craftTable[y][x]) == 5:
-                  screen.screen.blit(pygame.transform.scale(self.craftTable[y][x][0][1],(40,40)),(self.craftTable[y][x][1]+5,self.craftTable[y][x][2]+5))
-                  self.craftTable[y][x] = self.pickUpCraft(50,50,place,maze,player,[self.craftTable[y][x][0],self.craftTable[y][x][0],self.craftTable[y][x][1],self.craftTable[y][x][2]],self.craftTable[y][x])
+               if not self.craftTable[y][x] == [[0,0]]:
+                  newImg = pygame.transform.scale(self.craftTable[y][x][0].image,(40,40))
+                  screen.screen.blit(newImg,(self.craftTable[y][x][1]+5,self.craftTable[y][x][2]+5))
+                  self.craftTable[y][x] = self.pickUpCraft(50,50,place,maze,player,self.craftTable[y][x])
          pygame.draw.rect(screen.screen,(0,0,0),pygame.Rect(200,50,50,50),5)
-         if not self.craftPickUp == [[0,0]]:
-            screen.screen.blit(pygame.transform.scale(self.craftPickUp[0][1],(40,40)),(self.craftPickUp[1],self.craftPickUp[2]))
-            self.craftPickUp = self.pickUpCraft(50,50,place,maze,player,[self.craftPickUp[0],self.craftPickUp[0],self.craftPickUp[1],self.craftPickUp[2]],self.craftPickUp,True,True,self.craftPickUp[0][0])
-         if not self.carftMake([["rock","wood","wood"],["rock","iron","wood"],["rock","wood","wood"]],[["sheild",self.sheild],205,60],player,screen) == [[0,0]]:
-            self.craftPickUp = self.carftMake([["rock","wood","wood"],["rock","iron","wood"],["rock","wood","wood"]],[["sheild",self.sheild],205,60],player,screen)
-         if not self.carftMake([[0,0,0],["iron","wood","wood"],[0,0,0]],[["spear",self.spear],205,60],player,screen) == [[0,0]]:
-            self.craftPickUp = self.carftMake([[0,0,0],["iron","wood","wood"],[0,0,0]],[["spear",self.spear],205,60],player,screen)
+
+         for craftR in craftRList:
+            self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen)
          
    def make(self,place,screen,player):
       self.timer  -= 1 
-      x,y          = pygame.mouse.get_pos()
-      Mpress       = pygame.mouse.get_pressed()
-      if (Mpress[2] and place.treesCut < 0 and self.timer < 1 and not player.inMaze):
-         image = pygame.image.load("woodPlanks.png")
-         x,y   = screen.convertSTW(x,y)
-         key   = place.genKeyP(x,y)
-         place.map_dic[key].image[0] = pygame.transform.scale(image,(58,58))
-         place.map_dic[key].soild    = True
-         place.treesCut -= 1
-         self.timer = 20
+#      x,y          = pygame.mouse.get_pos()
+ #     Mpress       = pygame.mouse.get_pressed()
+  #    if (Mpress[2] and place.treesCut < 0 and self.timer < 1 and not player.inMaze):
+   #      image = pygame.image.load("woodPlanks.png")
+    #     x,y   = screen.convertSTW(x,y)
+     #    key   = place.genKeyP(x,y)
+      #   place.map_dic[key].image[0] = pygame.transform.scale(image,(58,58))
+       #  place.map_dic[key].soild    = True
+        # place.treesCut -= 1
+         #self.timer = 20
 
    def pickUp(self,w,h,place,maze,player,items):
       Mpos     = pygame.mouse.get_pos()
@@ -119,63 +115,57 @@ class invetory:
       holding  = ""
       count    = []
       for item in items:
-         if Mpressed[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item[2]+290,item[3]+290,w,h):
-            if item[0] > 0 and not self.holding[0] == item[1][0]:
-               holding  = item[1]
-               item[0] -= 1
-               hit      = True
-         count.append(item[0])
+         if Mpressed[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item.x,item.y,item.w,item.h):
+            if item.amount > 0 and not self.holding[0] == item.name:
+               holding      = [item.name,item.image]
+               item.amount -= 1
+               hit          = True
       if not self.holding[0] == "none" and hit:
-         if self.holding[0] == "rock":
-             items[1][0] += 1
-         elif self.holding[0] == "wood":
-             items[0][0] += 1
-         elif self.holding[0] == "iron":
-             items[2][0] += 1
-         count[0] = items[0][0]
-         count[1] = items[1][0]
-         count[2] = items[2][0]
+         for item in items:
+            if self.holding[0] == item.name:
+               item.amount += 1
       if hit:
          self.holding = holding
-      return count[0],count[1],count[2]
 
-   def pickUpCraft(self,w,h,place,maze,player,item,items,craft = False,addList = False,crafted = 0):
+   def pickUpCraft(self,w,h,place,maze,player,item,craft = False,addList = False,crafted = 0):
       Mpos     = pygame.mouse.get_pos()
       Mpressed = pygame.mouse.get_pressed()
       hit      = False
       holding  = ""
-      if Mpressed[2] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item[2],item[3],w,h):
-         if not self.holding[0] == item[1][0]:
-            holding  = item[1]
-            items    = [[0,0]]
+      if Mpressed[2] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item[1],item[2],item[0].w,item[0].h):
+         if not self.holding[0] == item[0].name:
+            holding  = [item[0].name,item[0].image]
+            item     = [self.empty,item[1],item[2]]
             hit      = True
       if not self.holding[0] == "none" and hit:
-         if self.holding[0] == "rock":
-             place.rocksBrocken += 1
-         elif self.holding[0] == "wood":
-             place.treesCut += 1
-         elif self.holding[0] == "iron":
-             maze.iron += 1
+         for item in self.itemList:
+            if self.holding[0] == item.name:
+               item.amount += 1
       if hit:
          self.holding = holding
-         if craft:
-            if addList:
-               self.craftList.append(crafted)
-            self.craftTable  = [[[[0,0]],[[0,0]],[[0,0]]],[[[0,0]],[[0,0]],[[0,0]]],[[[0,0]],[[0,0]],[[0,0]]]]
-      return items
+      return item
 
    def placeItem(self,x,y,w,h,player,items):
       Mpos   = pygame.mouse.get_pos()
       Mpress = pygame.mouse.get_pressed()
       for item in items:
-         if Mpress[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,x,y,w,h) and self.holding[0] == item[0]:
+         if Mpress[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,x,y,w,h) and self.holding[0] == item.name:
             self.holding = ["none",0]
-            return [item,x,y,w,h]
-      return []
+            return [item,x,y]
+      return "bob"
 
    def carftMake(self,recpie,outcome,player,screen):
       for y in range(3):
          for x in range(3):
-            if not recpie[y][x] == self.craftTable[y][x][0][0]:
+            if not recpie[y][x] == self.craftTable[y][x][0].name:
                return [[0,0]]
-      return outcome
+      if len(outcome) == 2:
+         self.craftList.append(outcome[0])
+      else:
+         outcome[0].amount += 1
+      self.craftTable  = []
+      for x in range(3):
+         self.craftTable.append([])
+         for y in range(3):
+            self.craftTable[x].append([self.empty,580-x*50,580-y*50])
+

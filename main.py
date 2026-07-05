@@ -12,6 +12,7 @@ from invetory       import invetory
 from cave           import Cave
 from corruptedEnemy import corruptedEnemy
 from biome          import biome
+from item           import item
 from tileValues     import tileValues
 
 width  = 580
@@ -36,6 +37,21 @@ first = True
 ballList = []
 tileList = {}
 
+sheildImg = pygame.image.load("sheildInvent.png")
+sheildImg = pygame.transform.scale(sheildImg,(50,40))
+
+rocks       = item(200,260,50,50,"rock","rock_invent.png")
+wood        = item(200,200,50,50,"wood","wood.png")
+iron        = item(380,200,50,50,"iron","iron_invent.png")
+empty       = item(-100,-100,0,0,"empty","wood.png")
+refinedIron = item(200,320,50,50,"refinedIron","refinedIron.png")
+itemList    = [wood,rocks,iron,refinedIron]
+
+sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],["sheild",sheildImg]]
+spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],["spear",sheildImg]]
+refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron]]
+craftRList = [sheildR,spearR,refineR]
+
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
 flower     = tileValues(["flower.png"],False,True,58,58)
@@ -50,8 +66,8 @@ sandRocks  = tileValues(["sandRocks.png","sand2.png","sandportal.png"],True,Fals
 forest    = biome("forest",20,1,[[grass,0.2375],[grass2,0.2375],[flower,0.2375],[tree,0.2375],[rock,0.05]])
 sand      = biome("sand",20,1,[[sand,0.3125],[sand2,0.3125],[sand3,0.3125],[sandRocks,0.0625]])
 biomeList = [forest,sand]
-invet      = invetory(0,"wood.png")
-place      = place(biomeList)
+invet      = invetory(0,"wood.png",itemList,empty)
+place      = place(biomeList,wood,rocks)
 spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1)
 sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
@@ -81,7 +97,7 @@ while running:
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
       enemy_list = []
-      cave.update(screen,gob,pickaxe)
+      cave.update(screen,gob,pickaxe,iron)
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,keys,invet,biomeList)
 
@@ -89,7 +105,7 @@ while running:
    gob.weponChange(keys)
    gob.draw(screen)
    test.update(gob,screen,place,ballList)
-   invet.open(screen,keys,gob,place,cave)
+   invet.open(screen,keys,gob,place,cave,craftRList)
    invet.make(place,screen,gob)
 
    if len(ballList) > 0:

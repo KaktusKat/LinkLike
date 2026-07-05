@@ -10,10 +10,9 @@ class Cave:
          image = pygame.image.load(img)
          image = pygame.transform.scale(image,(29,29))
          self.images.append(image)
-      self.iron     = 0
       self.tileList = {}
 
-   def update(self,screen,player,pickaxe):
+   def update(self,screen,player,pickaxe,iron):
       near = []
       new  = []
       for x in range (-14,14):
@@ -43,7 +42,8 @@ class Cave:
              tiles.image = [self.images[0]]
              tiles.soild = False
              if tiles.iron:
-                self.iron += 1
+                iron.amount += 1
+                tiles.iron = False
           tiles.draw(screen)
 
    def add(self,new):
