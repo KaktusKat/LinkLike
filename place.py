@@ -6,11 +6,12 @@ import numpy as np
 
 class place:
 
-   def __init__(self,biomes,wood,rock):
+   def __init__(self,biomes,wood,rock,flint):
        self.map_dic      = {}
        self.map_dic2     = {}
        self.wood         = wood
        self.rock         = rock
+       self.flint        = flint
        self.images       = {}
        self.prob         = {}
        for biome in biomes:
@@ -23,7 +24,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,keys,invet,biomeList):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -45,22 +46,26 @@ class place:
 
             if key in self.map_dic:
                if not self.map_dic[key].justMade:
-                  if tool1.attacking or tool2.attacking:
-                     if self.map_dic[key].isHit(tool1) and self.map_dic[key].soild and self.map_dic[key].breakable: 
-                        grass = pygame.image.load("stump.png")
-                        self.map_dic[key].image[0] = pygame.transform.scale(grass,(58,58))
-                        self.map_dic[key].soild    = False
-                        self.wood.amount          += 1
+                  if len(self.map_dic[key].toolList) > 0:
+                     for tool in self.map_dic[key].toolList:
+                        if self.map_dic[key].isHit(tool[0]) and tool[0].attacking and not self.map_dic[key].iframes:
+                           self.map_dic[key].health += 1
+                           self.map_dic[key].iframes = True
+                           self.map_dic[key].toolHit = tool[0]
+                           if self.map_dic[key].health == tool[1]: 
+                              imageValues                    = random.choice(self.map_dic[key].change)
+                              self.map_dic[key].image        = imageValues.image.copy()
+                              self.map_dic[key].soild        = imageValues.soild
+                              self.map_dic[key].breakable    = imageValues.breakable
+                              self.map_dic[key].portal       = imageValues.portal
+                              self.map_dic[key].toolList     = []
+                              self.map_dic[key].item.amount += 1
+                  
+                  if self.map_dic[key].iframes and not self.map_dic[key].toolHit.attacking:
+                     self.map_dic[key].iframes = False
 
-                     if self.map_dic[key].isHit(tool2) and self.map_dic[key].soild and not self.map_dic[key].breakable: 
-                        if random.randint(0,1) == 1:
-                           self.map_dic[key].image_index = 2
-                           self.map_dic[key].portal      = True
-                        else:
-                           self.map_dic[key].image_index = 1
-                        self.map_dic[key].soild       = False
-                        self.rock.amount             += 1
                   self.map_dic[key].draw(screen)
+
                imaged = True
                if self.map_dic[key].justMade:
                   imaged = False
@@ -104,5 +109,9 @@ class place:
                   change.image     = imageValues.image.copy()
                   change.soild     = imageValues.soild
                   change.breakable = imageValues.breakable
+                  change.toolList  = imageValues.toolList.copy()
+                  change.item      = imageValues.item
+                  change.change    = imageValues.change.copy()
                   change.justMade  = False
+                  change.health    = 0
                   change.draw(screen)

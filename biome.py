@@ -7,6 +7,9 @@ class biome:
       self.rarity = rarity
       self.images = []
       self.prob   = []
+      total       = 0
       for img in images:
          self.images.append(img[0])
-         self.prob.append(img[1])
+         total += img[1]
+      for img in images:
+         self.prob.append(img[1]/total)
