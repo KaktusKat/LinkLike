@@ -13,6 +13,7 @@ class player(sprite):
       self.inMaze    = False
       self.health    = heath
       self.sheild    = sheild
+      self.sheildC   = []
       self.table     = True
       self.spearGot  = True
       self.spear     = spear
@@ -44,7 +45,7 @@ class player(sprite):
                 delList.append(ball)
          for ball in delList:
              ballList.remove(ball)
-      if keys[pygame.K_LSHIFT] and "sheild" in invetory.craftList:
+      if len(self.sheildC) >= 1 and mousePress[2]:
          self.sheild.block(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x

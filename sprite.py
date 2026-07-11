@@ -80,8 +80,8 @@ class sprite:
    def checkMove(self,movex,movey,place):
       for y in range(-2, 3):
          for x in range(-2, 3):
-            X   = x + self.x//50
-            Y   = y + self.y//50
+            X   = x + self.x//58
+            Y   = y + self.y//58
             key = place.genKeyC(X, Y)
             if key in place.map_dic:
                thing = place.map_dic[key]

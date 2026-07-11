@@ -45,22 +45,23 @@ war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
+hammer     = tool(["hammer.png"],-100,-100,120,120,25,80,2.5)
 
 sheildImg = pygame.image.load("sheildInvent.png")
 sheildImg = pygame.transform.scale(sheildImg,(50,40))
 
-rocks       = item(200,260,50,50,"rock","rock_invent.png")
-flints      = item(300,200,50,50,"flint","flintInvent.png")
-wood        = item(200,200,50,50,"wood","wood.png")
-iron        = item(380,200,50,50,"iron","iron_invent.png")
-empty       = item(-100,-100,0,0,"empty","wood.png")
-refinedIron = item(200,320,50,50,"refinedIron","refinedIron.png")
-itemList    = [wood,rocks,iron,refinedIron,flints]
-
-sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],["sheild",sheildImg]]
-spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],["spear",sheildImg]]
-refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron]]
-craftRList = [sheildR,spearR,refineR]
+rocks       = item(200,260,50,50,"rock","rock_invent.png",1)
+flints      = item(300,200,50,50,"flint","flintInvent.png",1)
+wood        = item(200,200,50,50,"wood","wood.png",1)
+iron        = item(380,200,50,50,"iron","iron_invent.png",1)
+empty       = item(-100,-100,0,0,"empty","wood.png",1)
+refinedIron = item(200,320,50,50,"refinedIron","refinedIron.png",1)
+sheildI     = item(200,200,50,50,"sheildI","sheildInvent.png",2)
+spearI      = item(200,260,50,50,"spearI","spearInvent.png",2)
+swordI      = item(300,200,50,50,"swordI","swordInvent.png",2)
+pickaxeI    = item(380,200,50,50,"pickaxeI","pickaxeInvent.png",2)
+axeI        = item(200,320,50,50,"axeI","axeInvent.png",2)
+itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,swordI,pickaxeI,axeI]
 
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
@@ -82,10 +83,18 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet      = invetory(0,"wood.png",itemList,empty)
 place      = place(biomeList,wood,rocks,flints)
-wepon += [war_hammar,sword,pickaxe,fist]
+wepon += [fist,hammer]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
 cave       = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
+
+sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],[sheildI,1],[gob.sheildC,sheild]]
+spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,spear]]
+swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,sword]]
+pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,pickaxe]]
+axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,war_hammar]]
+refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
+craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR]
 
 enemy_list = []
 for i in range(2):
