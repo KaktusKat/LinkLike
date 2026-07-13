@@ -18,7 +18,7 @@ class enemy(sprite):
       self.timer     = 0
  
    def update(self,player,move,enemy_list,keys,place,screen):
-      if player.wep == 3 and player.tool[player.wep].attacking:        # check if it is a spear
+      if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:        # check if it is a spear
          Xmove = 0
          Ymove = 0
          tool  = player.tool[player.wep]
@@ -34,26 +34,26 @@ class enemy(sprite):
       if self.ha == 0:
          enemy_list.remove(self)
          return
-      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) or (self.a < 0 and self.a > -10):
+      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) and not self.iframes:
          x = self.x
          y = self.y
-         self.x = self.x+player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
-         self.y = self.y+player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
-         self.checkMove(0,self.y-y,place)
-         self.checkMove(self.x-x,0,place)
-         self.a += 1
+         self.velocityX += player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
+         self.velocityY += player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
+         self.a      += 1
+         self.iframes = True
 
       if self.a == 0:
          self.a = -10
          self.ha -= 1
+
+      if player.tool[player.wep].attacking == False:
+         self.iframes = False
 
       if self.isHit(player.sheild) and self.attacking:
          self.ha    -= 3
          self.attack = -1
 
       if self.isHit(player) and self.attacking and self.timer < 0:
-         self.x += 1
-         self.y += 1
          player.health -= 1
          self.timer = 20
 
@@ -64,33 +64,23 @@ class enemy(sprite):
          self.lastmove = [0,0]
 
       if self.a < 0 and self.a > -10:
-         return
-
-      if not move:
-         self.x += 1
-         self.y += 1
-         return
+         pass
 
       if self.x < player.x:
-         self.x += 1
+         self.velocityX  += 0.1
          self.lastmove[0] = 1 
-         self.checkMove(1,0,place)
       else:
-         self.x -= 1
+         self.velocityX -= 0.1
          self.lastmove[0] = -1
-         self.checkMove(-1,0,place)
 
       if self.y < player.y:
-         self.y += 1
+         self.velocityY += 0.1
          self.lastmove[1] = 1
-         self.checkMove(0,1,place)
       else:
-         self.y -= 1
+         self.velocityY -= 0.1
          self.lastmove[1] = -1
-         self.checkMove(0,-1,place)
 
-      self.x += 1
-      self.y += 1
+      
 
       if (abs(self.x - player.x) <= 100 or abs(self.y - player.y) <= 100) and self.Acooldown < 0:
          self.attack = 10
@@ -100,32 +90,19 @@ class enemy(sprite):
             self.sign = True
 
       if self.attack > 0 and self.wait < 0:
-         self.attacking = True
-         self.x        += self.lastmove[0]*11
-         self.y        += self.lastmove[1]*11
-         self.attack   -= 1
-         self.Acooldown = 200
+         self.attacking   = True
+         self.velocityX  += self.lastmove[0]*11
+         self.velocityY  += self.lastmove[1]*11
+         self.attack     -= 1
+         self.Acooldown   = 200
          self.image_index = 0
          self.sign = False
       else:
          self.attacking = False
 
-#      if keys[pygame.K_w]:
- #        self.y += 0.5
-  #       self.checkMove(0,1.5,place)
-
-#      if keys[pygame.K_s]:
- #        self.y -= 0.5
-  #       self.checkMove(0,-1.5,place)
-
-#      if keys[pygame.K_d]:
- #        self.x -= 0.5
-  #       self.checkMove(-1.5,0,place)
-
-#      if keys[pygame.K_a]:
- #        self.x += 0.5
-  #       self.checkMove(1.5,0,place)
-
+      self.checkMove(self.velocityX,self.velocityY,place)
+      self.x += self.velocityX
+      self.y += self.velocityY
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1

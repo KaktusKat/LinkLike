@@ -58,32 +58,22 @@ class player(sprite):
          self.t   = -60
          return
       if keys[pygame.K_w]:
-         self.y -= 1.5
-         if self.inMaze:
-            self.checkMoveM(0,-1.5,maze)
-         else:
-            self.checkMove(0,-1.5,place)
+         self.velocityY -= 0.2
          a+=1
       if keys[pygame.K_s]:
-         self.y += 1.5
-         if self.inMaze:
-           self.checkMoveM(0,1.5,maze)
-         else:
-           self.checkMove(0,1.5,place)
+         self.velocityY += 0.2
          a+=1
       if keys[pygame.K_d]:
-         self.x += 1.5
-         if self.inMaze:
-            self.checkMoveM(1.5,0,maze)
-         else:
-            self.checkMove(1.5,0,place)
+         self.velocityX += 0.2
          a+=1
       if keys[pygame.K_a]:
-         self.x -= 1.5
-         if self.inMaze:
-            self.checkMoveM(-1.5,0,maze)
-         else:
-            self.checkMove(-1.5,0,place)
+         self.velocityX -= 0.2
+      if self.inMaze:
+         self.checkMoveM(self.velocityX,self.velocityY,maze)
+      if not self.inMaze:
+         self.checkMove(self.velocityX,self.velocityY,place)
+      self.x += self.velocityX
+      self.y += self.velocityY
       if keys[pygame.K_r] and self.inMaze:
          self.inMaze = False
          self.x      = 0

@@ -37,15 +37,15 @@ first = True
 ballList = []
 tileList = {}
 
-spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1)
+spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1,name = "spear")
 sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
-pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,30,1)
+pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,50,1)
 fist       = tool(["fist.png"],-110,-100,50,100,50,30,1)
 war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
 battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
 axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
-hammer     = tool(["hammer.png"],-100,-100,120,120,25,80,2.5)
+hammer     = tool(["hammer.png"],-100,-100,120,120,25,50,20)
 
 sheildImg = pygame.image.load("sheildInvent.png")
 sheildImg = pygame.transform.scale(sheildImg,(50,40))
@@ -86,7 +86,7 @@ place      = place(biomeList,wood,rocks,flints)
 wepon += [fist,hammer]
 gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
 cave       = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
-test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
+#test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],[sheildI,1],[gob.sheildC,sheild]]
 spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,spear]]
@@ -120,7 +120,7 @@ while running:
    gob.update(keys,screen,place,cave,invet,ballList)
    gob.weponChange(keys)
    gob.draw(screen)
-   test.update(gob,screen,place,ballList)
+ #  test.update(gob,screen,place,ballList)
    invet.open(screen,keys,gob,place,cave,craftRList)
    invet.make(place,screen,gob)
 
