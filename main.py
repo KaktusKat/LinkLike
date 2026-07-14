@@ -61,7 +61,8 @@ spearI      = item(200,260,50,50,"spearI","spearInvent.png",2)
 swordI      = item(300,200,50,50,"swordI","swordInvent.png",2)
 pickaxeI    = item(380,200,50,50,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(200,320,50,50,"axeI","axeInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,swordI,pickaxeI,axeI]
+hammerI     = item(300,320,50,50,"hammerI","hammerInvent.png",2)
+itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,swordI,pickaxeI,axeI,hammerI]
 
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
@@ -81,11 +82,11 @@ sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,[[pickaxe,1]],rocks,[
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,1],[rock,0.25]])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
-invet      = invetory(0,"wood.png",itemList,empty)
-place      = place(biomeList,wood,rocks,flints)
-wepon += [fist,hammer]
-gob        = player(["gob.png","gobmove.png"],0,0,54,48,wepon,10,sheild,spear)
-cave       = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
+invet     = invetory(0,"wood.png",itemList,empty)
+place     = place(biomeList,wood,rocks,flints)
+wepon    += [fist]
+gob       = player(["gob.png","gobmove.png"],0,0,50,44,wepon,10,sheild,spear)
+cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],[sheildI,1],[gob.sheildC,sheild]]
@@ -93,8 +94,9 @@ spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty",
 swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,sword]]
 pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,pickaxe]]
 axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,war_hammar]]
+hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,hammer]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
-craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR]
+craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
 for i in range(2):
@@ -117,7 +119,7 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList)
 
-   gob.update(keys,screen,place,cave,invet,ballList)
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list)
    gob.weponChange(keys)
    gob.draw(screen)
  #  test.update(gob,screen,place,ballList)

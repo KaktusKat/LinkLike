@@ -11,6 +11,7 @@ class sprite:
       self.h           = h
       self.w           = w
       self.flip        = False
+      self.flipS       = False
       self.num         = count
       self.image_index = 0
       self.soild       = soild
@@ -24,21 +25,23 @@ class sprite:
 
    def draw(self, screen):
       img = self.image[self.image_index]
+      if self.flipS:
+         img = pygame.transform.flip(img,True,False)
       if self.flip:
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
 
-   def isHitXYSide(self,playerX,playerY,playerW,playerH,other,moveList):
+   def isHitSide(self,other,moveList):
 
       for move in moveList:
 
          if self == other:
             return False
 
-         playerX = playerX + move[0]
-         playerY = playerY + move[1]
-         top_x   = playerX + playerW
-         top_y   = playerY + playerH
+         playerX = self.x + move[0]
+         playerY = self.y + move[1]
+         top_x   = self.x + move[0] + self.w
+         top_y   = self.y + move[1] + self.h
 
          other_top_x = other.x + other.w
          other_top_y = other.y + other.h
@@ -117,7 +120,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitXYSide(self.x,self.y,self.w,self.h,thing,moveList)
+                  side = self.isHitSide(thing,moveList)
                   if side == "x":
                      self.velocityX = -self.velocityX
                      return
@@ -142,12 +145,12 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitXYSide(self.x,self.y,self.w,self.h,thing,moveList)
+                  side = self.isHitSide(thing,moveList)
                   if side == "x":
                      self.velocityX = -self.velocityX
+                     return True
                   if side == "y":
                      self.velocityY = -self.velocityY
-                  if self.isHitXY(newX,newY,self.x,self.y,thing):
                      return True
       return False
    
@@ -163,9 +166,26 @@ class sprite:
             thing = maze.get_cell(X, Y)
             moveList = [[0,self.velocityX,"y"],[self.velocityY,0,"x"],[self.velocityX,self.velocityY,"both"]]
             if thing and thing.soild:
-               side = self.isHitXYSide(self.x,self.y,self.w,self.h,thing,moveList)
+               side = self.isHitSide(thing,moveList)
                if side == "x":
                   self.velocityX = -self.velocityX
+                  return
                if side == "y":
                   self.velocityY = -self.velocityY
+                  return
+
+   def checkMoveE(self,movex,movey,enemyList):
+      for enemy in enemyList:
+         
+         moveList = [[-self.velocityX+enemy.velocityX,0,"x"],[0,-self.velocityY+enemy.velocityY,"y"]]
+         selfVelocityX = self.velocityX
+         selfVelocityY = self.velocityY
+
+         side = enemy.isHitSide(self,moveList)
+         if side == "x":
+            self.velocityX  = enemy.velocityX
+            enemy.velocityX = selfVelocityX
+         if side == "y":
+            self.velocityY  = enemy.velocityY
+            enemy.velocityY = selfVelocityY
 

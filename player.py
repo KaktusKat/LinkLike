@@ -18,7 +18,7 @@ class player(sprite):
       self.spearGot  = True
       self.spear     = spear
 
-   def update(self,keys,screen,place,maze,invetory,ballList):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList):
       if self.health <= 0:
          return
       if "spear" in invetory.craftList and self.spearGot:
@@ -64,14 +64,17 @@ class player(sprite):
          self.velocityY += 0.2
          a+=1
       if keys[pygame.K_d]:
+         self.flipS  = False
          self.velocityX += 0.2
          a+=1
       if keys[pygame.K_a]:
+         self.flipS = True
          self.velocityX -= 0.2
       if self.inMaze:
          self.checkMoveM(self.velocityX,self.velocityY,maze)
       if not self.inMaze:
          self.checkMove(self.velocityX,self.velocityY,place)
+         self.checkMoveE(self.velocityX,self.velocityY,enemyList)
       self.x += self.velocityX
       self.y += self.velocityY
       if keys[pygame.K_r] and self.inMaze:
@@ -90,7 +93,7 @@ class player(sprite):
          self.image[1] = pygame.transform.flip(self.image[1],True,False)
          self.b = False
       self.tool[self.wep].use(screen,self)
-      self.sheild.use(screen,self)     
+      self.sheild.use(screen,self)
  
    def weponChange(self,keys):
       self.a -= 1
@@ -120,4 +123,13 @@ class player(sprite):
        if self.inMaze:
           return True
        return False
+
+
+   def draw(self, screen):
+      img = self.image[self.image_index]
+      if self.flipS:
+         img = pygame.transform.flip(img,True,False)
+      if self.flip:
+         img = pygame.transform.flip(img,False,True)
+      screen.blit(img, self.x, self.y)
           
