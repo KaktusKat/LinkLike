@@ -47,9 +47,6 @@ axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
 sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
 hammer     = tool(["hammer.png"],-100,-100,120,120,25,50,20)
 
-sheildImg = pygame.image.load("sheildInvent.png")
-sheildImg = pygame.transform.scale(sheildImg,(50,40))
-
 rocks       = item(200,260,50,50,"rock","rock_invent.png",1)
 flints      = item(300,200,50,50,"flint","flintInvent.png",1)
 wood        = item(200,200,50,50,"wood","wood.png",1)

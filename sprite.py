@@ -122,7 +122,6 @@ class sprite:
                if thing.soild:
                   side = self.isHitSide(thing,moveList)
                   if side == "x":
-                     print("hi")
                      self.velocityX = -self.velocityX
                      return
                   if side == "y":

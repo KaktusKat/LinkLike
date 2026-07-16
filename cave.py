@@ -7,7 +7,7 @@ class Cave:
    def __init__(self,images):
       self.images   = []
       for img in images:
-         image = pygame.image.load(img)
+         image = pygame.image.load("images/"+img)
          image = pygame.transform.scale(image,(29,29))
          self.images.append(image)
       self.tileList = {}

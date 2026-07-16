@@ -4,16 +4,6 @@ class invetory:
    def __init__(self,woodNum,wood,itemList,empty):
       self.woodNum     = woodNum
       self.window      = False
-      self.wood        = pygame.image.load(wood)
-      self.wood        = pygame.transform.scale(self.wood,(50,50))
-      self.sheild      = pygame.image.load("sheildInvent.png")
-      self.sheild      = pygame.transform.scale(self.sheild,(50,40))
-      self.crafter     = pygame.image.load("craft.png")
-      self.crafter     = pygame.transform.scale(self.sheild,(100,100))
-      self.iron        = pygame.image.load("iron_invent.png")
-      self.iron        = pygame.transform.scale(self.iron,(50,50))
-      self.spear       = pygame.image.load("spearInvent.png")
-      self.spear       = pygame.transform.scale(self.spear,(7,50))
       self.placeBlock  = 0
       self.place       = False
       self.timer       = 0
