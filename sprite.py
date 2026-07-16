@@ -6,7 +6,7 @@ class sprite:
       self.y      = posY
       self.image  = []
       for i in range(len(img)):
-         image = pygame.image.load(img[i])
+         image = pygame.image.load("images/"+img[i])
          self.image.append(pygame.transform.scale(image,(w,h)))
       self.h           = h
       self.w           = w
@@ -122,6 +122,7 @@ class sprite:
                if thing.soild:
                   side = self.isHitSide(thing,moveList)
                   if side == "x":
+                     print("hi")
                      self.velocityX = -self.velocityX
                      return
                   if side == "y":

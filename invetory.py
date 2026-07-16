@@ -102,9 +102,9 @@ class invetory:
 
          for craftR in craftRList:
             if len(craftR) == 3:
-               self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,craftR[2])
+               self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,keys,craftR[2])
             if len(craftR) == 2:
-               self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen)
+               self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,keys)
          
    def make(self,place,screen,player):
       self.timer  -= 1 
@@ -165,16 +165,17 @@ class invetory:
             return [item,x,y]
       return "bob"
 
-   def carftMake(self,recpie,outcome,player,screen,wepon = [[],1]):
+   def carftMake(self,recpie,outcome,player,screen,keys,wepon = [[],1]):
       for y in range(3):
          for x in range(3):
             if not recpie[y][x] == self.craftTable[y][x][0].name:
                return [[0,0]]
-      outcome[0].amount  += outcome[1]
-      wepon[0].append(wepon[1])
-      self.craftTable  = []
-      for x in range(3):
-         self.craftTable.append([])
-         for y in range(3):
-            self.craftTable[x].append([self.empty,580-x*50,580-y*50])
+      if keys[pygame.K_f]:
+         outcome[0].amount  += outcome[1]
+         wepon[0].append(wepon[1])
+         self.craftTable  = []
+         for x in range(3):
+            self.craftTable.append([])
+            for y in range(3):
+               self.craftTable[x].append([self.empty,580-x*50,580-y*50])
 

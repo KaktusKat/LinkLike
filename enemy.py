@@ -91,8 +91,8 @@ class enemy(sprite):
 
       if self.attack > 0 and self.wait < 0:
          self.attacking   = True
-         self.velocityX  += self.lastmove[0]*11
-         self.velocityY  += self.lastmove[1]*11
+         self.velocityX  += self.lastmove[0]*2
+         self.velocityY  += self.lastmove[1]*2
          self.attack     -= 1
          self.Acooldown   = 200
          self.image_index = 0
