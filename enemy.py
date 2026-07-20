@@ -82,14 +82,14 @@ class enemy(sprite):
 
       
 
-      if (abs(self.x - player.x) <= 100 or abs(self.y - player.y) <= 100) and self.Acooldown < 0:
+      if (abs(self.x - player.x) <= 100 or abs(self.y - player.y) <= 100) and self.Acooldown < 0 and False:
          self.attack = 10
          self.image_index = 1
          if not self.sign:
             self.wait = 70
             self.sign = True
 
-      if self.attack > 0 and self.wait < 0:
+      if self.attack > 0 and self.wait < 0 and False:
          self.attacking   = True
          self.velocityX  += self.lastmove[0]*2
          self.velocityY  += self.lastmove[1]*2
@@ -100,9 +100,7 @@ class enemy(sprite):
       else:
          self.attacking = False
 
-      self.checkMove(self.velocityX,self.velocityY,place)
-      self.x += self.velocityX
-      self.y += self.velocityY
+      self.checkMove(place)
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1

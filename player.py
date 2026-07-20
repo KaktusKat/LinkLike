@@ -71,12 +71,9 @@ class player(sprite):
          self.flipS = True
          self.velocityX -= 0.2
       if self.inMaze:
-         self.checkMoveM(self.velocityX,self.velocityY,maze)
+         self.checkMoveM(maze)
       if not self.inMaze:
-         self.checkMoveE(self.velocityX,self.velocityY,enemyList)
-         self.checkMove(self.velocityX,self.velocityY,place)
-      self.x += self.velocityX
-      self.y += self.velocityY
+         self.checkMove(place)
       if keys[pygame.K_r] and self.inMaze:
          self.inMaze = False
          self.x      = 0

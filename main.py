@@ -96,7 +96,7 @@ refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty",
 craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
-for i in range(2):
+for i in range(1):
    e = enemy(["blob.png","blobAttacking.png"],Ex,Ey,60,54,20)
    enemy_list.append(e)
    Ex = random.randint(0,450)
@@ -129,16 +129,16 @@ while running:
 
    for enmy in enemy_list:
       for i in enemy_list:
-         enmy.x += 1
-         enmy.y += 1
+    #     enmy.x += 1
+     #    enmy.y += 1
          if enmy.isHit(i) and noHit:
             noHit = False
-         enmy.x -= 2
-         enmy.y -= 2
+  #       enmy.x -= 2
+   #      enmy.y -= 2
          if enmy.isHit(i) and noHit:
             noHit = False
-         enmy.x += 1
-         enmy.y += 1
+#         enmy.x += 1
+ #        enmy.y += 1
       if  not noHit and not enmy.ha == 0 and not enmy.big:
          enmy.ha = 0
          i.ha = 0
@@ -147,6 +147,15 @@ while running:
       enmy.update(gob,noHit,enemy_list,keys,place,screen)
       noHit = True
       enmy.draw(screen)
+
+   gob.checkMoveE(enemy_list)
+ 
+   gob.x += gob.velocityX
+   gob.y += gob.velocityY
+
+   for enemy in enemy_list:
+       enemy.x += enemy.velocityX
+       enemy.y += enemy.velocityY
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT or gob.health <= 0:
