@@ -19,9 +19,9 @@ class sprite:
       self.velocityX   = 0
       self.velocityY   = 0
 
-   def move(self):
+   def move(self,offset = 0):
       self.image_index += 1
-      if self.image_index == len(self.image):
+      if self.image_index == len(self.image)-offset:
           self.image_index = 0
 
    def draw(self, screen):

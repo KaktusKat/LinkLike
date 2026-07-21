@@ -1,5 +1,6 @@
 import pygame
 from sprite import sprite
+import time
 import math
 
 class player(sprite):
@@ -17,8 +18,22 @@ class player(sprite):
       self.table     = True
       self.spearGot  = True
       self.spear     = spear
+      self.iFrames   = False
+      self.hit       = False
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList):
+      if self.hit == True:
+         self.hit         = False
+         self.image_index = 2
+         self.iFrames     = True
+         self.draw(screen)
+         return
+      if self.iFrames == True:
+         self.iFrames     = False
+         self.image_index = 2
+         time.sleep(0.1)
+      else:
+         self.image_index = 1
       if self.health <= 0:
          return
       if "spear" in invetory.craftList and self.spearGot:
@@ -70,6 +85,7 @@ class player(sprite):
       if keys[pygame.K_a]:
          self.flipS = True
          self.velocityX -= 0.2
+         a+=1
       if self.inMaze:
          self.checkMoveM(maze)
       if not self.inMaze:
@@ -80,7 +96,7 @@ class player(sprite):
          self.y      = 0
          a+=1
       if a > 0:
-         self.move()
+         self.move(1)
       if Mpos[0] < self.x and not self.b:
          self.image[0] = pygame.transform.flip(self.image[0],True,False)
          self.image[1] = pygame.transform.flip(self.image[1],True,False)
@@ -100,12 +116,6 @@ class player(sprite):
       if self.wep == len(self.tool):
          self.wep = 0
 
-   def draw(self,screen):
-      img = self.image[self.image_index]
-      if self.flip:
-         img = pygame.transform.flip(img,False,True)
-      screen.blit(img, self.x, self.y)
-
    def inPortal(self,place):
        mapX = self.x//58
        mapY = self.y//58
@@ -123,6 +133,8 @@ class player(sprite):
 
 
    def draw(self, screen):
+      if self.image_index >= len(self.image):
+         return
       img = self.image[self.image_index]
       if self.flipS:
          img = pygame.transform.flip(img,True,False)

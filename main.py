@@ -33,6 +33,7 @@ die   = False
 wepon = []
 wep   = 1
 first = True
+b     = 0
 
 ballList = []
 tileList = {}
@@ -82,7 +83,7 @@ biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
 wepon    += [fist]
-gob       = player(["gob.png","gobmove.png"],0,0,50,44,wepon,10,sheild,spear)
+gob       = player(["gob.png","gobmove.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
@@ -97,15 +98,14 @@ craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobAttacking.png"],Ex,Ey,60,54,20)
+   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,8)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
 running = True
 while running:
-   #hammer = pygame.image.load("war_hammar.png")
-   #screen.blit(hammer,(100,100))
+   b += 1 
    a += 1   
    keys = pygame.key.get_pressed()
 
@@ -116,9 +116,9 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList)
 
+   gob.draw(screen)
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list)
    gob.weponChange(keys)
-   gob.draw(screen)
  #  test.update(gob,screen,place,ballList)
    invet.open(screen,keys,gob,place,cave,craftRList)
    invet.make(place,screen,gob)
@@ -149,7 +149,7 @@ while running:
       enmy.draw(screen)
 
    gob.checkMoveE(enemy_list)
- 
+   
    gob.x += gob.velocityX
    gob.y += gob.velocityY
 

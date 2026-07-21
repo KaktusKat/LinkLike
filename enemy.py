@@ -1,6 +1,7 @@
 from sprite import sprite
 import math
 import pygame
+import time
 
 class enemy(sprite):
    def __init__(self,image,x,y,w,h,ha,big = False):
@@ -16,8 +17,14 @@ class enemy(sprite):
       self.sign      = False  
       self.attacking = False
       self.timer     = 0
+      self.iframes   = False
+      self.iFrames   = False
  
    def update(self,player,move,enemy_list,keys,place,screen):
+      if self.iFrames:
+         self.iFrames = False
+         time.sleep(0.15)
+      self.image_index = 0
       if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:        # check if it is a spear
          Xmove = 0
          Ymove = 0
@@ -34,13 +41,6 @@ class enemy(sprite):
       if self.ha == 0:
          enemy_list.remove(self)
          return
-      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) and not self.iframes:
-         x = self.x
-         y = self.y
-         self.velocityX += player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
-         self.velocityY += player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
-         self.a      += 1
-         self.iframes = True
 
       if self.a == 0:
          self.a = -10
@@ -53,9 +53,12 @@ class enemy(sprite):
          self.ha    -= 3
          self.attack = -1
 
-      if self.isHit(player) and self.attacking and self.timer < 0:
-         player.health -= 1
-         self.timer = 20
+      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and self.attacking and not player.iFrames:
+         player.health     -= 1
+         player.hit         = True
+         player.image_index = 1
+         self.attacking     = False
+         self.attack        = 0
 
       else:
          self.lastmove = [0,0]
@@ -100,6 +103,17 @@ class enemy(sprite):
       else:
          self.attacking = False
 
+      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) and not self.iframes:
+         x = self.x
+         y = self.y
+         self.velocityX  += player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
+         self.velocityY  += player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
+         self.a          += 1
+         self.image_index = 2
+         self.iFrames     = True
+         self.iframes     = True
+         self.ha         -= 1
+      
       self.checkMove(place)
       self.Acooldown -= 1
       self.wait -= 1 
