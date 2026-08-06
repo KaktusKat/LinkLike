@@ -21,11 +21,8 @@ class enemy(sprite):
       self.iFrames   = False
  
    def update(self,player,move,enemy_list,keys,place,screen):
-#      if self.iFrames:
- #        self.iFrames = False
-  #       time.sleep(0.15)
       self.image_index = 0
-      if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:        # check if it is a spear
+      if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:
          Xmove = 0
          Ymove = 0
          tool  = player.tool[player.wep]
@@ -38,7 +35,7 @@ class enemy(sprite):
          player.tool[player.wep].w = 75
          player.tool[player.wep].h = 75
       hit = False
-      if self.ha == 0:
+      if self.ha <= 0:
          enemy_list.remove(self)
          return
 
@@ -112,7 +109,7 @@ class enemy(sprite):
          self.image_index = 2
          self.iFrames     = True
          self.iframes     = True
-         self.ha         -= 1
+         self.ha         -= player.tool[player.wep].damage
       
       self.checkMove(place)
       self.Acooldown -= 1

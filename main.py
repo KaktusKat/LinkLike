@@ -40,15 +40,15 @@ enemyHit = 0
 ballList = []
 tileList = {}
 
-spear      = tool(["spear.png"],-111,-111,180,30,90,50,5,1,name = "spear")
-sheild     = tool(["sheild.png"],-100,-100,300,110,30,1,ratio = 0.5)
-pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,25,50,1)
-fist       = tool(["fist.png"],-110,-100,50,100,50,30,1)
-war_hammar = tool(["battle_axe.png"],-100,-100,98,150,25,80,2.5)
-battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
-axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
-sword      = tool(["sword.png"],-111,-111,53,15,60,30,5,2.5)
-hammer     = tool(["hammer.png"],-100,-100,120,120,25,50,20)
+spear      = tool(["spear.png"],-111,-111,180,30,1.5,90,50,5,1,name = "spear")
+sheild     = tool(["sheild.png"],-100,-100,300,110,0,30,1,ratio = 0.5)
+pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,0.5,25,50,1)
+fist       = tool(["fist.png"],-110,-100,50,100,0.1,50,30,1)
+war_hammar = tool(["battle_axe.png"],-100,-100,98,150,1,25,80,2.5)
+#battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
+#axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
+sword      = tool(["sword.png"],-111,-111,53,15,1.5,60,30,5,2.5)
+hammer     = tool(["hammer.png"],-100,-100,120,120,2,25,50,20)
 
 rocks       = item(200,260,50,50,"rock","rock_invent.png",1)
 flints      = item(300,200,50,50,"flint","flintInvent.png",1)

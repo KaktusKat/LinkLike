@@ -3,7 +3,7 @@ import math
 from sprite import sprite
 
 class tool(sprite):
-   def __init__(self,image,x,y,w,h,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1,name = ""):
+   def __init__(self,image,x,y,w,h,damage,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1,name = ""):
       super().__init__(image,x,y,w*ratio,h*ratio)
       self.distance   = d
       self.Aspeed     = Aspeed
@@ -16,6 +16,7 @@ class tool(sprite):
       self.attacking  = False
       self.isblocking = False
       self.name       = name
+      self.damage     = damage
 
    def attack(self,user,screen):
       if self.t < self.Aspeed:
