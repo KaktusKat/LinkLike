@@ -2,6 +2,7 @@
 
 import random
 import pygame
+import time
 from sprite         import sprite
 from player         import player
 from tool           import tool
@@ -24,16 +25,17 @@ screen = screen(width, height)
 
 pygame.display.set_caption("linkLike")
 clock = pygame.time.Clock()
-keys  = []
-Ex    = 50
-Ey    = 50
-a     = 0
-noHit = True
-die   = False
-wepon = []
-wep   = 1
-first = True
-b     = 0
+keys     = []
+Ex       = 50
+Ey       = 50
+a        = 0
+noHit    = True
+die      = False
+wepon    = []
+wep      = 1
+first    = True
+b        = 0
+enemyHit = 0
 
 ballList = []
 tileList = {}
@@ -82,7 +84,7 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist]
+wepon    += [fist,hammer]
 gob       = player(["gob.png","gobmove.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
@@ -98,13 +100,14 @@ craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,8)
+   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,12)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
 running = True
 while running:
+   enemyHit -= 1
    b += 1 
    a += 1   
    keys = pygame.key.get_pressed()
@@ -116,8 +119,8 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList)
 
-   gob.draw(screen)
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list)
+   gob.draw(screen)
    gob.weponChange(keys)
  #  test.update(gob,screen,place,ballList)
    invet.open(screen,keys,gob,place,cave,craftRList)
@@ -127,26 +130,18 @@ while running:
       for ball in ballList:
           ball.update(gob,screen)
 
+   hit = False
    for enmy in enemy_list:
-      for i in enemy_list:
-    #     enmy.x += 1
-     #    enmy.y += 1
-         if enmy.isHit(i) and noHit:
-            noHit = False
-  #       enmy.x -= 2
-   #      enmy.y -= 2
-         if enmy.isHit(i) and noHit:
-            noHit = False
-#         enmy.x += 1
- #        enmy.y += 1
-      if  not noHit and not enmy.ha == 0 and not enmy.big:
-         enmy.ha = 0
-         i.ha = 0
-         e = enemy(["blob.png","blobAttacking.png"],random.randint(0,500),random.randint(0,500),100,60,40,True)
-         enemy_list.append(e)
       enmy.update(gob,noHit,enemy_list,keys,place,screen)
-      noHit = True
+      if enmy.iFrames:
+         hit = True
+         enmy.iFrames     = False
+         enmy.image_index = 2
       enmy.draw(screen)
+   if hit and enemyHit < 0:
+      enemyHit = 50
+      pygame.display.update()
+      time.sleep(0.15)
 
    gob.checkMoveE(enemy_list)
    

@@ -21,9 +21,9 @@ class enemy(sprite):
       self.iFrames   = False
  
    def update(self,player,move,enemy_list,keys,place,screen):
-      if self.iFrames:
-         self.iFrames = False
-         time.sleep(0.15)
+#      if self.iFrames:
+ #        self.iFrames = False
+  #       time.sleep(0.15)
       self.image_index = 0
       if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:        # check if it is a spear
          Xmove = 0

@@ -115,3 +115,7 @@ class place:
                   change.justMade  = False
                   change.health    = 0
                   change.draw(screen)
+                  if random.randint(0,200) == 1 and not change.soild:
+                     e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,12)
+                     enemy_list.append(e)
+

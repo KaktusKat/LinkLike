@@ -14,7 +14,7 @@ class player(sprite):
       self.inMaze    = False
       self.health    = heath
       self.sheild    = sheild
-      self.sheildC   = []
+      self.sheildC   = [1]
       self.table     = True
       self.spearGot  = True
       self.spear     = spear
