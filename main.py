@@ -138,6 +138,7 @@ while running:
          enmy.iFrames     = False
          enmy.image_index = 2
       enmy.draw(screen)
+      enmy.checkMoveE(enemy_list)
    if hit and enemyHit < 0:
       enemyHit = 50
       pygame.display.update()
