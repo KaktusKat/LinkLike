@@ -64,5 +64,6 @@ class tool(sprite):
       if self.flip:
          self.x += 10 
          img = pygame.transform.flip(img,True,False)
+      pygame.draw.rect(screen.screen,(255,0,0),pygame.Rect(self.dX-img.get_width()/2-user.x+290,self.dY-img.get_height()/2-user.y+290,img.get_width(),img.get_height()),2)
       screen.blit(img, self.dX-img.get_width()/2, self.dY-img.get_height()/2)
 

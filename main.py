@@ -50,18 +50,18 @@ war_hammar = tool(["battle_axe.png"],-100,-100,98,150,1,25,80,2.5)
 sword      = tool(["sword.png"],-111,-111,53,15,1.5,60,30,5,2.5)
 hammer     = tool(["hammer.png"],-100,-100,120,120,2,25,50,20)
 
-rocks       = item(200,260,50,50,"rock","rock_invent.png",1)
-flints      = item(300,200,50,50,"flint","flintInvent.png",1)
-wood        = item(200,200,50,50,"wood","wood.png",1)
-iron        = item(380,200,50,50,"iron","iron_invent.png",1)
+rocks       = item(177,267,50,50,"rock","rock_invent.png",1)
+flints      = item(267,177,50,50,"flint","flintInvent.png",1)
+wood        = item(177,177,50,50,"wood","wood.png",1)
+iron        = item(267,267,50,50,"iron","iron_invent.png",1)
 empty       = item(-100,-100,0,0,"empty","wood.png",1)
-refinedIron = item(200,320,50,50,"refinedIron","refinedIron.png",1)
-sheildI     = item(200,200,50,50,"sheildI","sheildInvent.png",2)
-spearI      = item(200,260,50,50,"spearI","spearInvent.png",2)
-swordI      = item(300,200,50,50,"swordI","swordInvent.png",2)
-pickaxeI    = item(380,200,50,50,"pickaxeI","pickaxeInvent.png",2)
-axeI        = item(200,320,50,50,"axeI","axeInvent.png",2)
-hammerI     = item(300,320,50,50,"hammerI","hammerInvent.png",2)
+refinedIron = item(177,357,50,50,"refinedIron","refinedIron.png",1)
+sheildI     = item(177,177,50,50,"sheildI","sheildInvent.png",2)
+spearI      = item(177,267,50,50,"spearI","spearInvent.png",2)
+swordI      = item(267,177,50,50,"swordI","swordInvent.png",2)
+pickaxeI    = item(267,267,50,50,"pickaxeI","pickaxeInvent.png",2)
+axeI        = item(177,357,50,50,"axeI","axeInvent.png",2)
+hammerI     = item(267,357,50,50,"hammerI","hammerInvent.png",2)
 itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,swordI,pickaxeI,axeI,hammerI]
 
 grass      = tileValues(["grass.png"],False,True,58,58)
@@ -84,7 +84,7 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist,hammer]
+wepon    += [fist,hammer,sword]
 gob       = player(["gob.png","gobmove.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
@@ -123,8 +123,6 @@ while running:
    gob.draw(screen)
    gob.weponChange(keys)
  #  test.update(gob,screen,place,ballList)
-   invet.open(screen,keys,gob,place,cave,craftRList)
-   invet.make(place,screen,gob)
 
    if len(ballList) > 0:
       for ball in ballList:
@@ -143,6 +141,9 @@ while running:
       enemyHit = 50
       pygame.display.update()
       time.sleep(0.15)
+
+   invet.open(screen,keys,gob,place,cave,craftRList)
+   invet.make(place,screen,gob)
 
    gob.checkMoveE(enemy_list)
    

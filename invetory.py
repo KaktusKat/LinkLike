@@ -2,6 +2,10 @@ import pygame
 
 class invetory:
    def __init__(self,woodNum,wood,itemList,empty):
+      self.imgI        = pygame.image.load("images/inventOpen.png")
+      self.imgI        = pygame.transform.scale(self.imgI,(300,300))
+      self.imgC        = pygame.image.load("images/inventCrafting.png")
+      self.imgC        = pygame.transform.scale(self.imgC,(150,150))
       self.woodNum     = woodNum
       self.window      = False
       self.placeBlock  = 0
@@ -29,7 +33,7 @@ class invetory:
 
    def open(self,screen,keys,player,place,maze,craftRList):
        if keys[pygame.K_q] or self.window or self.table:
-          pygame.draw.rect(screen.screen,(81,74,74),(screen.width/2 - 150,screen.height/2 - 150,300,300))
+          screen.screen.blit(self.imgI,(screen.width/2-150,screen.height/2-150))
           self.window = True
           self.craft(screen,player,place,maze,craftRList,keys)
           if player.table:
@@ -58,10 +62,10 @@ class invetory:
       if not self.holding[0] == "none":
          screen.blit(pygame.transform.scale(self.holding[1],(25,25)),Mpos[0]-290+player.x,Mpos[1]-290+player.y) 
       if self.table:
-         for x in range(3):
-            for y in range(3):    
-               pygame.draw.rect(screen.screen,(0,0,0),pygame.Rect(x*50,y*50,50,50),5)
-               if self.first:
+         screen.screen.blit(self.imgC,(0,0))
+         if self.first:
+            for x in range(3):
+               for y in range(3):    
                   self.Rlistx.append(x*50)
                   self.Rlisty.append(y*50)
          self.first = False
@@ -81,7 +85,6 @@ class invetory:
                   newImg = pygame.transform.scale(self.craftTable[y][x][0].image,(40,40))
                   screen.screen.blit(newImg,(self.craftTable[y][x][1]+5,self.craftTable[y][x][2]+5))
                   self.craftTable[y][x] = self.pickUpCraft(50,50,place,maze,player,self.craftTable[y][x])
-         pygame.draw.rect(screen.screen,(0,0,0),pygame.Rect(200,50,50,50),5)
 
          if keys[pygame.K_l]:
             if not self.pageNum == self.maxPage:
