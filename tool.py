@@ -3,20 +3,22 @@ import math
 from sprite import sprite
 
 class tool(sprite):
-   def __init__(self,image,x,y,w,h,damage,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1,name = ""):
+   def __init__(self,image,x,y,w,h,damage,d,Aspeed,kback=20,ratio = 1,dx=1,dy=1,name = "",stabAnimate = 0):
       super().__init__(image,x,y,w*ratio,h*ratio)
-      self.distance   = d
-      self.Aspeed     = Aspeed
-      self.timer      = 0
-      self.t          = Aspeed
-      self.dX         = dx
-      self.dY         = dy
-      self.kback      = kback
-      self.angle      = 0
-      self.attacking  = False
-      self.isblocking = False
-      self.name       = name
-      self.damage     = damage
+      self.distance    = d
+      self.dSave       = d
+      self.Aspeed      = Aspeed
+      self.timer       = 0
+      self.t           = Aspeed
+      self.dX          = dx
+      self.dY          = dy
+      self.kback       = kback
+      self.angle       = 0
+      self.attacking   = False
+      self.isblocking  = False
+      self.name        = name
+      self.damage      = damage
+      self.stabAnimate = stabAnimate
 
    def attack(self,user,screen):
       if self.t < self.Aspeed:
@@ -45,6 +47,8 @@ class tool(sprite):
    def use(self,screen,user):
       self.t += 1
       if self.timer > 0 or self.isblocking:
+         if self.timer > 15:
+            self.distance += self.stabAnimate
          self.attacking = True
          self.x         = self.dX-self.image[0].get_width()/2
          self.y         = self.dY-self.image[0].get_height()/2
@@ -53,6 +57,7 @@ class tool(sprite):
          self.t          = 0
          self.isblocking = False
          return
+      self.distance  = self.dSave
       self.attacking = False
 
    def draw(self,screen,user):

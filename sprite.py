@@ -19,10 +19,10 @@ class sprite:
       self.velocityX   = 0
       self.velocityY   = 0
 
-   def move(self,offset = 0):
+   def move(self,offsetb = 0,offseta = 0):
       self.image_index += 1
-      if self.image_index == len(self.image)-offset:
-          self.image_index = 0
+      if self.image_index == len(self.image)-offseta:
+          self.image_index = 0+offsetb
 
    def draw(self, screen):
       img = self.image[self.image_index]
@@ -168,8 +168,8 @@ class sprite:
              (Oy < top_y) and (other_top_y > self.y)
 
    def checkMove(self,place):
-      self.velocityX *= 0.95
-      self.velocityY *= 0.95
+#      self.velocityX *= 0.95
+ #     self.velocityY *= 0.95
 
       for y in range(-2, 3):
          for x in range(-2, 3):
@@ -189,8 +189,8 @@ class sprite:
                      return
    
    def checkMoveTF(self,place):
-      self.velocityX *= 0.95
-      self.velocityY *= 0.95
+  #    self.velocityX *= 0.95
+   #   self.velocityY *= 0.95
 
       for y in range(-2, 3):
          for x in range(-2, 3):
@@ -211,8 +211,8 @@ class sprite:
       return False
    
    def checkMoveM(self,maze):
-      self.velocityX *= 0.95
-      self.velocityY *= 0.95
+    #  self.velocityX *= 0.95
+     # self.velocityY *= 0.95
       for oy in range(-2, 3):
          for ox in range(-2, 3):
             X   = ox + self.x//29

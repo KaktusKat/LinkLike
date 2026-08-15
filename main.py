@@ -40,7 +40,7 @@ enemyHit = 0
 ballList = []
 tileList = {}
 
-spear      = tool(["spear.png"],-111,-111,180,30,1.5,90,50,5,1,name = "spear")
+spear      = tool(["spear.png"],-111,-111,122,22,1.5,70,50,12,1,name = "spear",stabAnimate = 1)
 sheild     = tool(["sheild.png"],-100,-100,300,110,0,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,0.5,25,50,1)
 fist       = tool(["fist.png"],-110,-100,50,100,0.1,50,30,1)
@@ -84,8 +84,8 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist,hammer,sword]
-gob       = player(["gob.png","gobmove.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
+wepon    += [fist,hammer,spear]
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
@@ -131,6 +131,8 @@ while running:
    hit = False
    for enmy in enemy_list:
       enmy.update(gob,noHit,enemy_list,keys,place,screen)
+      enmy.velocityX *= 0.95
+      enmy.velocityY *= 0.95
       if enmy.iFrames:
          hit = True
          enmy.iFrames     = False
@@ -146,9 +148,17 @@ while running:
    invet.make(place,screen,gob)
 
    gob.checkMoveE(enemy_list)
+   if gob.inMaze:
+      gob.checkMoveM(maze)
+   if not gob.inMaze:
+      gob.checkMove(place)
+
    
    gob.x += gob.velocityX
    gob.y += gob.velocityY
+   gob.velocityX *= 0.95
+   gob.velocityY *= 0.95
+   print(gob.image_index)
 
    for enemy in enemy_list:
        enemy.x += enemy.velocityX

@@ -20,6 +20,8 @@ class player(sprite):
       self.spear     = spear
       self.iFrames   = False
       self.hit       = False
+      self.animate   = 0
+      self.animated  = False
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList):
       if self.hit == True:
@@ -32,14 +34,12 @@ class player(sprite):
          self.iFrames     = False
          self.image_index = 2
          time.sleep(0.1)
-      else:
          self.image_index = 1
       if self.health <= 0:
          return
       if "spear" in invetory.craftList and self.spearGot:
          self.tool.append(self.spear)
          self.spearGot = False
-      a          = 0
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
@@ -74,18 +74,27 @@ class player(sprite):
          return
       if keys[pygame.K_w]:
          self.velocityY -= 0.2
-         a+=1
+         if not self.animated:
+            self.animate += 1
+            self.animated = True
       if keys[pygame.K_s]:
          self.velocityY += 0.2
-         a+=1
+         if not self.animated:
+            self.animate += 1
+            self.animated = True
       if keys[pygame.K_d]:
          self.flipS  = False
          self.velocityX += 0.2
-         a+=1
+         if not self.animated:
+            self.animate += 1
+            self.animated = True
       if keys[pygame.K_a]:
          self.flipS = True
          self.velocityX -= 0.2
-         a+=1
+         if not self.animated:
+            self.animate += 1
+            self.animated = True
+      self.animated = False
       if self.inMaze:
          self.checkMoveM(maze)
       if not self.inMaze:
@@ -94,9 +103,9 @@ class player(sprite):
          self.inMaze = False
          self.x      = 0
          self.y      = 0
-         a+=1
-      if a > 0:
-         self.move(1)
+      if self.animate > 0:
+         self.move(1,1)
+         self.animate = -10
       if Mpos[0] < self.x and not self.b:
          self.image[0] = pygame.transform.flip(self.image[0],True,False)
          self.image[1] = pygame.transform.flip(self.image[1],True,False)
