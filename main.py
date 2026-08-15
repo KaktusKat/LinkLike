@@ -41,6 +41,7 @@ ballList = []
 tileList = {}
 
 spear      = tool(["spear.png"],-111,-111,122,22,1.5,70,50,12,1,name = "spear",stabAnimate = 1)
+knife      = tool(["throwingKnife.png"],-111,-111,44,14,0.5,30,50,12,1,stabAnimate = 11)
 sheild     = tool(["sheild.png"],-100,-100,300,110,0,30,1,ratio = 0.5)
 pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,0.5,25,50,1)
 fist       = tool(["fist.png"],-110,-100,50,100,0.1,50,30,1)
@@ -58,11 +59,12 @@ empty       = item(-100,-100,0,0,"empty","wood.png",1)
 refinedIron = item(177,357,50,50,"refinedIron","refinedIron.png",1)
 sheildI     = item(177,177,50,50,"sheildI","sheildInvent.png",2)
 spearI      = item(177,267,50,50,"spearI","spearInvent.png",2)
+knifeI      = item(357,177,50,50,"knifeI","throwingKnife.png",2)
 swordI      = item(267,177,50,50,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,swordI,pickaxeI,axeI,hammerI]
+itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
 
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
@@ -84,7 +86,7 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist,hammer,spear]
+wepon    += [fist,hammer,knife]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
