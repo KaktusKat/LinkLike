@@ -4,34 +4,34 @@ import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,tool,heath,sheild,spear):
+   def __init__(self,img,posX,posY,w,h,tool,heath,spear):
       super().__init__(img,posX,posY,w,h)
-      self.tool      = tool
-      self.b         = False
-      self.t         = -10
-      self.wep       = 0
-      self.a         = 0
-      self.inMaze    = False
-      self.health    = heath
-      self.sheild    = sheild
-      self.sheildC   = [1]
-      self.table     = True
-      self.spearGot  = True
-      self.spear     = spear
-      self.iFrames   = False
-      self.hit       = False
-      self.animate   = 0
-      self.animated  = False
+      self.tool       = tool
+      self.b          = False
+      self.t          = -10
+      self.wep        = 0
+      self.a          = 0
+      self.inMaze     = False
+      self.health     = heath
+      self.table      = True
+      self.spearGot   = True
+      self.spear      = spear
+      self.iFrames    = 1
+      self.iFrameTime = 40
+      self.hit        = False
+      self.animate    = 0
+      self.animated   = False
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList):
+      if self.iFrames >= 1:
+         self.iFrames -= 1
       if self.hit == True:
          self.hit         = False
-         self.image_index = 2
-         self.iFrames     = True
+         self.image_index = 3
+         self.iFrames     = self.iFrameTime
          self.draw(screen)
          return
-      if self.iFrames == True:
-         self.iFrames     = False
+      if self.iFrames == self.iFrameTime - 1:
          self.image_index = 2
          time.sleep(0.1)
          self.image_index = 1
@@ -43,8 +43,6 @@ class player(sprite):
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
-      if mousePress[0] and not self.sheild.attacking:
-         self.tool[self.wep].attack(self,screen)
       if mousePress[2] and self.inMaze:
          craft = maze.get_cell(int(((Mpos[0]+self.x)//70)-4),int(((Mpos[1]+self.y)//70)-4))
          if not invetory.window:
@@ -60,8 +58,6 @@ class player(sprite):
                 delList.append(ball)
          for ball in delList:
              ballList.remove(ball)
-      if len(self.sheildC) >= 1 and mousePress[2]:
-         self.sheild.block(self,screen)
       if keys[pygame.K_SPACE] and self.t > 0:
          Rx       = Mpos[0] - self.x
          Ry       = Mpos[1] - self.y
@@ -104,7 +100,7 @@ class player(sprite):
          self.x      = 0
          self.y      = 0
       if self.animate > 0:
-         self.move(1,1)
+         self.move(1,2)
          self.animate = -10
       if Mpos[0] < self.x and not self.b:
          self.image[0] = pygame.transform.flip(self.image[0],True,False)
@@ -114,8 +110,9 @@ class player(sprite):
          self.image[0] = pygame.transform.flip(self.image[0],True,False)
          self.image[1] = pygame.transform.flip(self.image[1],True,False)
          self.b = False
-      self.tool[self.wep].use(screen,self)
-      self.sheild.use(screen,self)
+      self.tool[self.wep].attack(screen,self)
+      if self.iFrames > 0:
+         self.image_index = 4
  
    def weponChange(self,keys):
       self.a -= 1

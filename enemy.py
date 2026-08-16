@@ -46,16 +46,10 @@ class enemy(sprite):
       if player.tool[player.wep].attacking == False:
          self.iframes = False
 
-      if self.isHit(player.sheild) and self.attacking:
-         self.ha    -= 3
-         self.attack = -1
-
-      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and self.attacking and not player.iFrames:
+      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and not player.iFrames:
          player.health     -= 1
          player.hit         = True
          player.image_index = 1
-         self.attacking     = False
-         self.attack        = 0
 
       else:
          self.lastmove = [0,0]
@@ -101,10 +95,11 @@ class enemy(sprite):
          self.attacking = False
 
       if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) and not self.iframes:
-         x = self.x
-         y = self.y
-         self.velocityX  += player.tool[player.wep].kback*math.cos(player.tool[player.wep].angle)
-         self.velocityY  += player.tool[player.wep].kback*math.sin(player.tool[player.wep].angle)
+         x    = self.x
+         y    = self.y
+         tool = player.tool[player.wep]
+         self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
+         self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
          self.a          += 1
          self.image_index = 2
          self.iFrames     = True

@@ -21,7 +21,7 @@ class sprite:
 
    def move(self,offsetb = 0,offseta = 0):
       self.image_index += 1
-      if self.image_index == len(self.image)-offseta:
+      if self.image_index >= len(self.image)-offseta:
           self.image_index = 0+offsetb
 
    def draw(self, screen):

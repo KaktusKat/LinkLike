@@ -5,7 +5,9 @@ import pygame
 import time
 from sprite         import sprite
 from player         import player
-from tool           import tool
+from slashF         import slashF
+from stabF          import stabF
+from meleeWeapon    import meleeWeapon
 from enemy          import enemy
 from place          import place 
 from screen         import screen
@@ -40,16 +42,26 @@ enemyHit = 0
 ballList = []
 tileList = {}
 
-spear      = tool(["spear.png"],-111,-111,122,22,1.5,70,50,12,1,name = "spear",stabAnimate = 1)
-knife      = tool(["throwingKnife.png"],-111,-111,44,14,0.5,30,50,12,1,stabAnimate = 11)
-sheild     = tool(["sheild.png"],-100,-100,300,110,0,30,1,ratio = 0.5)
-pickaxe    = tool(["pickaxe.png"],-110,-100,124,199,0.5,25,50,1)
-fist       = tool(["fist.png"],-110,-100,50,100,0.1,50,30,1)
-war_hammar = tool(["battle_axe.png"],-100,-100,98,150,1,25,80,2.5)
-#battle_axe = tool(["battle_axe.png"],-100,-100,47,55,25,80,2.5)
-#axe        = tool(["axe.png"],-100,-100,57,79,1,2,45)
-sword      = tool(["sword.png"],-111,-111,53,15,1.5,60,30,5,2.5)
-hammer     = tool(["hammer.png"],-100,-100,120,120,2,25,50,20)
+spear1     = stabF(["spear.png"],122,22,20,10,4)
+spear      = meleeWeapon(50,1.5,5,[spear1],50)
+
+pickaxe1   = slashF(["pickaxeSwing.png","pickaxe.png"],124,199,25,0.6,5)
+pickaxe    = meleeWeapon(80,0.5,5,[pickaxe1],30)
+
+fist1      = stabF(["fist.png"],50,100,20,5,5)
+fist       = meleeWeapon(40,0.2,5,[fist1],30)
+
+axe1       = slashF(["battle_axeSwing.png","battle_axe.png"],98,150,25,0.6,5)
+war_hammar = meleeWeapon(80,1,5,[axe1],100)
+
+sword1     = slashF(["swordSwing1.png","sword1.png"],136,180,50,0.6,5)
+sword2     = slashF(["swordSwing2.png","sword2.png"],136,180,50,-0.6,5)
+sword3     = stabF(["sword3.png"],160,30,50,5,5)
+sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70)
+#sword      = tool(["sword.png"],-111,-111,53,15,1.5,60,30,5,2.5)
+ 
+hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,25,0.6,5)
+hammer     = meleeWeapon(75,1.5,40,[hammer1],1)
 
 rocks       = item(177,267,50,50,"rock","rock_invent.png",1)
 flints      = item(267,177,50,50,"flint","flintInvent.png",1)
@@ -57,14 +69,13 @@ wood        = item(177,177,50,50,"wood","wood.png",1)
 iron        = item(267,267,50,50,"iron","iron_invent.png",1)
 empty       = item(-100,-100,0,0,"empty","wood.png",1)
 refinedIron = item(177,357,50,50,"refinedIron","refinedIron.png",1)
-sheildI     = item(177,177,50,50,"sheildI","sheildInvent.png",2)
 spearI      = item(177,267,50,50,"spearI","spearInvent.png",2)
 knifeI      = item(357,177,50,50,"knifeI","throwingKnife.png",2)
 swordI      = item(267,177,50,50,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,flints,sheildI,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
+itemList    = [wood,rocks,iron,refinedIron,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
 
 grass      = tileValues(["grass.png"],False,True,58,58)
 grass2     = tileValues(["grass2.png"],False,True,58,58)
@@ -86,19 +97,18 @@ sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist,hammer,knife]
-gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png"],0,0,50,44,wepon,10,sheild,spear)
+wepon    += [fist]
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png"],0,0,50,44,wepon,10,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
-sheildR    = [[["rock","wood","empty"],["rock","refinedIron","wood"],["rock","wood","empty"]],[sheildI,1],[gob.sheildC,sheild]]
 spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,spear]]
 swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,sword]]
 pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,pickaxe]]
 axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,war_hammar]]
 hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,hammer]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
-craftRList = [sheildR,spearR,refineR,swordR,axeR,pickaxeR,hammerR]
+craftRList = [spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
 for i in range(1):
@@ -151,7 +161,7 @@ while running:
 
    gob.checkMoveE(enemy_list)
    if gob.inMaze:
-      gob.checkMoveM(maze)
+      gob.checkMoveM(cave)
    if not gob.inMaze:
       gob.checkMove(place)
 
@@ -160,7 +170,6 @@ while running:
    gob.y += gob.velocityY
    gob.velocityX *= 0.95
    gob.velocityY *= 0.95
-   print(gob.image_index)
 
    for enemy in enemy_list:
        enemy.x += enemy.velocityX
