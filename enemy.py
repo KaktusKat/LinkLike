@@ -97,7 +97,7 @@ class enemy(sprite):
       if (self.isHit(weaponList[player.tool[player.wep]]) and weaponList[player.tool[player.wep]].attacking) and not self.iframes:
          x    = self.x
          y    = self.y
-         tool = player.tool[player.wep]
+         tool = weaponList[player.tool[player.wep]]
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
          self.a          += 1
