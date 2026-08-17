@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+import pickle
 import random
 import pygame
 import time
+import sys
+import copy
 from sprite         import sprite
 from player         import player
 from slashF         import slashF
@@ -21,6 +24,8 @@ from tileValues     import tileValues
 width  = 580
 height = 580
 
+sys.setrecursionlimit(30000)
+
 pygame.init()
 
 screen = screen(width, height)
@@ -38,100 +43,120 @@ wep      = 1
 first    = True
 b        = 0
 enemyHit = 0
+load     = input("do you want to reload?")
 
 ballList = []
 tileList = {}
 
-spear1     = stabF(["spear.png"],122,22,20,10,4)
+spear1     = stabF(["spear.png"],122,22,screen.images,20,10,4)
 spear      = meleeWeapon(50,1.5,5,[spear1],50)
 
-pickaxe1   = slashF(["pickaxeSwing.png","pickaxe.png"],124,199,25,0.6,5)
+pickaxe1   = slashF(["pickaxeSwing.png","pickaxe.png"],124,199,screen.images,25,0.6,5)
 pickaxe    = meleeWeapon(80,0.5,5,[pickaxe1],30)
 
-fist1      = stabF(["fist.png"],50,100,20,5,5)
+fist1      = stabF(["fist.png"],50,100,screen.images,20,5,5)
 fist       = meleeWeapon(40,0.2,5,[fist1],30)
 
-axe1       = slashF(["battle_axeSwing.png","battle_axe.png"],98,150,25,0.6,5)
+axe1       = slashF(["battle_axeSwing.png","battle_axe.png"],98,150,screen.images,25,0.6,5)
 war_hammar = meleeWeapon(80,1,5,[axe1],100)
 
-sword1     = slashF(["swordSwing1.png","sword1.png"],136,180,50,0.6,5)
-sword2     = slashF(["swordSwing2.png","sword2.png"],136,180,50,-0.6,5)
-sword3     = stabF(["sword3.png"],160,30,50,5,5)
+sword1     = slashF(["swordSwing1.png","sword1.png"],136,180,screen.images,50,0.6,5)
+sword2     = slashF(["swordSwing2.png","sword2.png"],136,180,screen.images,50,-0.6,5)
+sword3     = stabF(["sword3.png"],160,30,screen.images,50,5,5)
 sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70)
-#sword      = tool(["sword.png"],-111,-111,53,15,1.5,60,30,5,2.5)
  
-hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,25,0.6,5)
+hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,screen.images,25,0.6,5)
 hammer     = meleeWeapon(75,1.5,40,[hammer1],1)
 
-rocks       = item(177,267,50,50,"rock","rock_invent.png",1)
-flints      = item(267,177,50,50,"flint","flintInvent.png",1)
-wood        = item(177,177,50,50,"wood","wood.png",1)
-iron        = item(267,267,50,50,"iron","iron_invent.png",1)
-empty       = item(-100,-100,0,0,"empty","wood.png",1)
-refinedIron = item(177,357,50,50,"refinedIron","refinedIron.png",1)
-spearI      = item(177,267,50,50,"spearI","spearInvent.png",2)
-knifeI      = item(357,177,50,50,"knifeI","throwingKnife.png",2)
-swordI      = item(267,177,50,50,"swordI","swordInvent.png",2)
-pickaxeI    = item(267,267,50,50,"pickaxeI","pickaxeInvent.png",2)
-axeI        = item(177,357,50,50,"axeI","axeInvent.png",2)
-hammerI     = item(267,357,50,50,"hammerI","hammerInvent.png",2)
+weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear}
+
+rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
+flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
+wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
+iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
+empty       = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
+refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
+spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",2)
+knifeI      = item(357,177,50,50,screen.images,"knifeI","throwingKnife.png",2)
+swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",2)
+pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",2)
+axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
+hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
 itemList    = [wood,rocks,iron,refinedIron,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
 
-grass      = tileValues(["grass.png"],False,True,58,58)
-grass2     = tileValues(["grass2.png"],False,True,58,58)
-flower     = tileValues(["flower.png"],False,True,58,58)
-flint      = tileValues(["flints.png"],False,True,58,58,[[fist,1]],flints,[grass2])
-stump      = tileValues(["stump.png"],False,True,58,58)
-tree       = tileValues(["tree.png"],True,True,58,58,[[fist,4],[war_hammar,1]],wood,[stump])
-portal     = tileValues(["portal.png"],False,True,58,58,portal = True)
-rock       = tileValues(["rock.png"],True,False,58,58,[[pickaxe,1]],rocks,[grass2,portal])
-sand       = tileValues(["sand.png"],False,True,58,58)
-sand2      = tileValues(["sand2.png"],False,True,58,58)
-sand3      = tileValues(["sand3.png"],False,True,58,58)
-catus      = tileValues(["catus.png"],True,True,58,58)
-sandPortal = tileValues(["sandportal.png"],False,True,58,58,portal = True)
-sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,[[pickaxe,1]],rocks,[sandPortal,sand2])
+grass      = tileValues(["grass.png"],False,True,58,58,screen.images)
+grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images)
+flower     = tileValues(["flower.png"],False,True,58,58,screen.images)
+flint      = tileValues(["flints.png"],False,True,58,58,screen.images,[["fist",1]],flints,[grass2])
+stump      = tileValues(["stump.png"],False,True,58,58,screen.images)
+tree       = tileValues(["tree.png"],True,True,58,58,screen.images,[["fist",4],["axe",1]],wood,[stump])
+portal     = tileValues(["portal.png"],False,True,58,58,screen.images,portal = True)
+rock       = tileValues(["rock.png"],True,False,58,58,screen.images,[["pickaxe",1]],rocks,[grass2,portal])
+sand       = tileValues(["sand.png"],False,True,58,58,screen.images)
+sand2      = tileValues(["sand2.png"],False,True,58,58,screen.images)
+sand3      = tileValues(["sand3.png"],False,True,58,58,screen.images)
+catus      = tileValues(["catus.png"],True,True,58,58,screen.images)
+sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,portal = True)
+sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,screen.images,[["pickaxe",1]],rocks,[sandPortal,sand2])
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,1],[rock,0.25]])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
-invet     = invetory(0,"wood.png",itemList,empty)
+invet     = invetory(0,"wood.png",itemList,empty,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += [fist]
-gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png"],0,0,50,44,wepon,10,spear)
-cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"])
+wepon    += ["fist"]
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png"],0,0,50,44,screen.images,wepon,10,spear)
+cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
-
-spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,spear]]
-swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,sword]]
-pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,pickaxe]]
-axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,war_hammar]]
-hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,hammer]]
-refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
-craftRList = [spearR,refineR,swordR,axeR,pickaxeR,hammerR]
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,12)
+   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,12)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
+if load == "yes":
+   with open("save.plk","rb") as file:
+      load       = pickle.load(file)
+      gob        = load[0]
+      invet      = load[1]
+      place      = load[2]
+      cave       = load[3]
+      enemy_list = load[4]
+      for i in range(len(itemList)):
+          itemList[i]          = load[i+3]
+
+spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,"spear"]]
+swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,"sword"]]
+pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,"pickaxe"]]
+axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,"war_hammar"]]
+hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,"hammer"]]
+refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
+craftRList = [spearR,refineR,hammerR,axeR,swordR,pickaxeR]
+
+
 running = True
 while running:
+   keys = pygame.key.get_pressed()
+   if keys[pygame.K_t]:
+      with open("save.plk","wb") as file:
+         saveList = [gob,invet,place,cave,enemy_list]
+         for item in itemList:
+             saveList.append(item)
+         pickle.dump(saveList,file)
    enemyHit -= 1
    b += 1 
    a += 1   
-   keys = pygame.key.get_pressed()
 
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
       enemy_list = []
       cave.update(screen,gob,pickaxe,iron)
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,weaponList)
 
-   gob.update(keys,screen,place,cave,invet,ballList,enemy_list)
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList)
    gob.draw(screen)
    gob.weponChange(keys)
  #  test.update(gob,screen,place,ballList)
@@ -142,7 +167,7 @@ while running:
 
    hit = False
    for enmy in enemy_list:
-      enmy.update(gob,noHit,enemy_list,keys,place,screen)
+      enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList)
       enmy.velocityX *= 0.95
       enmy.velocityY *= 0.95
       if enmy.iFrames:

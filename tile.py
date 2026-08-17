@@ -4,8 +4,8 @@ import random
 from sprite import sprite
 
 class tile(sprite):
-   def __init__(self, img, posX, posY, w, h,soild,biomes = [],breakable = True,portal = False,craft = False,spike = False,justMade = False,numRow = 0,reducedNoise = False):
-       super().__init__(img, posX, posY, w, h, soild=soild)
+   def __init__(self, img, posX, posY, w, h,images,soild,biomes = [],breakable = True,portal = False,craft = False,spike = False,justMade = False,numRow = 0,reducedNoise = False):
+       super().__init__(img, posX, posY, w, h,images, soild=soild)
        self.numRow       = numRow
        self.reducedNoise = reducedNoise
        self.breakable    = breakable

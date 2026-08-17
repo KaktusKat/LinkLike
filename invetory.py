@@ -1,11 +1,12 @@
 import pygame
 
 class invetory:
-   def __init__(self,woodNum,wood,itemList,empty):
-      self.imgI        = pygame.image.load("images/inventOpen.png")
-      self.imgI        = pygame.transform.scale(self.imgI,(300,300))
-      self.imgC        = pygame.image.load("images/inventCrafting.png")
-      self.imgC        = pygame.transform.scale(self.imgC,(150,150))
+   def __init__(self,woodNum,wood,itemList,empty,images):
+      self.imgI        = "images/inventOpen.png"
+      self.imgC        = "images/inventCrafting.png"
+      for img in [[self.imgI,300],[self.imgC,150]]:
+          image        = pygame.image.load(img[0])
+          images[img[0]]  = pygame.transform.scale(image,(img[1],img[1]))
       self.woodNum     = woodNum
       self.window      = False
       self.placeBlock  = 0
@@ -33,7 +34,7 @@ class invetory:
 
    def open(self,screen,keys,player,place,maze,craftRList):
        if keys[pygame.K_q] or self.window or self.table:
-          screen.screen.blit(self.imgI,(screen.width/2-150,screen.height/2-150))
+          screen.screen.blit(screen.images[self.imgI],(screen.width/2-150,screen.height/2-150))
           self.window = True
           self.craft(screen,player,place,maze,craftRList,keys)
           if player.table:
@@ -48,7 +49,7 @@ class invetory:
             num          = pygame.font.SysFont("I don't think this dose anything",40)
             num          = num.render(f"{item.amount}",False,(0,0,0))
             screen.screen.blit(num,(item.x+item.w,item.y+item.h))
-            screen.screen.blit(item.image,(item.x,item.y))
+            screen.screen.blit(screen.images[item.image],(item.x,item.y))
       if not self.craftList == []:
          y = 0
          for item in self.craftList:
@@ -60,9 +61,9 @@ class invetory:
       Mpressed           = pygame.mouse.get_pressed()
       self.pickUp(50,50,place,maze,player,self.itemList)
       if not self.holding[0] == "none":
-         screen.blit(pygame.transform.scale(self.holding[1],(25,25)),Mpos[0]-290+player.x,Mpos[1]-290+player.y) 
+         screen.blit(pygame.transform.scale(screen.images[self.holding[1]],(25,25)),Mpos[0]-290+player.x,Mpos[1]-290+player.y) 
       if self.table:
-         screen.screen.blit(self.imgC,(0,0))
+         screen.screen.blit(screen.images[self.imgC],(0,0))
          if self.first:
             for x in range(3):
                for y in range(3):    
@@ -82,7 +83,7 @@ class invetory:
          for y in range(len(self.craftTable)):
             for x in range(len(self.craftTable[y])):
                if not self.craftTable[y][x] == [[0,0]]:
-                  newImg = pygame.transform.scale(self.craftTable[y][x][0].image,(40,40))
+                  newImg = pygame.transform.scale(screen.images[self.craftTable[y][x][0].image],(40,40))
                   screen.screen.blit(newImg,(self.craftTable[y][x][1]+5,self.craftTable[y][x][2]+5))
                   self.craftTable[y][x] = self.pickUpCraft(50,50,place,maze,player,self.craftTable[y][x])
 

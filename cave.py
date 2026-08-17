@@ -4,12 +4,12 @@ from tile import tile
 
 class Cave:
 
-   def __init__(self,images):
+   def __init__(self,images,Simage):
       self.images   = []
       for img in images:
+         self.images.append("images/"+img)
          image = pygame.image.load("images/"+img)
-         image = pygame.transform.scale(image,(29,29))
-         self.images.append(image)
+         Simage["images/"+img] = pygame.transform.scale(image,(29,29))
       self.tileList = {}
 
    def update(self,screen,player,pickaxe,iron):
@@ -27,7 +27,7 @@ class Cave:
             if not keyX in self.tileList:
                self.tileList[keyX] = {}
             if not keyY in self.tileList[keyX]:
-               self.tileList[keyX][keyY] = tile(["CaveBackground.png"],(player.x//29)*29+x*29,(player.y//29)*29+y*29,29,29,True,numRow = 1)
+               self.tileList[keyX][keyY] = tile(["CaveBackground.png"],(player.x//29)*29+x*29,(player.y//29)*29+y*29,29,29,screen.images,True,numRow = 1)
                self.tileList[keyX][keyY].randomPlace(self.images[1],self.images[0])
                if not out:
                   new.append(self.tileList[keyX][keyY])

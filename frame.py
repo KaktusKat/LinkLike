@@ -3,8 +3,8 @@ import math
 from sprite import sprite
 
 class frame(sprite):
-   def __init__(self,image,w,h,d,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
-      super().__init__(image,x,y,w*ratio,h*ratio)
+   def __init__(self,image,w,h,images,d,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
+      super().__init__(image,x,y,w*ratio,h*ratio,images)
       self.distance    = d
       self.dSave       = d
       self.dX          = dx
@@ -21,7 +21,7 @@ class frame(sprite):
       Mpos        = pygame.mouse.get_pos()
       self.angle  = math.atan2(Mpos[1]-u_y,Mpos[0]-u_x)
       angle       = ((180*self.angle)/math.pi)
-      self.Rwepon = pygame.transform.rotate(self.image[self.image_index],-angle)
+      self.Rwepon = -angle
 
    def use(self,screen,user):
       self.x         = self.dX-self.image[0].get_width()/2
@@ -33,6 +33,6 @@ class frame(sprite):
       u_x     = user.x+user.w/2
       self.dX = u_x+self.distance*math.cos(self.angle)
       self.dY = u_y+self.distance*math.sin(self.angle)
-      img = self.Rwepon
+      img = pygame.transform.rotate(screen.images[self.image[self.image_index]],self.Rwepon)
       screen.blit(img, self.dX-img.get_width()/2, self.dY-img.get_height()/2)
 

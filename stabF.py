@@ -1,9 +1,10 @@
+import pygame
 import math
 from frame import frame
 
 class stabF(frame):
-   def __init__(self,image,w,h,d,stabMove,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
-      super().__init__(image,w,h,d,numMove,ratio,dx,dy,x,y)
+   def __init__(self,image,w,h,images,d,stabMove,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
+      super().__init__(image,w,h,images,d,numMove,ratio,dx,dy,x,y)
       self.stabMove = stabMove
       self.dSave    = d
 
@@ -11,8 +12,8 @@ class stabF(frame):
       self.num += 1
       if self.num <= self.numMove:
          self.distance += self.stabMove
-      self.x         = self.dX-self.image[0].get_width()/2
-      self.y         = self.dY-self.image[0].get_height()/2
+      self.x         = self.dX-screen.images[self.image[0]].get_width()/2
+      self.y         = self.dY-screen.images[self.image[0]].get_height()/2
 
    def draw(self,screen,user):
       self.use(screen,user)
@@ -20,7 +21,7 @@ class stabF(frame):
       u_x     = user.x+user.w/2
       self.dX = u_x+self.distance*math.cos(self.angle)
       self.dY = u_y+self.distance*math.sin(self.angle)
-      img = self.Rwepon
+      img = pygame.transform.rotate(screen.images[self.image[self.image_index]],self.Rwepon)
       if self.flip:
          self.x += 10
          img = pygame.transform.flip(img,True,False)

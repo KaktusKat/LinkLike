@@ -1,11 +1,12 @@
+import pickle
 import pygame
 from sprite import sprite
 import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,tool,heath,spear):
-      super().__init__(img,posX,posY,w,h)
+   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear):
+      super().__init__(img,posX,posY,w,h,images)
       self.tool       = tool
       self.b          = False
       self.t          = -10
@@ -14,22 +15,19 @@ class player(sprite):
       self.inMaze     = False
       self.health     = heath
       self.table      = True
-      self.spearGot   = True
-      self.spear      = spear
       self.iFrames    = 1
       self.iFrameTime = 40
       self.hit        = False
       self.animate    = 0
       self.animated   = False
 
-   def update(self,keys,screen,place,maze,invetory,ballList,enemyList):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList):
       if self.iFrames >= 1:
          self.iFrames -= 1
       if self.hit == True:
          self.hit         = False
          self.image_index = 3
          self.iFrames     = self.iFrameTime
-         self.draw(screen)
          return
       if self.iFrames == self.iFrameTime - 1:
          self.image_index = 2
@@ -37,9 +35,6 @@ class player(sprite):
          self.image_index = 1
       if self.health <= 0:
          return
-      if "spear" in invetory.craftList and self.spearGot:
-         self.tool.append(self.spear)
-         self.spearGot = False
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
@@ -102,15 +97,15 @@ class player(sprite):
       if self.animate > 0:
          self.move(1,2)
          self.animate = -10
-      if Mpos[0] < self.x and not self.b:
-         self.image[0] = pygame.transform.flip(self.image[0],True,False)
-         self.image[1] = pygame.transform.flip(self.image[1],True,False)
-         self.b = True
-      if Mpos[0] > self.x and self.b:         
-         self.image[0] = pygame.transform.flip(self.image[0],True,False)
-         self.image[1] = pygame.transform.flip(self.image[1],True,False)
-         self.b = False
-      self.tool[self.wep].attack(screen,self)
+#      if Mpos[0] < self.x and not self.b:
+ #        self.image[0] = pygame.transform.flip(self.image[0],True,False)
+  #       self.image[1] = pygame.transform.flip(self.image[1],True,False)
+   #      self.b = True
+    #  if Mpos[0] > self.x and self.b:         
+     #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
+      #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
+       #  self.b = False
+      weaponList[self.tool[self.wep]].attack(screen,self)
       if self.iFrames > 0:
          self.image_index = 4
  
@@ -141,7 +136,7 @@ class player(sprite):
    def draw(self, screen):
       if self.image_index >= len(self.image):
          return
-      img = self.image[self.image_index]
+      img = screen.images[self.image[self.image_index]]
       if self.flipS:
          img = pygame.transform.flip(img,True,False)
       if self.flip:

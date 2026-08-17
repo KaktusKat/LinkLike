@@ -4,8 +4,8 @@ import pygame
 import time
 
 class enemy(sprite):
-   def __init__(self,image,x,y,w,h,ha,big = False):
-      super().__init__(image,x,y,w,h)
+   def __init__(self,image,x,y,w,h,images,ha,big = False):
+      super().__init__(image,x,y,w,h,images)
       self.a         = -10
       self.ha        = ha
       self.big       = big
@@ -20,7 +20,7 @@ class enemy(sprite):
       self.iframes   = False
       self.iFrames   = False
  
-   def update(self,player,move,enemy_list,keys,place,screen):
+   def update(self,player,move,enemy_list,keys,place,screen,weaponList):
       self.image_index = 0
 #      if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:
  #        Xmove = 0
@@ -43,7 +43,7 @@ class enemy(sprite):
          self.a = -10
          self.ha -= 1
 
-      if player.tool[player.wep].attacking == False:
+      if weaponList[player.tool[player.wep]].attacking == False:
          self.iframes = False
 
       if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and not player.iFrames:
@@ -94,7 +94,7 @@ class enemy(sprite):
       else:
          self.attacking = False
 
-      if (self.isHit(player.tool[player.wep]) and player.tool[player.wep].attacking) and not self.iframes:
+      if (self.isHit(weaponList[player.tool[player.wep]]) and player.tool[player.wep].attacking) and not self.iframes:
          x    = self.x
          y    = self.y
          tool = player.tool[player.wep]

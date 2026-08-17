@@ -24,7 +24,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,weaponList):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -48,11 +48,12 @@ class place:
                if not self.map_dic[key].justMade:
                   if len(self.map_dic[key].toolList) > 0:
                      for tool in self.map_dic[key].toolList:
-                        if self.map_dic[key].isHit(tool[0]) and tool[0].attacking and not self.map_dic[key].iframes:
+                        if self.map_dic[key].isHit(weaponList[tool[0]]) and weaponList[tool[0]].attacking and not self.map_dic[key].iframes:
+                           print("yesgo")
                            self.map_dic[key].health += 1
                            self.map_dic[key].iframes = True
                            self.map_dic[key].toolHit = tool[0]
-                           if self.map_dic[key].health == tool[1]: 
+                           if self.map_dic[key].health >= tool[1]: 
                               imageValues                    = random.choice(self.map_dic[key].change)
                               self.map_dic[key].image        = imageValues.image.copy()
                               self.map_dic[key].soild        = imageValues.soild
@@ -61,7 +62,7 @@ class place:
                               self.map_dic[key].toolList     = []
                               self.map_dic[key].item.amount += 1
                   
-                  if self.map_dic[key].iframes and not self.map_dic[key].toolHit.attacking:
+                  if self.map_dic[key].iframes and not weaponList[self.map_dic[key].toolHit].attacking:
                      self.map_dic[key].iframes = False
 
                   self.map_dic[key].draw(screen)
@@ -80,7 +81,7 @@ class place:
                      xpos = player.x + keyX * 58 - (player.x % 58)
                      ypos = player.y + keyY * 58 - (player.y % 58)
                      if not key2 in self.map_dic:
-                        self.map_dic[key2] = tile(["grass.png"],xpos,ypos,58,58,False,biomeList,justMade = True)
+                        self.map_dic[key2] = tile(["grass.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
                for keyX in range(-6,6):
                   for keyY in range(-6,6):
                      map_x = keyX + player.x // 58
@@ -116,6 +117,6 @@ class place:
                   change.health    = 0
                   change.draw(screen)
                   if random.randint(0,200) == 1 and not change.soild:
-                     e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,12)
+                     e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,12)
                      enemy_list.append(e)
 

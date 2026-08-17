@@ -4,7 +4,8 @@ class screen:
    def __init__(self, width, height):
       self.screen = pygame.display.set_mode((width, height))
       self.width  = width
-      self.height = height 
+      self.height = height
+      self.images = {} 
       self.background_col = (56, 142, 60)
 
    def clear(self, centre_x, centre_y):

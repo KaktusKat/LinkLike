@@ -2,13 +2,14 @@ import pygame
 from Vector import Vector
 
 class sprite:
-   def __init__(self, img, posX, posY, w, h, count = 1, soild = False):
+   def __init__(self, img, posX, posY, w, h,images, count = 1, soild = False):
       self.x      = posX
       self.y      = posY
       self.image  = []
       for i in range(len(img)):
+         self.image.append("images/"+img[i])
          image = pygame.image.load("images/"+img[i])
-         self.image.append(pygame.transform.scale(image,(w,h)))
+         images[self.image[i]] = pygame.transform.scale(image,(w,h))
       self.h           = h
       self.w           = w
       self.flip        = False
@@ -25,7 +26,7 @@ class sprite:
           self.image_index = 0+offsetb
 
    def draw(self, screen):
-      img = self.image[self.image_index]
+      img = screen.images[self.image[self.image_index]]
       if self.flipS:
          img = pygame.transform.flip(img,True,False)
       if self.flip:
