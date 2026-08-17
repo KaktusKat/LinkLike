@@ -46,10 +46,12 @@ class enemy(sprite):
       if weaponList[player.tool[player.wep]].attacking == False:
          self.iframes = False
 
-      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and not player.iFrames:
+      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w,self.h,player) and self.attacking and not player.iFrames:
          player.health     -= 1
          player.hit         = True
          player.image_index = 1
+         self.attack        = 0
+         self.attacking     = False
 
       else:
          self.lastmove = [0,0]
@@ -104,9 +106,9 @@ class enemy(sprite):
          self.image_index = 2
          self.iFrames     = True
          self.iframes     = True
-         self.ha         -= player.tool[player.wep].damage
+         self.ha         -= weaponList[player.tool[player.wep]].damage
       
-      self.checkMove(place)
+      self.checkMove(place,screen)
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1

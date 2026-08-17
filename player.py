@@ -87,9 +87,9 @@ class player(sprite):
             self.animated = True
       self.animated = False
       if self.inMaze:
-         self.checkMoveM(maze)
+         self.checkMoveM(maze,screen)
       if not self.inMaze:
-         self.checkMove(place)
+         self.checkMove(place,screen)
       if keys[pygame.K_r] and self.inMaze:
          self.inMaze = False
          self.x      = 0

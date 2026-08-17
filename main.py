@@ -89,7 +89,7 @@ grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,[["fist",1]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images)
-tree       = tileValues(["tree.png"],True,True,58,58,screen.images,[["fist",4],["axe",1]],wood,[stump])
+tree       = tileValues(["tree.png"],True,True,25,30,screen.images,[["fist",4],["axe",1]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,portal = True)
 rock       = tileValues(["rock.png"],True,False,58,58,screen.images,[["pickaxe",1]],rocks,[grass2,portal])
 sand       = tileValues(["sand.png"],False,True,58,58,screen.images)
@@ -175,7 +175,7 @@ while running:
          enmy.iFrames     = False
          enmy.image_index = 2
       enmy.draw(screen)
-      enmy.checkMoveE(enemy_list)
+      enmy.checkMoveE(enemy_list,screen)
    if hit and enemyHit < 0:
       enemyHit = 50
       pygame.display.update()
@@ -184,11 +184,11 @@ while running:
    invet.open(screen,keys,gob,place,cave,craftRList)
    invet.make(place,screen,gob)
 
-   gob.checkMoveE(enemy_list)
+   gob.checkMoveE(enemy_list,screen)
    if gob.inMaze:
-      gob.checkMoveM(cave)
+      gob.checkMoveM(cave,screen)
    if not gob.inMaze:
-      gob.checkMove(place)
+      gob.checkMove(place,screen)
 
    
    gob.x += gob.velocityX

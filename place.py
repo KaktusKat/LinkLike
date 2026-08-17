@@ -49,7 +49,6 @@ class place:
                   if len(self.map_dic[key].toolList) > 0:
                      for tool in self.map_dic[key].toolList:
                         if self.map_dic[key].isHit(weaponList[tool[0]]) and weaponList[tool[0]].attacking and not self.map_dic[key].iframes:
-                           print("yesgo")
                            self.map_dic[key].health += 1
                            self.map_dic[key].iframes = True
                            self.map_dic[key].toolHit = tool[0]
@@ -108,6 +107,8 @@ class place:
                   change.biome     = b.name
                   imageValues      = np.random.choice(self.images[change.biome],p = self.prob[change.biome])
                   change.image     = imageValues.image.copy()
+                  change.w         = imageValues.w
+                  change.h         = imageValues.h
                   change.soild     = imageValues.soild
                   change.breakable = imageValues.breakable
                   change.toolList  = imageValues.toolList.copy()

@@ -88,7 +88,7 @@ class sprite:
        return None
 
 
-   def isHitSide(self,other):
+   def isHitSide(self,other,screen,rect = False):
 
       moveList = [ [ [0, 0],
                      [self.velocityY, other.velocityY]
@@ -99,6 +99,14 @@ class sprite:
                      "x"]
                    ]
 
+      offsetX = (screen.images[other.image[0]].get_width()-other.w)/2
+      offsetY = (screen.images[other.image[0]].get_height()-other.h)/2
+
+      rectX,rectY   = screen.convertWTS(other.x +offsetX,other.y+offsetY)
+      
+      if rect:
+         pygame.draw.rect(screen.screen,(250,0,0),pygame.Rect(rectX,rectY,other.w,other.h),2)
+ 
       for move in moveList:
 
          playerX = self.x + move[0][0]
@@ -106,8 +114,8 @@ class sprite:
          top_x   = playerX + self.w
          top_y   = playerY + self.h
 
-         otherX      = other.x + move[0][1]
-         otherY      = other.y + move[1][1]
+         otherX      = other.x + move[0][1]+offsetX
+         otherY      = other.y + move[1][1]+offsetY
          other_top_x = otherX + other.w
          other_top_y = otherY + other.h
 
@@ -168,10 +176,7 @@ class sprite:
       return (Ox < top_x) and (other_top_x > self.x) and \
              (Oy < top_y) and (other_top_y > self.y)
 
-   def checkMove(self,place):
-#      self.velocityX *= 0.95
- #     self.velocityY *= 0.95
-
+   def checkMove(self,place,screen):
       for y in range(-2, 3):
          for x in range(-2, 3):
             X   = x + self.x//58
@@ -181,7 +186,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitSide(thing)
+                  side = self.isHitSide(thing,screen)
                   if side == "x":
                      self.velocityX = -self.velocityX
                      return
@@ -189,10 +194,7 @@ class sprite:
                      self.velocityY = -self.velocityY
                      return
    
-   def checkMoveTF(self,place):
-  #    self.velocityX *= 0.95
-   #   self.velocityY *= 0.95
-
+   def checkMoveTF(self,place,screen):
       for y in range(-2, 3):
          for x in range(-2, 3):
             X   = x + self.x//58
@@ -202,7 +204,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitSide(thing)
+                  side = self.isHitSide(thing,screen)
                   if side == "x":
                      self.velocityX = -self.velocityX
                      return True
@@ -211,7 +213,7 @@ class sprite:
                      return True
       return False
    
-   def checkMoveM(self,maze):
+   def checkMoveM(self,maze,screen):
     #  self.velocityX *= 0.95
      # self.velocityY *= 0.95
       for oy in range(-2, 3):
@@ -222,7 +224,7 @@ class sprite:
             Y = int(Y)
             thing = maze.get_cell(X, Y)
             if thing and thing.soild:
-               side = self.isHitSide(thing)
+               side = self.isHitSide(thing,screen)
                if side == "x":
                   self.velocityX = -self.velocityX
                   return
@@ -230,13 +232,13 @@ class sprite:
                   self.velocityY = -self.velocityY
                   return
 
-   def checkMoveE(self,enemyList):
+   def checkMoveE(self,enemyList,screen):
       for i in range(len(enemyList)):
 
          selfVelocityX = self.velocityX
          selfVelocityY = self.velocityY
 
-         side = self.isHitSide(enemyList[i])
+         side = self.isHitSide(enemyList[i],screen)
          if side == "x":
             self.velocityX         = enemyList[i].velocityX
             enemyList[i].velocityX = selfVelocityX

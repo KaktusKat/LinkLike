@@ -6,10 +6,12 @@ class tileValues:
       for img in image:
          self.image.append("images/"+img)
          image = pygame.image.load("images/"+img)
-         images["images/"+img] = pygame.transform.scale(image,(w,h))
+         images["images/"+img] = pygame.transform.scale(image,(58,58))
       self.soild     = soild
       self.breakable = breakable
       self.toolList  = toolList
       self.item      = item
       self.change    = change
+      self.w         = w
+      self.h         = h
       self.portal    = portal
