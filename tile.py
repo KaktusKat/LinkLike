@@ -106,5 +106,4 @@ class tile(sprite):
          else:
             self.image = [block[1]]
             self.iron  = True
-                                                                                                                
 

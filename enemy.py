@@ -22,19 +22,6 @@ class enemy(sprite):
  
    def update(self,player,move,enemy_list,keys,place,screen,weaponList):
       self.image_index = 0
-#      if player.tool[player.wep].name == "spear" and player.tool[player.wep].attacking:
- #        Xmove = 0
-  #       Ymove = 0
-   #      tool  = player.tool[player.wep]
-    #     if ((-tool.angle)*180/math.pi < 90 and (-tool.angle)*180/math.pi > 0) or ((-tool.angle)*180/math.pi > -90 and (-tool.angle)*180/math.pi < 0):
-     #       Xmove += tool.Rwepon.get_width()/2
-      #   if (-tool.angle)*180/math.pi < 0:
-       #     Ymove += tool.Rwepon.get_height()/2
-        # player.tool[player.wep].x = (tool.dX-tool.Rwepon.get_width()/2)+Xmove
-         #player.tool[player.wep].y = (tool.dY-tool.Rwepon.get_height()/2)+Ymove
-       #  player.tool[player.wep].w = 75
-        # player.tool[player.wep].h = 75
-      hit = False
       if self.ha <= 0:
          enemy_list.remove(self)
          return

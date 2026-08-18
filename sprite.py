@@ -125,13 +125,16 @@ class sprite:
             return move[2]
                
    
-   def isHitXY(self,playerX,playerY,playerW,playerH, other):
+   def isHitXY(self,playerX,playerY,playerW,playerH, other,offsetX = 0,offsetY = 0):
 
       if self == other:
          return False
 
-      top_x = playerX + playerW
-      top_y = playerY + playerH
+
+      playerX += offsetX
+      playerY += offsetY
+      top_x    = playerX + playerW
+      top_y    = playerY + playerH
 
       other_top_x = other.x + other.w
       other_top_y = other.y + other.h
@@ -186,7 +189,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitSide(thing,screen)
+                  side = self.isHitSide(thing,screen,True)
                   if side == "x":
                      self.velocityX = -self.velocityX
                      return
@@ -247,4 +250,44 @@ class sprite:
             self.velocityY         = enemyList[i].velocityY
             enemyList[i].velocityY = selfVelocityY
             return
+
+   def LOS(self,radius,target,place,maze = False):
+      distanceX     = self.x - target.x
+      distanceY     = self.y - target.y
+      totalDistance = distanceX + distanceY
+
+      if distanceX >= radius or distanceY >= radius:
+         return False
+
+      travelX = (20/totalDistance)*distanceX
+      travelX = (20/totalDistance)*distanceY
+      posX    = self.x
+      posY    = self.y
+
+      for i in range(math.ceil(totalDistance/20)):
+         posX += travelX
+         posY += travelY
+
+         if maze:
+            for oy in range(-2, 3):
+               for ox in range(-2, 3):
+                  X   = ox + posX//29
+                  Y   = oy + posY//29
+                  X = int(X)
+                  Y = int(Y)
+                  thing = maze.get_cell(X, Y)
+
+                  if thing.isHitXY(posX,posY,self.w,self.h) and thing.soild:
+                     return False
+         else:
+            for y in range(-2, 3):
+               for x in range(-2, 3):
+                  X   = x + posX//58
+                  Y   = y + posY//58
+                  key = place.genKeyC(X, Y)
+                  thing = place.map_dic[key]
+
+                  if thing.isHitXY(posX,posY,self.w,self.h) and thing.soild:
+                     return False
+      return True
 

@@ -65,6 +65,10 @@ class place:
                      self.map_dic[key].iframes = False
 
                   self.map_dic[key].draw(screen)
+#                  if self.map_dic[key].LOS:
+ #                    self.map_dic[key].LOS = False
+  #                   x,y                   = screen.convertWTS(self.map_dic[key].x,self.map_dic[key].y)
+   #                  pygame.draw.rect(screen.screen,(0,0,250),pygame.Rect(x,y,self.map_dic[key].h,self.map_dic[key].w),2)
 
                imaged = True
                if self.map_dic[key].justMade:

@@ -45,6 +45,20 @@ class player(sprite):
                if craft.craft:
                   self.table   = True
                   invetory.table = True
+
+      for x in range(3):
+         for y in range(3):
+            if x + y == 3:
+               print(x,y)
+               print("in1")
+               X   = x-4 + self.x//58
+               Y   = y-4 + self.y//58
+               key = place.genKeyC(X, Y)
+               tile = place.map_dic[key]
+#               tile.LOS = True
+              
+#               self.LOST(9,tile,place)
+              
       if len(ballList) > 0:
          delList = []
          for ball in ballList:
@@ -142,4 +156,51 @@ class player(sprite):
       if self.flip:
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
+
+   def LOST(self,radius,target,place,maze = False):
+      distanceX     = self.x - target.x
+      distanceY     = self.y - target.y
+      totalDistance = distanceX + distanceY
+
+      if distanceX >= radius or distanceY >= radius:
+         return False
+
+      travelX = (20/totalDistance)*distanceX
+      travelX = (20/totalDistance)*distanceY
+      posX    = self.x
+      posY    = self.y
+
+      for i in range(math.ceil(totalDistance/20)):
+         posX += travelX
+         posY += travelY
+
+         if maze:
+            for oy in range(-2, 3):
+               for ox in range(-2, 3):
+                  X   = ox + posX//29
+                  Y   = oy + posY//29
+                  X = int(X)
+                  Y = int(Y)
+                  thing = place.get_cell(X, Y)
+
+                  if thing.isHitXY(posX,posY,self.w,self.h):
+                     if thing.soild:
+                        return False
+                     else:
+                        thing.LOS = True
+         else:
+            for y in range(-2, 3):
+               for x in range(-2, 3):
+                  X   = x + posX//58
+                  Y   = y + posY//58
+                  key = place.genKeyC(X, Y)
+
+                  if thing.isHitXY(posX,posY,self.w,self.h):
+                     if thing.soild:
+                        return False
+                     else:
+                        thing.LOS = True
+      return True
+
+
           
