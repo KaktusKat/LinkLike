@@ -23,7 +23,7 @@ class enemy(sprite):
       self.chasing   = False
  
    def update(self,player,move,enemy_list,keys,place,screen,weaponList):
-      self.image_index = 0
+#      self.image_index = 0
       self.attackT += 1
       if self.ha <= 0:
          enemy_list.remove(self)
@@ -56,7 +56,14 @@ class enemy(sprite):
          self.chase(player,screen,place)
       else:
          self.idle(player,screen,place)
-      
+
+      if self.animate > 0:
+         self.move(0,2)
+         if self.image_index == 1:
+            self.y         -= 20
+         else:
+            self.y         += 20
+         self.animate = -10
 
       if self.LOS(8,player,place) and self.attackT > 1000 and random.randint(0,20) == 1:
          self.attackT = 0
@@ -84,6 +91,7 @@ class enemy(sprite):
       self.timer -= 1
 
    def idle(self,player,screen,place):
+      self.animate    = 0
       self.circle(3.5,screen,place,player)
       if self.LOS(8,player,place):
          self.chasing = True
@@ -99,6 +107,7 @@ class enemy(sprite):
          totalDistance   = abs(distanceX) + abs(distanceY)
          self.velocityX -= (0.1/totalDistance)*distanceX
          self.velocityY -= (0.1/totalDistance)*distanceY
+         self.animate   += 1
          return
       else:
          self.circle(3.5,screen,place,player)
@@ -110,6 +119,7 @@ class enemy(sprite):
                   distanceX       = self.x - tile.x
                   distanceY       = self.y - tile.y
                   totalDistance   = abs(distanceX) + abs(distanceY)
+                  self.animate   += 1
                   self.velocityX -= (0.2/totalDistance)*distanceX
                   self.velocityY -= (0.2/totalDistance)*distanceY
                   return
@@ -118,7 +128,7 @@ class enemy(sprite):
 
    def attack(self,player):
       if self.attackT < 70:
-         self.image_index = 1
+         self.image_index = 2
          if self.iframes:
             self.attackT     = 300
             self.attacking   = False
@@ -129,5 +139,5 @@ class enemy(sprite):
           distanceX       = self.x - player.x
           distanceY       = self.y - player.y
           totalDistance   = abs(distanceX) + abs(distanceY)
-          self.velocityX -= (10/totalDistance)*distanceX
-          self.velocityY -= (10/totalDistance)*distanceY
+          self.velocityX -= (6/totalDistance)*distanceX
+          self.velocityY -= (6/totalDistance)*distanceY

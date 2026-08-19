@@ -111,7 +111,7 @@ cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.ima
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,12)
+   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,12)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
