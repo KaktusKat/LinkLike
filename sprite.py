@@ -255,7 +255,7 @@ class sprite:
    def LOS(self,radius,target,place,screen = 0,maze = False):
       distanceX     = self.x - target.x
       distanceY     = self.y - target.y
-      totalDistance = distanceX + distanceY
+      totalDistance = abs(distanceX) + abs(distanceY)
 
       if abs(distanceX) >= radius*58 or abs(distanceY) >= radius*58:
          return False
@@ -280,7 +280,7 @@ class sprite:
                   Y = int(Y)
                   thing = maze.get_cell(X, Y)
 
-                  if thing.isHitXY(posX,posY,self.w,self.h,thing) and thing.soild:
+                  if thing.isHitXY(posX,posY,self.w,self.h,thing,screen) and thing.soild:
                      return False
          else:
             for y in range(-2, 3):
