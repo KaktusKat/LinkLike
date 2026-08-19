@@ -19,6 +19,7 @@ class enemy(sprite):
       self.timer     = 0
       self.iframes   = False
       self.iFrames   = False
+      self.chasing   = False
  
    def update(self,player,move,enemy_list,keys,place,screen,weaponList):
       self.image_index = 0
@@ -49,20 +50,10 @@ class enemy(sprite):
       if self.a < 0 and self.a > -10:
          pass
 
-      if self.x < player.x:
-         self.velocityX  += 0.1
-         self.lastmove[0] = 1 
+      if self.chasing:
+         self.chase(player,screen,place)
       else:
-         self.velocityX -= 0.1
-         self.lastmove[0] = -1
-
-      if self.y < player.y:
-         self.velocityY += 0.1
-         self.lastmove[1] = 1
-      else:
-         self.velocityY -= 0.1
-         self.lastmove[1] = -1
-
+         self.idle(player,screen,place)
       
 
       if (abs(self.x - player.x) <= 100 or abs(self.y - player.y) <= 100) and self.Acooldown < 0:
@@ -99,3 +90,37 @@ class enemy(sprite):
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1
+
+   def idle(self,player,screen,place):
+      self.circle(3.5,screen,place,player)
+      if self.LOS(8,player,place):
+         self.chasing = True
+      for tile in self.circleTiles:
+         if tile in player.circleTiles:
+            if player.LOS(8,tile,place):
+               self.chasing = True
+
+   def chase(self,player,screen,place):
+      if self.LOS(8,player,place):
+         distanceX       = self.x - player.x
+         distanceY       = self.y - player.y
+         totalDistance   = abs(distanceX) + abs(distanceY)
+         self.velocityX -= (0.1/totalDistance)*distanceX
+         self.velocityY -= (0.1/totalDistance)*distanceY
+         return
+      else:
+         self.circle(3.5,screen,place,player)
+         for tile in self.circleTiles:
+            if tile in player.circleTiles:
+               if player.LOS(8,tile,place) and self.LOS(8,tile,place):
+#                  x,y = screen.convertWTS(tile.x,tile.y)
+ #                 pygame.draw.rect(screen.screen,(250,250,250),pygame.Rect(x,y,58,58),2)
+                  distanceX       = self.x - tile.x
+                  distanceY       = self.y - tile.y
+                  totalDistance   = distanceX + distanceY
+                  self.velocityX -= (0.1/totalDistance)*distanceX
+                  self.velocityY -= (0.1/totalDistance)*distanceY
+                  return
+      self.chasing = False
+      return
+

@@ -46,18 +46,18 @@ class player(sprite):
                   self.table   = True
                   invetory.table = True
 
-      for x in range(3):
-         for y in range(3):
-            if x + y == 3:
-               print(x,y)
-               print("in1")
-               X   = x-4 + self.x//58
-               Y   = y-4 + self.y//58
-               key = place.genKeyC(X, Y)
-               tile = place.map_dic[key]
-#               tile.LOS = True
+      self.circleTiles = []
+      for x in range(8):
+         for y in range(8):
+            X   = x-3 + self.x//58
+            Y   = y-3 + self.y//58
+            key = place.genKeyC(X, Y)
+            tile = place.map_dic[key]
+            ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
+            if ab <= 3.5**2:
+               self.circleTiles.append(tile)
+#               pygame.draw.rect(screen.screen,(0,0,200),pygame.Rect(tile.x+290-self.x,tile.y-self.y+290,58,58),2)
               
-#               self.LOST(9,tile,place)
               
       if len(ballList) > 0:
          delList = []

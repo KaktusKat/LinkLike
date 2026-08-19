@@ -1,4 +1,5 @@
 import pygame
+import math
 from Vector import Vector
 
 class sprite:
@@ -19,6 +20,7 @@ class sprite:
       self.soild       = soild
       self.velocityX   = 0
       self.velocityY   = 0
+      self.circleTiles = []
 
    def move(self,offsetb = 0,offseta = 0):
       self.image_index += 1
@@ -125,14 +127,14 @@ class sprite:
             return move[2]
                
    
-   def isHitXY(self,playerX,playerY,playerW,playerH, other,offsetX = 0,offsetY = 0):
-
-      if self == other:
-         return False
+   def isHitXY(self,playerX,playerY,playerW,playerH, other,screen = 0,offsetX = 0,offsetY = 0):
 
 
       playerX += offsetX
       playerY += offsetY
+      if not screen == 0:
+         x,y = screen.convertWTS(playerX,playerY)
+         pygame.draw.rect(screen.screen,(250,0,0),pygame.Rect(x,y,playerW,playerH),2)
       top_x    = playerX + playerW
       top_y    = playerY + playerH
 
@@ -143,7 +145,6 @@ class sprite:
              (other.y < top_y) and (other_top_y > playerY)
    
    def isHitXYXY(self,playerX,playerY,playerW,playerH, otherX,otherY,otherW,otherH):
-
 
       top_x = playerX + playerW
       top_y = playerY + playerH
@@ -189,7 +190,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic[key]
                if thing.soild:
-                  side = self.isHitSide(thing,screen,True)
+                  side = self.isHitSide(thing,screen)
                   if side == "x":
                      self.velocityX = -self.velocityX
                      return
@@ -251,22 +252,24 @@ class sprite:
             enemyList[i].velocityY = selfVelocityY
             return
 
-   def LOS(self,radius,target,place,maze = False):
+   def LOS(self,radius,target,place,screen = 0,maze = False):
       distanceX     = self.x - target.x
       distanceY     = self.y - target.y
       totalDistance = distanceX + distanceY
 
-      if distanceX >= radius or distanceY >= radius:
+      if abs(distanceX) >= radius*58 or abs(distanceY) >= radius*58:
          return False
+      if totalDistance == 0:
+         return True
 
       travelX = (20/totalDistance)*distanceX
-      travelX = (20/totalDistance)*distanceY
+      travelY = (20/totalDistance)*distanceY
       posX    = self.x
       posY    = self.y
 
       for i in range(math.ceil(totalDistance/20)):
-         posX += travelX
-         posY += travelY
+         posX -= travelX
+         posY -= travelY
 
          if maze:
             for oy in range(-2, 3):
@@ -277,7 +280,7 @@ class sprite:
                   Y = int(Y)
                   thing = maze.get_cell(X, Y)
 
-                  if thing.isHitXY(posX,posY,self.w,self.h) and thing.soild:
+                  if thing.isHitXY(posX,posY,self.w,self.h,thing) and thing.soild:
                      return False
          else:
             for y in range(-2, 3):
@@ -285,9 +288,27 @@ class sprite:
                   X   = x + posX//58
                   Y   = y + posY//58
                   key = place.genKeyC(X, Y)
+                  if not key in place.map_dic:
+                     return False
                   thing = place.map_dic[key]
 
-                  if thing.isHitXY(posX,posY,self.w,self.h) and thing.soild:
+                  if thing.isHitXY(posX,posY,self.w,self.h,thing,screen) and thing.soild:
                      return False
       return True
+
+   def circle(self,radius,screen,place,player):
+      self.circleTiles = []
+      for x in range(int(2*radius+1)):
+         for y in range(int(2*radius+1)):
+            X   = x-int(radius) + self.x//58
+            Y   = y-int(radius) + self.y//58
+            key = place.genKeyC(X, Y)
+            if not key in place.map_dic:
+               return
+            tile = place.map_dic[key]
+            ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
+            if ab <= radius**2:
+               self.circleTiles.append(tile)
+#               pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(tile.x+290-player.x,tile.y-player.y+290,40,40),2)
+
 

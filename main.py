@@ -99,7 +99,7 @@ catus      = tileValues(["catus.png"],True,True,58,58,screen.images)
 sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,portal = True)
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,[["pickaxe",1]],rocks,[sandPortal,sand2])
 
-forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,1],[rock,0.25]])
+forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,0.25],[rock,0.25]])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
 biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty,screen.images)
@@ -130,7 +130,7 @@ if load == "yes":
 spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,"spear"]]
 swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,"sword"]]
 pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,"pickaxe"]]
-axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,"war_hammar"]]
+axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,"axe"]]
 hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
 craftRList = [spearR,refineR,hammerR,axeR,swordR,pickaxeR]
