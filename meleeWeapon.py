@@ -22,8 +22,9 @@ class meleeWeapon(weapon):
   
          if self.attackTimer == 2:
 
-            user.velocityX  -= (self.kback*math.cos(self.frameList[self.frameIndex].angle))/2.5
-            user.velocityY  -= (self.kback*math.sin(self.frameList[self.frameIndex].angle))/2.5
+            frame            = self.frameList[self.frameIndex]
+            user.velocityX  -= (self.kback*math.cos(frame.angle+frame.slashMove*4))/2.5
+            user.velocityY  -= (self.kback*math.sin(frame.angle+frame.slashMove*4))/2.5
  
          self.frameList[self.frameIndex].draw(screen,user)
          self.x = self.frameList[self.frameIndex].x

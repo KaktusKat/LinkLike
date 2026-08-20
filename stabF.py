@@ -5,8 +5,9 @@ from frame import frame
 class stabF(frame):
    def __init__(self,image,w,h,images,d,stabMove,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
       super().__init__(image,w,h,images,d,numMove,ratio,dx,dy,x,y)
-      self.stabMove = stabMove
-      self.dSave    = d
+      self.stabMove  = stabMove
+      self.slashMove = 0
+      self.dSave     = d
 
    def use(self,screen,user):
       self.num += 1
