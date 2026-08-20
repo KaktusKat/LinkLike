@@ -92,6 +92,8 @@ stump      = tileValues(["stump.png"],False,True,58,58,screen.images)
 tree       = tileValues(["tree.png"],True,True,25,30,screen.images,[["fist",4],["axe",1]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,portal = True)
 rock       = tileValues(["rock.png"],True,False,20,20,screen.images,[["pickaxe",1]],rocks,[grass2,portal])
+GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images)
+GCD2       = tileValues(["grassCD2.png"],False,True,58,58,screen.images)
 sand       = tileValues(["sand.png"],False,True,58,58,screen.images)
 sand2      = tileValues(["sand2.png"],False,True,58,58,screen.images)
 sand3      = tileValues(["sand3.png"],False,True,58,58,screen.images)
@@ -99,9 +101,10 @@ catus      = tileValues(["catus.png"],True,True,58,58,screen.images)
 sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,portal = True)
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,[["pickaxe",1]],rocks,[sandPortal,sand2])
 
-forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,0.25],[rock,0.25]])
-sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]])
+forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,0.25],[rock,0.25]],[GCD,GCD2])
+sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]],[GCD,GCD2])
 biomeList = [forest,sand]
+biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,empty,screen.images)
 place     = place(biomeList,wood,rocks,flints)
 wepon    += ["fist"]
@@ -154,7 +157,7 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,iron)
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,weaponList)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList)
 
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList)
    gob.draw(screen)

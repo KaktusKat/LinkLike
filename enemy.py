@@ -60,9 +60,9 @@ class enemy(sprite):
       if self.animate > 0:
          self.move(0,2)
          if self.image_index == 1 and self.attackT > 100:
-            self.y         -= 20
+            self.y         -= 0
          elif self.attackT > 100:
-            self.y         += 20
+            self.y         += 0
          self.animate = -10
 
       if self.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
@@ -70,6 +70,8 @@ class enemy(sprite):
          self.attack(player)
       if self.attackT < 100:
          self.attack(player)
+      else:
+         self.attacking = False
 
       if (self.isHit(weaponList[player.tool[player.wep]]) and weaponList[player.tool[player.wep]].attacking) and not self.iframes:
          x    = self.x

@@ -27,6 +27,7 @@ class tile(sprite):
        self.health       = 0
        self.iframes      = False
        self.toolHit      = 0
+       self.connector    = False
        a = -1
        for biome in self.biomes:
           a += 1

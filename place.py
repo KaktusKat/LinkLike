@@ -14,9 +14,11 @@ class place:
        self.flint        = flint
        self.images       = {}
        self.prob         = {}
+       self.connectors   = {}
        for biome in biomes:
-          self.images[biome.name] = biome.images
-          self.prob[biome.name]   = biome.prob
+          self.connectors[biome.name] = biome.connectors
+          self.images[biome.name]     = biome.images
+          self.prob[biome.name]       = biome.prob
 
    def genKeyC(self, cell_x, cell_y):
        return cell_x + cell_y * 100000
@@ -24,7 +26,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,weaponList):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -64,12 +66,26 @@ class place:
                   if self.map_dic[key].iframes and not weaponList[self.map_dic[key].toolHit].attacking:
                      self.map_dic[key].iframes = False
 
+                  possibaleC = []
+                  if not self.map_dic[key].connector:
+                     self.map_dic[key].near(self.map_dic,self)
+                     if not self.map_dic[key].biomeNear[self.map_dic[key].biome] == 4-self.map_dic[key].emptyNear:
+                        for biome in self.map_dic[key].biomeNear:
+                           if not biome == self.map_dic[key].biome:
+                             for connector in biomeDict[self.map_dic[key].biome].connectors:
+                                if connector in biomeDict[biome].connectors:
+                                   possibaleC.append(connector)
+
+                  if len(possibaleC) > 0:
+                     ImageValues             = np.random.choice(possibaleC)
+                     self.map_dic[key].soild = ImageValues.soild
+                     self.map_dic[key].h     = ImageValues.h
+                     self.map_dic[key].w     = ImageValues.w
+                     self.map_dic[key].image = ImageValues.image.copy()
+
+                  self.map_dic[key].connector = True
                   self.map_dic[key].draw(screen)
-                  if self.map_dic[key].LOS:
-                     self.map_dic[key].LOS = False
-    #                 x                     = self.map_dic[key].x-player.x+290 
-   #                  y                     = self.map_dic[key].y-player.y+290 
-   #                  pygame.draw.rect(screen.screen,(0,0,250),pygame.Rect(x,y,self.map_dic[key].h,self.map_dic[key].w),2)
+                     
 
                imaged = True
                if self.map_dic[key].justMade:
@@ -77,8 +93,8 @@ class place:
             else:
                imaged = False
             if not imaged:
-               for keyX in range(-7,7):
-                  for keyY in range(-7,7):
+               for keyX in range(-9,9):
+                  for keyY in range(-9,9):
                      map_x = keyX + player.x // 58
                      map_y = keyY + player.y // 58
                      key2  = self.genKeyC(map_x, map_y)
@@ -86,8 +102,8 @@ class place:
                      ypos = player.y + keyY * 58 - (player.y % 58)
                      if not key2 in self.map_dic:
                         self.map_dic[key2] = tile(["grass.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
-               for keyX in range(-6,6):
-                  for keyY in range(-6,6):
+               for keyX in range(-8,8):
+                  for keyY in range(-8,8):
                      map_x = keyX + player.x // 58
                      map_y = keyY + player.y // 58
                      key2  = self.genKeyC(map_x, map_y)
@@ -96,9 +112,8 @@ class place:
                highest = 0
                highestTest = 0
                change = 0
-               gotIn  = False
-               for keyX2 in range(-6,6):
-                  for keyY2 in range(-6,6):
+               for keyX2 in range(-8,8):
+                  for keyY2 in range(-8,8):
                      map_x = keyX2 + player.x // 58
                      map_y = keyY2 + player.y // 58
                      key3  = self.genKeyC(map_x, map_y)
@@ -107,6 +122,7 @@ class place:
                         highestTest = self.map_dic[key3].maxProb
                         change      = self.map_dic[key3]
                         gotIn       = True
+
                if not change == 0:
                   b = np.random.choice(change.biomes,p = list(dict.values(highest)))
                   change.biome     = b.name
@@ -121,7 +137,6 @@ class place:
                   change.change    = imageValues.change.copy()
                   change.justMade  = False
                   change.health    = 0
-                  change.draw(screen)
                   if random.randint(0,200) == 1 and not change.soild:
                      e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,12)
                      enemy_list.append(e)
