@@ -59,19 +59,17 @@ class enemy(sprite):
 
       if self.animate > 0:
          self.move(0,2)
-         if self.image_index == 1:
+         if self.image_index == 1 and self.attackT > 100:
             self.y         -= 20
-         else:
+         elif self.attackT > 100:
             self.y         += 20
          self.animate = -10
 
-      if self.LOS(8,player,place) and self.attackT > 1000 and random.randint(0,20) == 1:
+      if self.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
          self.attackT = 0
          self.attack(player)
       if self.attackT < 100:
          self.attack(player)
-      if self.attackT > 300:
-         self.attacking = False
 
       if (self.isHit(weaponList[player.tool[player.wep]]) and weaponList[player.tool[player.wep]].attacking) and not self.iframes:
          x    = self.x
@@ -80,7 +78,7 @@ class enemy(sprite):
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
          self.a          += 1
-         self.image_index = 2
+         self.image_index = 3
          self.iFrames     = True
          self.iframes     = True
          self.ha         -= weaponList[player.tool[player.wep]].damage
@@ -129,15 +127,17 @@ class enemy(sprite):
    def attack(self,player):
       if self.attackT < 70:
          self.image_index = 2
+         if self.attackT == 30:
+            self.distanceX       = self.x - player.x
+            self.distanceY       = self.y - player.y
+            self.totalDistance   = abs(self.distanceX) + abs(self.distanceY)
          if self.iframes:
             self.attackT     = 300
             self.attacking   = False
             self.image_index = 0
-      elif self.attackT < 100:
+      elif self.attackT < 80:
           self.attacking = True
           self.image_index = 0
-          distanceX       = self.x - player.x
-          distanceY       = self.y - player.y
-          totalDistance   = abs(distanceX) + abs(distanceY)
-          self.velocityX -= (6/totalDistance)*distanceX
-          self.velocityY -= (6/totalDistance)*distanceY
+          if self.attackT == 71:
+             self.velocityX -= (12/self.totalDistance)*self.distanceX
+             self.velocityY -= (12/self.totalDistance)*self.distanceY

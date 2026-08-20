@@ -105,7 +105,7 @@ biomeList = [forest,sand]
 invet     = invetory(0,"wood.png",itemList,empty,screen.images)
 place     = place(biomeList,wood,rocks,flints)
 wepon    += ["fist"]
-gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png"],0,0,50,44,screen.images,wepon,10,spear)
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,50,44,screen.images,wepon,10,spear)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
@@ -173,7 +173,7 @@ while running:
       if enmy.iFrames:
          hit = True
          enmy.iFrames     = False
-         enmy.image_index = 2
+         enmy.image_index = 3
       enmy.draw(screen)
       enmy.checkMoveE(enemy_list,screen)
    if hit and enemyHit < 0:
@@ -184,7 +184,8 @@ while running:
    invet.open(screen,keys,gob,place,cave,craftRList)
    invet.make(place,screen,gob)
 
-   gob.checkMoveE(enemy_list,screen)
+   if gob.roll < 0:
+      gob.checkMoveE(enemy_list,screen)
    if gob.inMaze:
       gob.checkMoveM(cave,screen)
    if not gob.inMaze:

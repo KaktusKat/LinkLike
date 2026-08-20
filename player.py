@@ -20,8 +20,12 @@ class player(sprite):
       self.hit        = False
       self.animate    = 0
       self.animated   = False
+      self.lastMove   = [0,0]
+      self.roll       = 0
+      self.rotated    = 0
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList):
+      self.roll -= 1
       if self.iFrames >= 1:
          self.iFrames -= 1
       if self.hit == True:
@@ -56,7 +60,6 @@ class player(sprite):
             ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
             if ab <= 3.5**2:
                self.circleTiles.append(tile)
-#               pygame.draw.rect(screen.screen,(0,0,200),pygame.Rect(tile.x+290-self.x,tile.y-self.y+290,58,58),2)
               
               
       if len(ballList) > 0:
@@ -68,34 +71,43 @@ class player(sprite):
          for ball in delList:
              ballList.remove(ball)
       if keys[pygame.K_SPACE] and self.t > 0:
-         Rx       = Mpos[0] - self.x
-         Ry       = Mpos[1] - self.y
-         length   = math.sqrt(Rx*Rx + Ry*Ry)
-         Dx       = Rx / length
-         Dy       = Ry / length
-         self.x  -= Dx * 150
-         self.y  -= Dy * 150
-         self.t   = -60
+         totalDistance  = abs(self.lastMove[0])+abs(self.lastMove[1])
+         if totalDistance == 2:
+            self.lastMove[0] = math.sqrt(self.lastMove[0]**2+self.lastMove[1]**2)/2*(self.lastMove[0]/abs(self.lastMove[0]))
+            self.lastMove[1] = math.sqrt(self.lastMove[0]**2+self.lastMove[1]**2)/2*(self.lastMove[1]/abs(self.lastMove[1]))
+         self.velocityX += self.lastMove[0]*12
+         self.velocityY += self.lastMove[1]*12
+         self.iFrames     = 40
+         self.roll        = 40
+         self.image_index = 5
+         self.t           = -60
          return
+      if self.roll > 0:
+         return
+      self.lastMove = [0,0]
       if keys[pygame.K_w]:
          self.velocityY -= 0.2
+         self.lastMove[1] = -1
          if not self.animated:
             self.animate += 1
             self.animated = True
       if keys[pygame.K_s]:
          self.velocityY += 0.2
+         self.lastMove[1] = 1
          if not self.animated:
             self.animate += 1
             self.animated = True
       if keys[pygame.K_d]:
          self.flipS  = False
          self.velocityX += 0.2
+         self.lastMove[0] = 1
          if not self.animated:
             self.animate += 1
             self.animated = True
       if keys[pygame.K_a]:
          self.flipS = True
          self.velocityX -= 0.2
+         self.lastMove[0] = -1
          if not self.animated:
             self.animate += 1
             self.animated = True
@@ -109,7 +121,7 @@ class player(sprite):
          self.x      = 0
          self.y      = 0
       if self.animate > 0:
-         self.move(1,2)
+         self.move(1,3)
          self.animate = -10
 #      if Mpos[0] < self.x and not self.b:
  #        self.image[0] = pygame.transform.flip(self.image[0],True,False)
@@ -151,6 +163,10 @@ class player(sprite):
       if self.image_index >= len(self.image):
          return
       img = screen.images[self.image[self.image_index]]
+      if self.roll > 0:
+         self.rotated += 10
+         img = screen.images[self.image[5]]
+         img = pygame.transform.rotate(img,self.rotated)
       if self.flipS:
          img = pygame.transform.flip(img,True,False)
       if self.flip:
