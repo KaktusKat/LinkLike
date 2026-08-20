@@ -35,8 +35,8 @@ class place:
       ROCK   = 2
       EMPTY  = 3
 
-      for x in range(-6, 6):
-         for y in range(-6, 6):
+      for x in range(-7, 7):
+         for y in range(-7, 7):
             
 
             map_x = x + player.x // 58
