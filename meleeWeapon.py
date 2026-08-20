@@ -1,4 +1,5 @@
 from weapon import weapon
+import math
 import pygame
 
 class meleeWeapon(weapon):
@@ -18,6 +19,12 @@ class meleeWeapon(weapon):
       Mpress = pygame.mouse.get_pressed()
 
       if self.attackTimer < 30:
+  
+         if self.attackTimer == 2:
+
+            user.velocityX  -= (self.kback*math.cos(self.frameList[self.frameIndex].angle))/2.5
+            user.velocityY  -= (self.kback*math.sin(self.frameList[self.frameIndex].angle))/2.5
+ 
          self.frameList[self.frameIndex].draw(screen,user)
          self.x = self.frameList[self.frameIndex].x
          self.y = self.frameList[self.frameIndex].y

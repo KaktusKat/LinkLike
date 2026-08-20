@@ -25,6 +25,8 @@ class player(sprite):
       self.rotated    = 0
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList):
+      if invetory.table:
+         return
       self.roll -= 1
       if self.iFrames >= 1:
          self.iFrames -= 1
