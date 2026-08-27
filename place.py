@@ -77,11 +77,14 @@ class place:
                                    possibaleC.append(connector)
 
                   if len(possibaleC) > 0:
-                     ImageValues             = np.random.choice(possibaleC)
-                     self.map_dic[key].soild = ImageValues.soild
-                     self.map_dic[key].h     = ImageValues.h
-                     self.map_dic[key].w     = ImageValues.w
-                     self.map_dic[key].image = ImageValues.image.copy()
+                     ImageValues                 = np.random.choice(possibaleC)
+                     self.map_dic[key].soild     = ImageValues.soild
+                     self.map_dic[key].h         = ImageValues.h
+                     self.map_dic[key].w         = ImageValues.w
+                     self.map_dic[key].image     = ImageValues.image.copy()
+                     self.map_dic[key].toolList  = ImageValues.toolList.copy()
+                     self.map_dic[key].item      = ImageValues.item
+                     self.map_dic[key].change    = ImageValues.change.copy()
 
                   self.map_dic[key].connector = True
                   self.map_dic[key].draw(screen)
