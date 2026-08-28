@@ -8,6 +8,7 @@ class meleeWeapon(weapon):
       self.frameList   = frameList
       self.frameIndex  = 0
       self.comboTimer  = 0
+      self.hit         = False
       self.comboSpeed  = comboSpeed
 
    def attack(self,screen,user):
@@ -20,8 +21,9 @@ class meleeWeapon(weapon):
 
       if self.attackTimer < 30:
   
-         if self.attackTimer == 2:
+         if self.hit:
 
+            self.hit = False
             frame            = self.frameList[self.frameIndex]
             user.velocityX  -= (self.kback*math.cos(frame.angle+frame.slashMove*4))/2.5
             user.velocityY  -= (self.kback*math.sin(frame.angle+frame.slashMove*4))/2.5

@@ -52,6 +52,7 @@ class place:
                      for tool in self.map_dic[key].toolList:
                         if self.map_dic[key].isHit(weaponList[tool[0]]) and weaponList[tool[0]].attacking and not self.map_dic[key].iframes:
                            self.map_dic[key].health += 1
+                           weaponList[tool[0]].hit   = True
                            self.map_dic[key].iframes = True
                            self.map_dic[key].toolHit = tool[0]
                            if self.map_dic[key].health >= tool[1]: 

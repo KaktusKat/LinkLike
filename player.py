@@ -166,7 +166,7 @@ class player(sprite):
          return
       img = screen.images[self.image[self.image_index]]
       if self.roll > 0:
-         self.rotated += 10
+         self.rotated -= 10
          img = screen.images[self.image[5]]
          img = pygame.transform.rotate(img,self.rotated)
       if self.flipS:

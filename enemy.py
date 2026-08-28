@@ -77,6 +77,7 @@ class enemy(sprite):
          x    = self.x
          y    = self.y
          tool = weaponList[player.tool[player.wep]]
+         tool.hit         = True
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
          self.a          += 1
