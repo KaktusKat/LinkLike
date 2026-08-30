@@ -5,9 +5,10 @@ import random
 import time
 
 class enemy(sprite):
-   def __init__(self,image,x,y,w,h,images,ha,big = False):
+   def __init__(self,image,x,y,w,h,images,sound,hitS,ha,big = False):
       super().__init__(image,x,y,w,h,images)
       self.a         = -10
+      self.hitS      = sound.loadS(hitS)
       self.ha        = ha
       self.big       = big
       self.lastmove  = [0,0]
@@ -22,7 +23,7 @@ class enemy(sprite):
       self.iFrames   = False
       self.chasing   = False
  
-   def update(self,player,move,enemy_list,keys,place,screen,weaponList):
+   def update(self,player,move,enemy_list,keys,place,screen,weaponList,sound):
 #      self.image_index = 0
       self.attackT += 1
       if self.ha <= 0:
@@ -78,12 +79,13 @@ class enemy(sprite):
          y    = self.y
          tool = weaponList[player.tool[player.wep]]
          tool.hit         = True
+         sound.playS(self.hitS)
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
          self.a          += 1
          self.image_index = 3
          self.iFrames     = True
-         self.iframes     = True
+         self.iframes     = tool.damage
          self.ha         -= weaponList[player.tool[player.wep]].damage
       
       self.checkMove(place,screen)
@@ -134,7 +136,7 @@ class enemy(sprite):
             self.distanceX       = self.x - player.x
             self.distanceY       = self.y - player.y
             self.totalDistance   = abs(self.distanceX) + abs(self.distanceY)
-         if self.iframes:
+         if self.iframes > 1.5:
             self.attackT     = 300
             self.attacking   = False
             self.image_index = 0

@@ -5,9 +5,10 @@ import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear):
+   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps):
       super().__init__(img,posX,posY,w,h,images)
       self.tool       = tool
+      self.footsteps  = sound.loadS(footsteps)
       self.b          = False
       self.t          = -10
       self.wep        = 0
@@ -24,7 +25,7 @@ class player(sprite):
       self.roll       = 0
       self.rotated    = 0
 
-   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,sound):
       if invetory.table:
          return
       self.roll -= 1
@@ -113,6 +114,8 @@ class player(sprite):
          if not self.animated:
             self.animate += 1
             self.animated = True
+      if keys[pygame.K_m]:
+         sound.loadM("bossM.wav")
       self.animated = False
       if self.inMaze:
          self.checkMoveM(maze,screen)
@@ -124,6 +127,7 @@ class player(sprite):
          self.y      = 0
       if self.animate > 0:
          self.move(1,3)
+         sound.playS(self.footsteps)
          self.animate = -10
 #      if Mpos[0] < self.x and not self.b:
  #        self.image[0] = pygame.transform.flip(self.image[0],True,False)
@@ -133,7 +137,7 @@ class player(sprite):
      #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
       #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
        #  self.b = False
-      weaponList[self.tool[self.wep]].attack(screen,self)
+      weaponList[self.tool[self.wep]].attack(screen,self,sound)
       if self.iFrames > 0:
          self.image_index = 4
  

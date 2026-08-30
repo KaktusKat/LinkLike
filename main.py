@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from sound          import sound
 from sprite         import sprite
 from player         import player
 from slashF         import slashF
@@ -28,7 +29,9 @@ sys.setrecursionlimit(30000)
 
 pygame.init()
 
-screen = screen(width, height)
+screen      = screen(width, height)
+sound       = sound()
+sound.loadM("backgroundMusic.wav")
 
 pygame.display.set_caption("linkLike")
 clock = pygame.time.Clock()
@@ -84,22 +87,22 @@ axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
 itemList    = [wood,rocks,iron,refinedIron,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
 
-grass      = tileValues(["grass.png"],False,True,58,58,screen.images)
-grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images)
-flower     = tileValues(["flower.png"],False,True,58,58,screen.images)
-flint      = tileValues(["flints.png"],False,True,58,58,screen.images,[["fist",1]],flints,[grass2])
-stump      = tileValues(["stump.png"],False,True,58,58,screen.images)
-tree       = tileValues(["tree.png"],True,True,25,30,screen.images,[["fist",4],["axe",1]],wood,[stump])
-portal     = tileValues(["portal.png"],False,True,58,58,screen.images,portal = True)
-rock       = tileValues(["rock.png"],True,False,20,20,screen.images,[["pickaxe",1]],rocks,[grass2,portal])
-GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images)
-GCD2       = tileValues(["grassCD2.png"],False,True,58,58,screen.images)
-sand       = tileValues(["sand.png"],False,True,58,58,screen.images)
-sand2      = tileValues(["sand2.png"],False,True,58,58,screen.images)
-sand3      = tileValues(["sand3.png"],False,True,58,58,screen.images)
-catus      = tileValues(["catus.png"],True,True,58,58,screen.images)
-sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,portal = True)
-sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,[["pickaxe",1]],rocks,[sandPortal,sand2])
+grass      = tileValues(["grass.png"],False,True,58,58,screen.images,sound)
+grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
+flower     = tileValues(["flower.png"],False,True,58,58,screen.images,sound)
+flint      = tileValues(["flints.png"],False,True,58,58,screen.images,sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
+stump      = tileValues(["stump.png"],False,True,58,58,screen.images,sound)
+tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",4],["axe",1,"treeA.wav"]],wood,[stump])
+portal     = tileValues(["portal.png"],False,True,58,58,screen.images,sound,portal = True)
+rock       = tileValues(["rock.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
+GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images,sound)
+GCD2       = tileValues(["grassCD2.png"],False,True,58,58,screen.images,sound)
+sand       = tileValues(["sand.png"],False,True,58,58,screen.images,sound)
+sand2      = tileValues(["sand2.png"],False,True,58,58,screen.images,sound)
+sand3      = tileValues(["sand3.png"],False,True,58,58,screen.images,sound)
+catus      = tileValues(["catus.png"],True,True,58,58,screen.images,sound)
+sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,portal = True)
+sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1],[flint,0.25],[tree,0.25],[rock,0.25]],[GCD,GCD2])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1],[sandRocks,0.25]],[GCD,GCD2])
@@ -107,14 +110,14 @@ biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,empty,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist"]
-gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,10,spear)
+wepon    += ["fist","axe"]
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,10,spear,sound,"footsteps.wav")
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,12)
+   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"fistHit.wav",12)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
@@ -157,12 +160,13 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,iron)
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound)
 
-   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList)
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,sound)
    gob.draw(screen)
    gob.weponChange(keys)
  #  test.update(gob,screen,place,ballList)
+
 
    if len(ballList) > 0:
       for ball in ballList:
@@ -170,7 +174,7 @@ while running:
 
    hit = False
    for enmy in enemy_list:
-      enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList)
+      enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList,sound)
       enmy.velocityX *= 0.95
       enmy.velocityY *= 0.95
       if enmy.iFrames:

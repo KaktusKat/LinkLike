@@ -1,12 +1,15 @@
 import pygame
 
 class tileValues:
-   def __init__(self,image,soild,breakable,w,h,images,toolList = [],item = [],change = [],portal = False):
+   def __init__(self,image,soild,breakable,w,h,images,sound,noise = [],toolList = [],item = [],change = [],portal = False):
       self.image = []
       for img in image:
          self.image.append("images/"+img)
          image = pygame.image.load("images/"+img)
          images["images/"+img] = pygame.transform.scale(image,(58,58))
+      self.noise = []
+      for n in noise:
+          self.noise = sound.loadS(n)
       self.soild     = soild
       self.breakable = breakable
       self.toolList  = toolList

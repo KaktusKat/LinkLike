@@ -26,7 +26,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,sound):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -52,6 +52,7 @@ class place:
                      for tool in self.map_dic[key].toolList:
                         if self.map_dic[key].isHit(weaponList[tool[0]]) and weaponList[tool[0]].attacking and not self.map_dic[key].iframes:
                            self.map_dic[key].health += 1
+                           sound.playS(self.map_dic[key].noise)
                            weaponList[tool[0]].hit   = True
                            self.map_dic[key].iframes = True
                            self.map_dic[key].toolHit = tool[0]
@@ -141,7 +142,8 @@ class place:
                   change.change    = imageValues.change.copy()
                   change.justMade  = False
                   change.health    = 0
+                  change.noise     = imageValues.noise
                   if random.randint(0,200) == 1 and not change.soild:
-                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,12)
+                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,sound,"fistHit.wav",12)
                      enemy_list.append(e)
 
