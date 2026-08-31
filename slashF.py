@@ -21,8 +21,8 @@ class slashF(frame):
          self.MposSave = Mpos
       else:
          Mpos = self.MposSave
-      self.angle  = math.atan2(Mpos[1]-u_y,Mpos[0]-u_x)
-      self.angle += self.slashMoved-self.slashMove*5
+      self.KBangle = math.atan2(Mpos[1]-u_y,Mpos[0]-u_x)
+      self.angle   = (self.slashMoved-self.slashMove*5)+self.KBangle
       angle  = ((180*self.angle)/math.pi)
       self.Rwepon = -angle
        

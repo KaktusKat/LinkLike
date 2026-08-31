@@ -11,6 +11,7 @@ class stabF(frame):
 
    def use(self,screen,user):
       self.num += 1
+      self.KBangle = self.angle
       if self.num <= self.numMove:
          self.distance += self.stabMove
       self.x         = self.dX-screen.images[self.image[0]].get_width()/2

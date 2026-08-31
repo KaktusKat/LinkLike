@@ -5,27 +5,31 @@ import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps):
+   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps,healthBar):
       super().__init__(img,posX,posY,w,h,images)
-      self.tool       = tool
-      self.footsteps  = sound.loadS(footsteps)
-      self.b          = False
-      self.t          = -10
-      self.wep        = 0
-      self.a          = 0
-      self.inMaze     = False
-      self.health     = heath
-      self.table      = True
-      self.iFrames    = 1
-      self.iFrameTime = 40
-      self.hit        = False
-      self.animate    = 0
-      self.animated   = False
-      self.lastMove   = [0,0]
-      self.roll       = 0
-      self.rotated    = 0
+      self.tool         = tool
+      self.footsteps    = sound.loadS(footsteps)
+      self.b            = False
+      self.healthBar    = healthBar
+      img               = pygame.image.load("images/"+self.healthBar)
+      images[healthBar] = pygame.transform.scale(img,(100,100))
+      self.t            = -10
+      self.wep          = 0
+      self.a            = 0
+      self.inMaze       = False
+      self.health       = heath
+      self.table        = True
+      self.iFrames      = 1
+      self.iFrameTime   = 40
+      self.hit          = False
+      self.animate      = 0
+      self.animated     = False
+      self.lastMove     = [0,0]
+      self.roll         = 0
+      self.rotated      = 0
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,sound):
+      self.healthDraw(screen)
       if invetory.table:
          return
       self.roll -= 1
@@ -83,7 +87,7 @@ class player(sprite):
          self.iFrames     = 40
          self.roll        = 40
          self.image_index = 5
-         self.t           = -60
+         self.t           = -100
          return
       if self.roll > 0:
          return
@@ -223,6 +227,13 @@ class player(sprite):
                      else:
                         thing.LOS = True
       return True
+
+   def healthDraw(self,screen):
+      x,y = screen.convertSTW(0,0)
+      screen.blit(screen.images[self.healthBar],x,y)
+      num          = pygame.font.SysFont("I don't think this dose anything",70)
+      num          = num.render(f"{self.health}",False,(0,0,0))
+      screen.blit(num,x+35,y+25)
 
 
           

@@ -80,8 +80,8 @@ class enemy(sprite):
          tool = weaponList[player.tool[player.wep]]
          tool.hit         = True
          sound.playS(self.hitS)
-         self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].angle)
-         self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].angle)
+         self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].KBangle)
+         self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].KBangle)
          self.a          += 1
          self.image_index = 3
          self.iFrames     = True

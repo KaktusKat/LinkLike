@@ -25,8 +25,8 @@ class meleeWeapon(weapon):
 
             self.hit = False
             frame            = self.frameList[self.frameIndex]
-            user.velocityX  -= (self.kback*math.cos(frame.angle+frame.slashMove*4))/2.5
-            user.velocityY  -= (self.kback*math.sin(frame.angle+frame.slashMove*4))/2.5
+            user.velocityX  -= (self.kback*math.cos(frame.KBangle))/2.5
+            user.velocityY  -= (self.kback*math.sin(frame.KBangle))/2.5
  
          self.frameList[self.frameIndex].draw(screen,user)
          self.x = self.frameList[self.frameIndex].x

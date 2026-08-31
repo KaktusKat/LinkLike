@@ -144,6 +144,6 @@ class place:
                   change.health    = 0
                   change.noise     = imageValues.noise
                   if random.randint(0,200) == 1 and not change.soild:
-                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,sound,"fistHit.wav",12)
+                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change.x,change.y,60,54,screen.images,sound,"enemyHit.wav",12)
                      enemy_list.append(e)
 
