@@ -55,6 +55,8 @@ class place:
                            sound.playS(self.map_dic[key].noise)
                            weaponList[tool[0]].hit   = True
                            self.map_dic[key].iframes = True
+                           if len(tool) == 4:
+                              tool[2].amount += tool[3]
                            self.map_dic[key].toolHit = tool[0]
                            if self.map_dic[key].health >= tool[1]: 
                               imageValues                    = random.choice(self.map_dic[key].change)

@@ -79,20 +79,21 @@ wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
 iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
 empty       = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
+stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
 spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",2)
 knifeI      = item(357,177,50,50,screen.images,"knifeI","throwingKnife.png",2)
 swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
+itemList    = [wood,rocks,iron,refinedIron,stick,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
 
 grass      = tileValues(["grass.png"],False,True,58,58,screen.images,sound)
 grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,sound)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images,sound)
-tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",4],["axe",1,"treeA.wav"]],wood,[stump])
+tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",4,stick,1],["axe",1,stick,2]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,sound,portal = True)
 rock       = tileValues(["rock.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
 GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images,sound)
@@ -111,7 +112,7 @@ biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,empty,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist","axe"]
+wepon    += ["fist"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png")
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
@@ -134,11 +135,11 @@ if load == "yes":
       for i in range(len(itemList)):
           itemList[i]          = load[i+3]
 
-spearR     = [[["empty","empty","empty"],["refinedIron","wood","wood"],["empty","empty","empty"]],[spearI,1],[gob.tool,"spear"]]
-swordR     = [[["empty","empty","empty"],["flint","flint","wood"],["empty","empty","empty"]],[swordI,1],[gob.tool,"sword"]]
-pickaxeR   = [[["flint","empty","empty"],["flint","wood","wood"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,"pickaxe"]]
-axeR       = [[["flint","flint","empty"],["flint","wood","wood"],["empty","empty","empty"]],[axeI,1],[gob.tool,"axe"]]
-hammerR    = [[["flint","flint","empty"],["flint","wood","wood"],["flint","flint","empty"]],[hammerI,1],[gob.tool,"hammer"]]
+spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[spearI,1],[gob.tool,"spear"]]
+swordR     = [[["empty","empty","empty"],["flint","flint","stick"],["empty","empty","empty"]],[swordI,1],[gob.tool,"sword"]]
+pickaxeR   = [[["flint","empty","empty"],["flint","stick","stick"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,"pickaxe"]]
+axeR       = [[["flint","flint","empty"],["flint","stick","stick"],["empty","empty","empty"]],[axeI,1],[gob.tool,"axe"]]
+hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[hammerI,1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
 craftRList = [spearR,refineR,hammerR,axeR,swordR,pickaxeR]
 
