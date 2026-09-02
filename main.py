@@ -6,6 +6,9 @@ import pygame
 import time
 import sys
 import copy
+from projectile     import projectile
+from fireF          import fireF
+from rangedWeapon   import rangedWeapon
 from sound          import sound
 from sprite         import sprite
 from player         import player
@@ -46,6 +49,7 @@ wep      = 1
 first    = True
 b        = 0
 enemyHit = 0
+projectileList = []
 load     = input("do you want to reload?")
 
 ballList = []
@@ -71,8 +75,6 @@ sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70)
 hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,screen.images,25,0.6,5)
 hammer     = meleeWeapon(75,1.5,40,[hammer1],1)
 
-weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear}
-
 rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
 flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
 wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
@@ -80,13 +82,20 @@ iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
 empty       = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
 stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
+arrowI      = item(177,177,50,50,screen.images,"arrow","arrowI.png",2)
+bowI        = item(357,177,50,50,screen.images,"bow","bowI.png",2)
 spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",2)
-knifeI      = item(357,177,50,50,screen.images,"knifeI","throwingKnife.png",2)
 swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,stick,flints,spearI,knifeI,swordI,pickaxeI,axeI,hammerI]
+itemList    = [wood,rocks,iron,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI]
+
+arrow      = projectile(["arrow.png"],-100,-100,32,32,screen.images,arrowI,1,"treeF.wav",sound,1000,True,45)
+bow1       = fireF(["bow.png","bow1.png","bowF.png"],140,140,screen.images,20,50,20)
+bow        = rangedWeapon(75,1.5,20,arrow,bow1)
+
+weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
 grass      = tileValues(["grass.png"],False,True,58,58,screen.images,sound)
 grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
@@ -137,11 +146,13 @@ if load == "yes":
 
 spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[spearI,1],[gob.tool,"spear"]]
 swordR     = [[["empty","empty","empty"],["flint","flint","stick"],["empty","empty","empty"]],[swordI,1],[gob.tool,"sword"]]
+arrowR     = [[["empty","empty","empty"],["flint","stick","stick"],["empty","empty","empty"]],[arrowI,4]]
 pickaxeR   = [[["flint","empty","empty"],["flint","stick","stick"],["flint","empty","empty"]],[pickaxeI,1],[gob.tool,"pickaxe"]]
 axeR       = [[["flint","flint","empty"],["flint","stick","stick"],["empty","empty","empty"]],[axeI,1],[gob.tool,"axe"]]
+bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["empty","empty","empty"]],[bowI,1],[gob.tool,"bow"]]
 hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[hammerI,1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[refinedIron,1]]
-craftRList = [spearR,refineR,hammerR,axeR,swordR,pickaxeR]
+craftRList = [spearR,refineR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR]
 
 
 running = True
@@ -164,11 +175,13 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound)
 
-   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,sound)
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,sound)
    gob.draw(screen)
    gob.weponChange(keys)
- #  test.update(gob,screen,place,ballList)
 
+   for projectile in projectileList:
+      projectile.draw(screen)
+      projectile.update(screen,sound,enemy_list,projectileList,place)
 
    if len(ballList) > 0:
       for ball in ballList:

@@ -11,7 +11,7 @@ class meleeWeapon(weapon):
       self.hit         = False
       self.comboSpeed  = comboSpeed
 
-   def attack(self,screen,user,sound):
+   def attack(self,screen,user,sound,useless):
 
       self.comboTimer  += 1
       self.AspeedTimer += 1

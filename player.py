@@ -28,7 +28,7 @@ class player(sprite):
       self.roll         = 0
       self.rotated      = 0
 
-   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,sound):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,sound):
       self.healthDraw(screen)
       if invetory.table:
          return
@@ -141,7 +141,7 @@ class player(sprite):
      #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
       #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
        #  self.b = False
-      weaponList[self.tool[self.wep]].attack(screen,self,sound)
+      weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList)
       if self.iFrames > 0:
          self.image_index = 4
  
