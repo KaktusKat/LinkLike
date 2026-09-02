@@ -1,4 +1,5 @@
 import pygame
+import math
 from sprite import sprite
 
 class projectile(sprite):
@@ -26,7 +27,8 @@ class projectile(sprite):
          if not self.bounce:
             self.range = 0
          else:
-            pass             #TODO
+            angle      = math.atan2(self.velocityY,self.velocityX)
+            self.angle = (180*angle)/math.pi
       if self.range <= 0:
          sound.playS(self.hitNoise)
          projectileList.remove(self)
