@@ -9,7 +9,7 @@ class rangedWeapon(weapon):
       self.projectile = projectile
       self.frame      = frame
 
-   def attack(self,screen,user,sound,projectileList):
+   def attack(self,screen,user,sound,projectileList,itemDict):
       
       self.rotateImg    = screen.images[self.projectile.image[0]]
 
@@ -18,9 +18,9 @@ class rangedWeapon(weapon):
       Mpress = pygame.mouse.get_pressed()
 
       if self.AspeedTimer == 2:
-         if self.attackTimer > self.Aspeed and self.projectile.item.amount >= 1:
+         if self.attackTimer > self.Aspeed and itemDict[self.projectile.item].amount >= 1:
          
-            self.projectile.item.amount -= 1
+            itemDict[self.projectile.item].amount -= 1
             newProjectile = copy.deepcopy(self.projectile)
             newProjectile.velocityX  += (self.kback*math.cos(self.frame.KBangle))
             newProjectile.velocityY  += (self.kback*math.sin(self.frame.KBangle))
@@ -39,6 +39,6 @@ class rangedWeapon(weapon):
         self.AspeedTimer  = 0
         self.attackTimer += 1
         self.frame.image_index  = 0
-        if self.attackTimer > self.Aspeed and self.projectile.item.amount >= 1:
+        if self.attackTimer > self.Aspeed and itemDict[self.projectile.item].amount >= 1:
            self.frame.image_index = len(self.frame.image)-1
 

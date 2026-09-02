@@ -41,3 +41,5 @@ class projectile(sprite):
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
 
+   def load(self,proDict):
+      self.item = proDict[self.item.name]

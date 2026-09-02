@@ -19,12 +19,13 @@ class enemy(sprite):
       self.sign      = False  
       self.attacking = False
       self.timer     = 0
+      self.animate   = 0
       self.iframes   = False
       self.iFrames   = False
       self.chasing   = False
  
    def update(self,player,move,enemy_list,keys,place,screen,weaponList,sound):
-#      self.image_index = 0
+      self.animate += 1
       self.attackT += 1
       if self.ha <= 0:
          enemy_list.remove(self)
@@ -64,7 +65,7 @@ class enemy(sprite):
             self.y         -= 0
          elif self.attackT > 100:
             self.y         += 0
-         self.animate = -10
+         self.animate = -20
 
       if self.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
          self.attackT = 0
