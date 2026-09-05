@@ -207,6 +207,7 @@ while running:
       enmy.checkMoveE(enemy_list,screen)
    if hit and enemyHit < 0:
       enemyHit = 50
+      sound.playS(enemy.hitS)
       pygame.display.update()
       time.sleep(0.15)
 

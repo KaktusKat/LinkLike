@@ -25,7 +25,6 @@ class enemy(sprite):
       self.chasing   = False
  
    def update(self,player,move,enemy_list,keys,place,screen,weaponList,sound):
-      self.animate += 1
       self.attackT += 1
       if self.ha <= 0:
          enemy_list.remove(self)
@@ -65,7 +64,7 @@ class enemy(sprite):
             self.y         -= 0
          elif self.attackT > 100:
             self.y         += 0
-         self.animate = -20
+         self.animate = -10
 
       if self.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
          self.attackT = 0
@@ -80,7 +79,6 @@ class enemy(sprite):
          y    = self.y
          tool = weaponList[player.tool[player.wep]]
          tool.hit         = True
-         sound.playS(self.hitS)
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].KBangle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].KBangle)
          self.a          += 1
@@ -95,7 +93,7 @@ class enemy(sprite):
       self.timer -= 1
 
    def idle(self,player,screen,place):
-      self.animate    = 0
+      self.animate   += 0.5
       self.circle(3.5,screen,place,player)
       if self.LOS(8,player,place):
          self.chasing = True
