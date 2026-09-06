@@ -119,7 +119,7 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
-fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]])
+fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],"treeF.wav",[["axe",1]])
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
@@ -135,7 +135,7 @@ cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.ima
 enemy_list = []
 for i in range(1):
    e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"enemyHit.wav",12)
-#   enemy_list.append(e)
+   enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
@@ -185,7 +185,7 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,itemDict[iron.name])
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,objectList,sound)
 
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound)
    gob.draw(screen)
