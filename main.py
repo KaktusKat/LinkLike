@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from placeObject    import placeObject
 from projectile     import projectile
 from fireF          import fireF
 from rangedWeapon   import rangedWeapon
@@ -49,6 +50,7 @@ wep      = 1
 first    = True
 b        = 0
 enemyHit = 0
+objectList = []
 projectileList = []
 load     = input("do you want to reload?")
 
@@ -117,13 +119,15 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
+fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]])
+
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
 biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist"]
+wepon    += ["fist","axe"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png")
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
@@ -131,7 +135,7 @@ cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.ima
 enemy_list = []
 for i in range(1):
    e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"enemyHit.wav",12)
-   enemy_list.append(e)
+#   enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
 
@@ -186,6 +190,9 @@ while running:
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound)
    gob.draw(screen)
    gob.weponChange(keys)
+
+   fence.place(itemDict,place,screen,objectList)
+   fence.draw(objectList,screen)
 
    for projectile in projectileList:
       projectile.draw(screen)
