@@ -5,9 +5,11 @@ import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps,healthBar):
+   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps,healthBar,placeList):
       super().__init__(img,posX,posY,w,h,images)
       self.tool         = tool
+      self.placeList    = placeList
+      self.placeIndex   = 0
       self.footsteps    = sound.loadS(footsteps)
       self.b            = False
       self.healthBar    = healthBar
@@ -28,8 +30,10 @@ class player(sprite):
       self.roll         = 0
       self.rotated      = 0
 
-   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound,placeDict):
       self.healthDraw(screen)
+      for key in range(len(self.placeList)):
+         self.placeList[key] = placeDict[self.placeList[key].name]
       if invetory.table:
          return
       self.roll -= 1
@@ -67,7 +71,6 @@ class player(sprite):
             ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
             if ab <= 3.5**2:
                self.circleTiles.append(tile)
-              
               
       if len(ballList) > 0:
          delList = []
@@ -120,6 +123,10 @@ class player(sprite):
             self.animated = True
       if keys[pygame.K_m]:
          sound.loadM("bossM.wav")
+      if keys[pygame.K_b]:
+         self.placeIndex += 1
+         if self.placeIndex >= len(self.placeList):
+            self.placeIndex = 0
       self.animated = False
       if self.inMaze:
          self.checkMoveM(maze,screen)
@@ -141,6 +148,7 @@ class player(sprite):
      #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
       #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
        #  self.b = False
+      placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen)
       weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList,itemDict)
       if self.iFrames > 0:
          self.image_index = 4

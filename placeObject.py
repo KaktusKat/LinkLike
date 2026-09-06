@@ -1,13 +1,15 @@
 import pygame
 
 class placeObject:
-   def __init__(self,item,img,images,w,h,aW,aH,imagesC,noise,toolList):
-      self.item     = item
-      self.w        = w
-      self.h        = h
-      self.toolList = toolList
-      self.noise    = noise
-      self.timer    = 0
+   def __init__(self,item,img,images,w,h,aW,aH,imagesC,name,noise,toolList):
+      self.item       = item
+      self.w          = w
+      self.h          = h
+      self.name       = name
+      self.objectList = []
+      self.toolList   = toolList
+      self.noise      = noise
+      self.timer      = 0
       self.image = "images/"+img
       image = pygame.image.load("images/"+img)
       images[self.image] = pygame.transform.scale(image,(aW,aH))
@@ -18,7 +20,7 @@ class placeObject:
          images[self.imagesC[i]] = pygame.transform.scale(image,(imagesC[i][1],imagesC[i][2]))
 
 
-   def place(self,itemDict,place,screen,objectList):
+   def place(self,itemDict,place,screen):
       self.timer += 1
       Mpress = pygame.mouse.get_pressed()
       Mpos   = pygame.mouse.get_pos()
@@ -39,11 +41,11 @@ class placeObject:
             tile.item     = self.item
             tile.w        = self.w
             tile.h        = self.h
-            self.load(objectList,tile)
-            objectList.append(tile)
+            self.load(tile)
+            self.objectList.append(tile)
 
-   def load(self,objectList,tile):
-       for tiles in objectList:
+   def load(self,tile):
+       for tiles in self.objectList:
            if tile.y - tiles.y == 0:
               tile.connectS[(tile.x-tiles.x)//58]         = True
               tiles.connectS[((tile.x-tiles.x)//58) * -1] = True
@@ -51,8 +53,8 @@ class placeObject:
               tile.connectU[(tile.y-tiles.y)//58]         = True
               tiles.connectU[((tile.y-tiles.y)//58) * -1] = True
 
-   def draw(self,objectList,screen):
-      for tile in objectList:
+   def draw(self,screen):
+      for tile in self.objectList:
          if tile.connectS[-1]:
             screen.blit(screen.images[self.imagesC[0]],tile.x+58/2,tile.y)
          if tile.connectS[1]:

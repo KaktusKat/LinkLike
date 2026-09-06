@@ -119,7 +119,8 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
-fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],"treeF.wav",[["axe",1]])
+fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],"fence","treeF.wav",[["axe",1]])
+placeList  = [fence]
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
@@ -128,7 +129,7 @@ biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
 wepon    += ["fist","axe"]
-gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png")
+gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
@@ -154,6 +155,10 @@ if load == "yes":
 itemDict    = {}
 for item in itemList:
    itemDict[item.name] = item
+
+placeDict  = {}
+for objectP in placeList:
+   placeDict[objectP.name] = objectP
    
 
 spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[itemDict[spearI.name],1],[gob.tool,"spear"]]
@@ -185,14 +190,15 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,itemDict[iron.name])
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,objectList,sound)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound)
 
-   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound)
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict)
    gob.draw(screen)
    gob.weponChange(keys)
 
-   fence.place(itemDict,place,screen,objectList)
-   fence.draw(objectList,screen)
+#   fence.place(itemDict,place,screen,objectList)
+   for objectP in placeList:
+       objectP.draw(screen)
 
    for projectile in projectileList:
       projectile.draw(screen)

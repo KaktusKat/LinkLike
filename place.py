@@ -31,7 +31,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,objectList,sound):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,sound):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -96,8 +96,8 @@ class place:
                               self.map_dic2[key].soild        = False
                               self.map_dic2[key].connectS     = {-1:False,1:False}
                               self.map_dic2[key].connectU     = {-1:False,1:False}
-                              if self.map_dic2[key] in objectList:
-                                 objectList.remove(self.map_dic2[key])
+                              if self.map_dic2[key] in player.placeList[player.placeIndex].objectList:
+                                 player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
                               self.map_dic2[key].image        = ["images/empty.png"]
                               self.map_dic2[key].toolList     = []
                               
