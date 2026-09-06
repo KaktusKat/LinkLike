@@ -93,7 +93,7 @@ class place:
                            self.map_dic2[key].toolHit = tool[0]
                            if self.map_dic2[key].health >= tool[1]:
                               self.map_dic2[key].item.amount += 1
-                              self.map_dic2[key].solid        = False
+                              self.map_dic2[key].soild        = False
                               self.map_dic2[key].image        = ["images/empty.png"]
                               self.map_dic2[key].toolList     = []
                               

@@ -103,7 +103,7 @@ grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,sound)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images,sound)
-tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",4,stick,1],["axe",1,stick,2]],wood,[stump])
+tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,sound,portal = True)
 rock       = tileValues(["rock.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
 GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images,sound)
@@ -117,7 +117,7 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
-forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.25],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
+forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
 biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
