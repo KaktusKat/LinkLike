@@ -288,9 +288,9 @@ class sprite:
                   X   = x + posX//58
                   Y   = y + posY//58
                   key = place.genKeyC(X, Y)
-                  if not key in place.map_dic:
+                  if not key in place.map_dic2:
                      return False
-                  thing = place.map_dic[key]
+                  thing = place.map_dic2[key]
 
                   if thing.isHitXY(posX,posY,self.w,self.h,thing,screen) and thing.soild:
                      return False
