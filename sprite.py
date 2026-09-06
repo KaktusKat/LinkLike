@@ -188,7 +188,7 @@ class sprite:
             key = place.genKeyC(X, Y)
 
             if key in place.map_dic:
-               thing = place.map_dic[key]
+               thing = place.map_dic2[key]
                if thing.soild:
                   side = self.isHitSide(thing,screen)
                   if side == "x":
@@ -206,7 +206,7 @@ class sprite:
             key = place.genKeyC(X, Y)
 
             if key in place.map_dic:
-               thing = place.map_dic[key]
+               thing = place.map_dic2[key]
                if thing.soild:
                   side = self.isHitSide(thing,screen)
                   if side == "x":
