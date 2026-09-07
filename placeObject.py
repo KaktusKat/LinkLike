@@ -44,6 +44,15 @@ class placeObject:
             self.load(tile)
             self.objectList.append(tile)
 
+   def unload(self,tile):
+       for tiles in self.objectList:
+           if tile.y - tiles.y == 0:
+              tile.connectS[(tile.x-tiles.x)//58]         = False
+              tiles.connectS[((tile.x-tiles.x)//58) * -1] = False
+           if tile.x - tiles.x == 0:
+              tile.connectU[(tile.y-tiles.y)//58]         = False
+              tiles.connectU[((tile.y-tiles.y)//58) * -1] = False
+
    def load(self,tile):
        for tiles in self.objectList:
            if tile.y - tiles.y == 0:

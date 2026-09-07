@@ -98,6 +98,7 @@ class place:
                               self.map_dic2[key].connectU     = {-1:False,1:False}
                               if self.map_dic2[key] in player.placeList[player.placeIndex].objectList:
                                  player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
+                                 player.placeList[player.placeIndex].unload(self.map_dic2[key])
                               self.map_dic2[key].image        = ["images/empty.png"]
                               self.map_dic2[key].toolList     = []
                               

@@ -150,6 +150,8 @@ if load == "yes":
       enemy_list = load[4]
       for i in range(len(itemList)):
           itemList[i]          = load[i+5]
+      for i in range(len(placeList)):
+          placeList[i].objectList = load[i+5+len(itemList)]
       
 
 itemDict    = {}
@@ -160,6 +162,10 @@ placeDict  = {}
 for objectP in placeList:
    placeDict[objectP.name] = objectP
    
+for objectP in placeList:
+   for tile in objectP.objectList:
+      objectP.load(tile)
+
 
 spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[itemDict[spearI.name],1],[gob.tool,"spear"]]
 swordR     = [[["empty","empty","empty"],["flint","flint","stick"],["empty","empty","empty"]],[itemDict[swordI.name],1],[gob.tool,"sword"]]
@@ -179,7 +185,9 @@ while running:
       with open("save.plk","wb") as file:
          saveList = [gob,invet,place,cave,enemy_list]
          for item in itemList:
-             saveList.append(item)
+            saveList.append(item)
+         for objectP in placeList:
+            saveList.append(objectP.objectList)
          pickle.dump(saveList,file)
    enemyHit -= 1
    b += 1 
