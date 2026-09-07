@@ -169,7 +169,7 @@ class place:
                   change2.justMade  = False
                   change2.health    = 0
                   change2.noise     = imageValues2.noise
-                  if random.randint(0,200) == 1 and not change2.soild:
+                  if random.randint(0,400) == 1 and not change2.soild:
                      e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,sound,"enemyHit.wav",12)
-#                     enemy_list.append(e)
+                     enemy_list.append(e)
 
