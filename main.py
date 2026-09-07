@@ -81,22 +81,25 @@ rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
 flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
 wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
 iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
+slime       = item(357,177,50,50,screen.images,"slime","slime.png",1)
 emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
 stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
 arrowI      = item(177,177,50,50,screen.images,"arrow","arrowI.png",2)
 bowI        = item(357,177,50,50,screen.images,"bow","bowI.png",2)
+arrowSI     = item(357,267,50,50,screen.images,"arrowS","arrowSlimeI.png",2)
 spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",2)
 swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI]
+itemList    = [wood,rocks,iron,slime,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
 
 
-arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,"arrow",1,"treeF.wav",sound,1000,True,45)
+arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,"arrow",1,"treeF.wav",sound,1000,False,45)
+arrowS     = projectile(["arrowSlime.png"],-100,-100,48,48,screen.images,"arrowS",1,"treeF.wav",sound,1000,True,45)
 bow1       = fireF(["bow.png","bow1.png","bowF.png"],140,140,screen.images,20,50,20)
-bow        = rangedWeapon(75,1.5,20,arrow,bow1)
+bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1)
 
 weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
@@ -128,14 +131,14 @@ biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist","axe"]
+wepon    += ["fist"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 #test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
 for i in range(1):
-   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"enemyHit.wav",12)
+   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"enemyHit.wav",12,slime)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
@@ -169,13 +172,14 @@ for objectP in placeList:
 
 spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[itemDict[spearI.name],1],[gob.tool,"spear"]]
 swordR     = [[["empty","empty","empty"],["flint","flint","stick"],["empty","empty","empty"]],[itemDict[swordI.name],1],[gob.tool,"sword"]]
-arrowR     = [[["empty","empty","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[arrowI.name],4]]
+arrowSR    = [[["empty","empty","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[arrowSI.name],4]]
+arrowR     = [[["empty","empty","empty"],["flint","slime","stick"],["empty","empty","empty"]],[itemDict[arrowI.name],4]]
 pickaxeR   = [[["flint","empty","empty"],["flint","stick","stick"],["flint","empty","empty"]],[itemDict[pickaxeI.name],1],[gob.tool,"pickaxe"]]
 axeR       = [[["flint","flint","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[axeI.name],1],[gob.tool,"axe"]]
-bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["empty","empty","empty"]],[itemDict[bowI.name],1],[gob.tool,"bow"]]
+bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["slime","slime","slime"]],[itemDict[bowI.name],1],[gob.tool,"bow"]]
 hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[itemDict[hammerI.name],1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[itemDict[refinedIron.name],1]]
-craftRList = [spearR,refineR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR]
+craftRList = [spearR,refineR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR]
 
 
 running = True
@@ -198,13 +202,12 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,itemDict[iron.name])
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound,slime)
 
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict)
    gob.draw(screen)
    gob.weponChange(keys)
 
-#   fence.place(itemDict,place,screen,objectList)
    for objectP in placeList:
        objectP.draw(screen)
 
@@ -218,7 +221,7 @@ while running:
 
    hit = False
    for enmy in enemy_list:
-      enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList,sound)
+      enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList,itemDict,sound)
       enmy.velocityX *= 0.95
       enmy.velocityY *= 0.95
       if enmy.iFrames:

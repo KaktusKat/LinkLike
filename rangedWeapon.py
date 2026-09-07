@@ -4,13 +4,17 @@ import math
 from weapon import weapon
 
 class rangedWeapon(weapon):
-   def __init__(self,Aspeed,damage,Kback,projectile,frame):
+   def __init__(self,Aspeed,damage,Kback,projectileL,frame):
       super().__init__(Aspeed,damage,Kback)
-      self.projectile = projectile
-      self.frame      = frame
+      self.projectileL = projectileL
+      self.projectileI = 0
+      self.frame       = frame
 
    def attack(self,screen,user,sound,projectileList,itemDict):
-      
+
+      self.switchIndex()
+      self.projectile = self.projectileL[self.projectileI]
+ 
       self.rotateImg    = screen.images[self.projectile.image[0]]
 
       self.AspeedTimer += 1
@@ -42,3 +46,9 @@ class rangedWeapon(weapon):
         if self.attackTimer > self.Aspeed and itemDict[self.projectile.item].amount >= 1:
            self.frame.image_index = len(self.frame.image)-1
 
+   def switchIndex(self):
+      keys = pygame.key.get_pressed()
+      if keys[pygame.K_t]:
+        self.projectileI += 1
+        if self.projectileI >= len(self.projectileL):
+          self.projectileI = 0

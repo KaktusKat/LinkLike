@@ -5,12 +5,13 @@ import random
 import time
 
 class enemy(sprite):
-   def __init__(self,image,x,y,w,h,images,sound,hitS,ha,big = False):
+   def __init__(self,image,x,y,w,h,images,sound,hitS,ha,item):
       super().__init__(image,x,y,w,h,images)
       self.a         = -10
       self.hitS      = sound.loadS(hitS)
       self.ha        = ha
-      self.big       = big
+      self.item      = item.name
+      self.big       = False
       self.lastmove  = [0,0]
       self.Kback     = 0
       self.attackT   = 300
@@ -24,9 +25,10 @@ class enemy(sprite):
       self.iFrames   = False
       self.chasing   = False
  
-   def update(self,player,move,enemy_list,keys,place,screen,weaponList,sound):
+   def update(self,player,move,enemy_list,keys,place,screen,weaponList,itemDict,sound):
       self.attackT += 1
       if self.ha <= 0:
+         itemDict[self.item].amount += 3
          enemy_list.remove(self)
          return
 

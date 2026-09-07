@@ -31,7 +31,7 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,sound):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,sound,slime):
 
       Mpos   = pygame.mouse.get_pos()
 
@@ -170,6 +170,6 @@ class place:
                   change2.health    = 0
                   change2.noise     = imageValues2.noise
                   if random.randint(0,400) == 1 and not change2.soild:
-                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,sound,"enemyHit.wav",12)
+                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,sound,"enemyHit.wav",12,slime)
                      enemy_list.append(e)
 
