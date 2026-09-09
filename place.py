@@ -158,6 +158,7 @@ class place:
                   change1.justMade  = False
                   change1.health    = 0
                   change1.noise     = imageValues.noise
+                  change2.bounce    = imageValues2.bounce
                   change2.image     = imageValues2.image.copy()
                   change2.w         = imageValues2.w
                   change2.h         = imageValues2.h

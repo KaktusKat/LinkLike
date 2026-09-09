@@ -7,6 +7,7 @@ class tile(sprite):
    def __init__(self, img, posX, posY, w, h,images,soild,biomes = [],breakable = True,portal = False,craft = False,spike = False,justMade = False,numRow = 0,reducedNoise = False):
        super().__init__(img, posX, posY, w, h,images, soild=soild)
        self.numRow       = numRow
+       self.bounce       = 0.95
        self.connectS     = {-1:False,1:False}
        self.connectU     = {-1:False,1:False}
        self.reducedNoise = reducedNoise

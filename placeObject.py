@@ -1,7 +1,7 @@
 import pygame
 
 class placeObject:
-   def __init__(self,item,img,images,w,h,aW,aH,imagesC,name,noise,toolList):
+   def __init__(self,item,img,images,w,h,aW,aH,imagesC,name,noise,toolList,bounce = 0.95):
       self.item       = item
       self.w          = w
       self.h          = h
@@ -10,6 +10,7 @@ class placeObject:
       self.toolList   = toolList
       self.noise      = noise
       self.timer      = 0
+      self.bounce     = bounce
       self.image = "images/"+img
       image = pygame.image.load("images/"+img)
       images[self.image] = pygame.transform.scale(image,(aW,aH))
@@ -41,6 +42,7 @@ class placeObject:
             tile.item     = self.item
             tile.w        = self.w
             tile.h        = self.h
+            tile.bounce   = self.bounce
             self.load(tile)
             self.objectList.append(tile)
 

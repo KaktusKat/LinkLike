@@ -82,6 +82,7 @@ flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
 wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
 iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
 slime       = item(357,177,50,50,screen.images,"slime","slime.png",1)
+woodS       = item(357,267,50,50,screen.images,"woodS","woodS.png",1)
 emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
 stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
@@ -93,7 +94,8 @@ swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",2)
 pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",2)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",2)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
-itemList    = [wood,rocks,iron,slime,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
+
+itemList    = [wood,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
 
 
 arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,"arrow",1,"treeF.wav",sound,1000,False,45)
@@ -123,7 +125,8 @@ sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,[
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
 fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],"fence","treeF.wav",[["axe",1]])
-placeList  = [fence]
+fenceS     = placeObject(woodS,"fenceSP.png",screen.images,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],"fenceS","treeF.wav",[["axe",1]],1.5)
+placeList  = [fence,fenceS]
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
@@ -172,14 +175,15 @@ for objectP in placeList:
 
 spearR     = [[["empty","empty","empty"],["refinedIron","stick","stick"],["empty","empty","empty"]],[itemDict[spearI.name],1],[gob.tool,"spear"]]
 swordR     = [[["empty","empty","empty"],["flint","flint","stick"],["empty","empty","empty"]],[itemDict[swordI.name],1],[gob.tool,"sword"]]
-arrowSR    = [[["empty","empty","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[arrowSI.name],4]]
-arrowR     = [[["empty","empty","empty"],["flint","slime","stick"],["empty","empty","empty"]],[itemDict[arrowI.name],4]]
+arrowR     = [[["empty","empty","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[arrowI.name],4]]
+arrowSR    = [[["empty","empty","empty"],["flint","slime","stick"],["empty","empty","empty"]],[itemDict[arrowSI.name],4]]
 pickaxeR   = [[["flint","empty","empty"],["flint","stick","stick"],["flint","empty","empty"]],[itemDict[pickaxeI.name],1],[gob.tool,"pickaxe"]]
 axeR       = [[["flint","flint","empty"],["flint","stick","stick"],["empty","empty","empty"]],[itemDict[axeI.name],1],[gob.tool,"axe"]]
 bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["slime","slime","slime"]],[itemDict[bowI.name],1],[gob.tool,"bow"]]
 hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[itemDict[hammerI.name],1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[itemDict[refinedIron.name],1]]
-craftRList = [spearR,refineR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR]
+woodSR     = [[["wood","empty","empty"],["slime","empty","empty"],["empty","empty","empty"]],[itemDict[woodS.name],1]]
+craftRList = [spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR]
 
 
 running = True

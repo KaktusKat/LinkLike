@@ -192,10 +192,10 @@ class sprite:
                if thing.soild:
                   side = self.isHitSide(thing,screen)
                   if side == "x":
-                     self.velocityX = -self.velocityX
+                     self.velocityX = -self.velocityX*thing.bounce
                      return
                   if side == "y":
-                     self.velocityY = -self.velocityY
+                     self.velocityY = -self.velocityY*thing.bounce
                      return
    
    def checkMoveTF(self,place,screen):
@@ -210,10 +210,10 @@ class sprite:
                if thing.soild:
                   side = self.isHitSide(thing,screen)
                   if side == "x":
-                     self.velocityX = -self.velocityX
+                     self.velocityX = -self.velocityX*thing.bounce
                      return True
                   if side == "y":
-                     self.velocityY = -self.velocityY
+                     self.velocityY = -self.velocityY*thing.bounce
                      return True
       return False
    
@@ -230,10 +230,10 @@ class sprite:
             if thing and thing.soild:
                side = self.isHitSide(thing,screen)
                if side == "x":
-                  self.velocityX = -self.velocityX
+                  self.velocityX = -self.velocityX*thing.bounce
                   return
                if side == "y":
-                  self.velocityY = -self.velocityY
+                  self.velocityY = -self.velocityY*thing.bounce
                   return
 
    def checkMoveE(self,enemyList,screen):
