@@ -3,6 +3,7 @@ import pygame
 class placeObject:
    def __init__(self,item,img,images,w,h,aW,aH,imagesC,name,noise,toolList,bounce = 0.95):
       self.item       = item
+      self.soild      = True
       self.w          = w
       self.h          = h
       self.name       = name
@@ -11,9 +12,9 @@ class placeObject:
       self.noise      = noise
       self.timer      = 0
       self.bounce     = bounce
-      self.image = "images/"+img
+      self.image = ["images/"+img]
       image = pygame.image.load("images/"+img)
-      images[self.image] = pygame.transform.scale(image,(aW,aH))
+      images[self.image[0]] = pygame.transform.scale(image,(aW,aH))
       self.imagesC = []
       for i in range(len(imagesC)):
          self.imagesC.append("images/"+imagesC[i][0])
@@ -34,8 +35,11 @@ class placeObject:
          key = place.genKeyC(x,y)
          if not place.map_dic2[key].soild:
             itemDict[self.item.name].amount -= 1
+            self.change(place,key)
+
+   def change(self,place,key):
             tile          = place.map_dic2[key]
-            tile.image    = [self.image]
+            tile.image    = self.image
             tile.soild    = True
             tile.toolList = self.toolList
             tile.noise    = self.noise
@@ -43,8 +47,10 @@ class placeObject:
             tile.w        = self.w
             tile.h        = self.h
             tile.bounce   = self.bounce
+            tile.made     = True
             self.load(tile)
             self.objectList.append(tile)
+      
 
    def unload(self,tile):
        for tiles in self.objectList:

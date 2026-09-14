@@ -8,6 +8,7 @@ class tile(sprite):
        super().__init__(img, posX, posY, w, h,images, soild=soild)
        self.numRow       = numRow
        self.bounce       = 0.95
+       self.made         = False
        self.connectS     = {-1:False,1:False}
        self.connectU     = {-1:False,1:False}
        self.reducedNoise = reducedNoise
@@ -62,6 +63,9 @@ class tile(sprite):
       self.prob = {}
       for biome in self.biomes:
          self.prob[biome.name] = 0
+      if not self.justMade:
+         self.maxProb = 0
+         return 
       sumSizes = self.emptyNear
       for biome in self.biomes:
          prob    = (self.biomeNear[biome.name]*biome.size) + (self.emptyNear*biome.rarity/self.rarity)

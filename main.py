@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from struture       import structure
 from placeObject    import placeObject
 from projectile     import projectile
 from fireF          import fireF
@@ -124,23 +125,30 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,sound,
 sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,sound)
 
+
 fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],"fence","treeF.wav",[["axe",1]])
-fenceS     = placeObject(woodS,"fenceSP.png",screen.images,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],"fenceS","treeF.wav",[["axe",1]],1.5)
+fenceS     = placeObject(woodS,"fenceSP.png",screen.images,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],"fenceS","treeF.wav",[["axe",1]],1.2)
 placeList  = [fence,fenceS]
 
-forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3])
-sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2])
+testSL     = [[fence,empty,fence],
+              [fence,rock,fence],
+              [fence,fence,fence]]
+
+testS      = structure([testSL],0.1)
+emptyS     = structure([[]],1)
+
+forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3],[testS,emptyS])
+sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2],[emptyS])
 biomeList = [forest,sand]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist"]
+wepon    += ["fist","axe"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
-#test       = corruptedEnemy(["corruptedBlob.png","teleportCorrupt.png"],0,0,60,54,5)
 
 enemy_list = []
-for i in range(1):
+for i in range(0):
    e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,sound,"enemyHit.wav",12,slime)
    enemy_list.append(e)
    Ex = random.randint(0,450)
@@ -188,8 +196,12 @@ craftRList = [spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pick
 
 running = True
 while running:
+
+
+
    keys = pygame.key.get_pressed()
    if keys[pygame.K_t]:
+      print(f"gobX:{gob.x//1},gobY:{gob.y//1}")
       with open("save.plk","wb") as file:
          saveList = [gob,invet,place,cave,enemy_list]
          for item in itemList:
@@ -211,6 +223,10 @@ while running:
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict)
    gob.draw(screen)
    gob.weponChange(keys)
+
+   for rect in testS.rectList:
+      x,y = rect[0]+290-gob.x,rect[1]+290-gob.y
+      pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,58,58),2)
 
    for objectP in placeList:
        objectP.draw(screen)
@@ -259,6 +275,7 @@ while running:
    for enemy in enemy_list:
        enemy.x += enemy.velocityX
        enemy.y += enemy.velocityY
+
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT or gob.health <= 0:

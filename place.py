@@ -13,17 +13,22 @@ class place:
        self.wood         = wood
        self.rock         = rock
        self.flint        = flint
+       self.structList   = []
+       self.structPDict  = {}
        self.images1      = {}
        self.images2      = {}
        self.prob1        = {}
        self.prob2        = {}
        self.connectors   = {}
+       self.structDict   = {}
        for biome in biomes:
-          self.connectors[biome.name] = biome.connectors
-          self.images1[biome.name]    = biome.images1
-          self.images2[biome.name]    = biome.images2
-          self.prob1[biome.name]      = biome.prob1
-          self.prob2[biome.name]      = biome.prob2
+          self.structDict[biome.name]  = biome.strutures
+          self.structPDict[biome.name] = biome.probS
+          self.connectors[biome.name]  = biome.connectors
+          self.images1[biome.name]     = biome.images1
+          self.images2[biome.name]     = biome.images2
+          self.prob1[biome.name]       = biome.prob1
+          self.prob2[biome.name]       = biome.prob2
 
    def genKeyC(self, cell_x, cell_y):
        return cell_x + cell_y * 100000
@@ -39,6 +44,7 @@ class place:
       ENEMY  = 1
       ROCK   = 2
       EMPTY  = 3
+      timesIn = 0
 
       for x in range(-7, 7):
          for y in range(-7, 7):
@@ -51,9 +57,12 @@ class place:
             xPos = player.x + x * 58 - (player.x % 58)
             yPos = player.y + y * 58 - (player.y % 58)
 
+
             if key in self.map_dic:
-               if not self.map_dic2[key].justMade:
+               if not self.map_dic2[key].justMade and not self.map_dic[key].biome == 0:
+                  timesIn += 1
                   
+
                   if self.map_dic2[key].iframes and not weaponList[self.map_dic2[key].toolHit].attacking:
                      self.map_dic2[key].iframes = False
 
@@ -128,18 +137,21 @@ class place:
                highest = 0
                highestTest = 0
                change = "bob"
+               gotIn  = False
                for keyX2 in range(-8,8):
                   for keyY2 in range(-8,8):
                      map_x = keyX2 + player.x // 58
                      map_y = keyY2 + player.y // 58
                      key3  = self.genKeyC(map_x, map_y)
-                     if self.map_dic[key3].maxProb > highestTest and self.map_dic[key3].biome == 0:
-                        highest     = self.map_dic[key3].prob
-                        highestTest = self.map_dic[key3].maxProb
-                        change      = key3
-                        gotIn       = True
+                     if self.map_dic[key3].maxProb > highestTest:
+                        if self.map_dic[key3].biome == 0:
+                           highest     = self.map_dic[key3].prob
+                           highestTest = self.map_dic[key3].maxProb
+                           change      = key3
+                           gotIn       = True
 
-               if not change == "bob":
+
+               if gotIn:
                   change1 = self.map_dic[change]
                   change2 = self.map_dic2[change]
                   b = np.random.choice(change1.biomes,p = list(dict.values(highest)))
@@ -158,19 +170,24 @@ class place:
                   change1.justMade  = False
                   change1.health    = 0
                   change1.noise     = imageValues.noise
-                  change2.bounce    = imageValues2.bounce
-                  change2.image     = imageValues2.image.copy()
-                  change2.w         = imageValues2.w
-                  change2.h         = imageValues2.h
-                  change2.soild     = imageValues2.soild
-                  change2.breakable = imageValues2.breakable
-                  change2.toolList  = imageValues2.toolList.copy()
-                  change2.item      = imageValues2.item
-                  change2.change    = imageValues2.change.copy()
+                  if not change2.made:
+                     change2.bounce    = imageValues2.bounce
+                     change2.image     = imageValues2.image.copy()
+                     change2.w         = imageValues2.w
+                     change2.h         = imageValues2.h
+                     change2.soild     = imageValues2.soild
+                     change2.breakable = imageValues2.breakable
+                     change2.toolList  = imageValues2.toolList.copy()
+                     change2.item      = imageValues2.item
+#                    change2.change    = imageValues2.change.copy()
+                     change2.health    = 0
+                     change2.noise     = imageValues2.noise
                   change2.justMade  = False
-                  change2.health    = 0
-                  change2.noise     = imageValues2.noise
+                  struct = np.random.choice(self.structDict[change1.biome],p = self.structPDict[change1.biome])
+                  self.structList.append([change1.x,change1.y,struct,0])
                   if random.randint(0,400) == 1 and not change2.soild:
                      e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,sound,"enemyHit.wav",12,slime)
-                     enemy_list.append(e)
-
+#              b       enemy_list.append(e)
+         for struct in self.structList:
+            struct[2].place(screen.images,self,struct[0],struct[1],biomeList,struct[3])
+         self.structList = []
