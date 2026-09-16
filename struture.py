@@ -1,4 +1,6 @@
 import pygame
+import numpy as np
+import math
 from placeObject import placeObject
 from tile        import tile
 
@@ -9,7 +11,7 @@ class structure:
       self.rectList = []
       self.roomHitL = []
 
-   def place(self,images,place,xPos,yPos,biomeList,roomNum):
+   def place(self,images,place,xPos,yPos,biomeList,roomNum,xA = 1,yA = 1):
       x    = 0
       y    = 0
       if self.roomList[roomNum] == []:
@@ -18,17 +20,26 @@ class structure:
       h    = len(self.roomList[roomNum])    * 58 + 58
       for room in self.roomHitL:
          if self.isHit([xPos,yPos,w,h],room):
+            self.rectList.append([xPos,yPos,w-58,h-58])
             return
-      for i in self.roomList[roomNum]:
-         for tileV in i:
-            xK   = x + xPos//58
-            yK   = y + yPos//58
-            key  = place.genKeyC(xK,yK)
-            In   = False
+      for a in range(len(self.roomList[roomNum])):
+         if yA == -1:
+            i = self.roomList[roomNum][len(self.roomList[roomNum])-a-1]
+         else:
+            i = self.roomList[roomNum][a]
+         for tileVLL in range(len(i)):
+            if xA == -1:
+               tileVL = i[len(i)-tileVLL-1]
+            else:
+               tileVL = i[tileVLL]
+            tileV = tileVL[0]
+            xK    = x + xPos//58
+            yK    = y + yPos//58
+            key   = place.genKeyC(xK,yK)
+            In    = False
             if key in place.map_dic2:
                tileL2 = place.map_dic2[key]
             else:
-               self.rectList.append([xPos+x*58,yPos+y*58])
                place.map_dic[key]  = tile(["grass2.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
                place.map_dic2[key] = tile(["tree.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
                tileL2 = place.map_dic2[key]
@@ -41,13 +52,18 @@ class structure:
                tileL2.bounce   = tileV.bounce
                tileL2.noise    = tileV.noise
                tileL2.item     = tileV.item
-              # tileL2.change   = tileV.change
+               tileL2.change   = tileV.change
                tileL2.w        = tileV.w
                tileL2.h        = tileV.h
                tileL2.made     = True
                tileL2.bounce   = tileV.bounce
-            x += 1
-         y += 1
+            if len(tileVL) >= 2:
+               Mx     = math.ceil(i.index(tileVL)/len(i))*2-1
+               My     = math.ceil(self.roomList[roomNum].index(i)/len(self.roomList[roomNum]))*2-1
+               struct = np.random.choice(tileVL[1],p = tileVL[1][0].probList)
+               self.place(images,place,xPos+struct.List[1],yPos+struct.List[2],biomeList,struct.List[0],Mx,My)
+            x += xA
+         y += yA
          x  = 0
       self.roomHitL.append([xPos,yPos,w,h])
 

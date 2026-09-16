@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from connecter      import connecter
 from struture       import structure
 from placeObject    import placeObject
 from projectile     import projectile
@@ -130,12 +131,29 @@ fence      = placeObject(wood,"fenceP.png",screen.images,7,40,58,58,[["fenceS.pn
 fenceS     = placeObject(woodS,"fenceSP.png",screen.images,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],"fenceS","treeF.wav",[["axe",1]],1.2)
 placeList  = [fence,fenceS]
 
-testSL     = [[fence,empty,fence],
-              [fence,rock,fence],
-              [fence,fence,fence]]
+C4         = connecter([2,-116,0,1],[1])
+testSL4    = [[[fence],   [fence],[fence]],
+              [[empty,[C4]],[empty],[empty]],
+              [[fence],   [fence],[fence]]]
 
-testS      = structure([testSL],0.1)
-emptyS     = structure([[]],1)
+testSL3    = [[[fence],[empty],[fence]],
+              [[fence],[empty],[empty]],
+              [[fence],[fence],[fence]]]
+
+
+C21        = connecter([3,-58,-116],[0.5,0.5])
+C22        = connecter([2,-58,-116],[0.5,0.5])
+testSL2    = [[[fence],          [fence],[fence],[fence],[fence]],
+              [[empty,[C21,C22]],[empty],[empty],[empty],[fence]],
+              [[fence],          [fence],[empty],[fence],[fence]]]
+
+C1         = connecter([1,-58,-58,1],[1])
+testSL1    = [[[fence],[empty,[C1]],[fence]],
+              [[fence],[empty],     [fence]],
+              [[fence],[empty],     [fence]]]
+
+testS      = structure([testSL1,testSL2,testSL3,testSL4],1)
+emptyS     = structure([[]],100)
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3],[testS,emptyS])
 sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2],[emptyS])
@@ -226,7 +244,7 @@ while running:
 
    for rect in testS.rectList:
       x,y = rect[0]+290-gob.x,rect[1]+290-gob.y
-      pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,58,58),2)
+      pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,rect[2],rect[3]),2)
 
    for objectP in placeList:
        objectP.draw(screen)
