@@ -27,6 +27,7 @@ class structure:
          yPosC = yPos - h + 58
       for room in self.roomHitL:
          self.addx += 15
+         self.rectList.append([xPosC,yPosC,w,h])
          if self.isHit([xPosC,yPosC,w,h],room):
             return
       for a in range(len(self.roomList[roomNum])):
@@ -53,17 +54,18 @@ class structure:
             if type(tileV) is placeObject:
                tileV.change(place,key)
             else:
-               tileL2.soild    = tileV.soild
-               tileL2.image    = tileV.image
-               tileL2.toolList = tileV.toolList
-               tileL2.bounce   = tileV.bounce
-               tileL2.noise    = tileV.noise
-               tileL2.item     = tileV.item
-               tileL2.change   = tileV.change
-               tileL2.w        = tileV.w
-               tileL2.h        = tileV.h
-               tileL2.made     = True
-               tileL2.bounce   = tileV.bounce
+               tileL2.soild     = tileV.soild
+               tileL2.image     = tileV.image
+               tileL2.chestList = tileV.chestList
+               tileL2.toolList  = tileV.toolList
+               tileL2.bounce    = tileV.bounce
+               tileL2.noise     = tileV.noise
+               tileL2.item      = tileV.item
+               tileL2.change    = tileV.change
+               tileL2.w         = tileV.w
+               tileL2.h         = tileV.h
+               tileL2.made      = True
+               tileL2.bounce    = tileV.bounce
             if len(tileVL) >= 2:
                Mx     = math.ceil(i.index(tileVL)/len(i))*2-1
                My     = math.ceil(self.roomList[roomNum].index(i)/len(self.roomList[roomNum]))*2-1
@@ -72,7 +74,7 @@ class structure:
             x += xA
          y += yA
          x  = 0
-      self.roomHitL.append([xPos,yPos,w,h])
+      self.roomHitL.append([xPosC,yPosC,w,h])
 
 
    def isHit(self,room1,room2):

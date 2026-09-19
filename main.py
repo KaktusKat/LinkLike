@@ -112,7 +112,7 @@ grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,sound)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images,sound)
-chest      = tileValues(["chest.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
+chest      = tileValues(["chest.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["axe",1,stick,2]],wood,chestList = [[wood,2],[flints,1],[emptyI,0]])
 tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,sound,portal = True)
 rock       = tileValues(["rock.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
@@ -153,7 +153,7 @@ testSL1    = [[[fence],[empty,[C1]],[fence]],
               [[fence],[empty],     [fence]],
               [[fence],[empty],     [fence]]]
 
-testS      = structure([testSL1,testSL2,testSL3,testSL4],1)
+testS      = structure([testSL1,testSL2,testSL3,testSL4],0.5)
 emptyS     = structure([[]],100)
 
 forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3],[testS,emptyS])
@@ -272,7 +272,7 @@ while running:
       pygame.display.update()
       time.sleep(0.15)
 
-   invet.open(screen,keys,gob,place,cave,craftRList)
+   invet.open(screen,keys,gob,place,cave,craftRList,itemDict,emptyI)
 
    if gob.roll < 0:
       gob.checkMoveE(enemy_list,screen)

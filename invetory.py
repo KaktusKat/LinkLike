@@ -4,10 +4,12 @@ class invetory:
    def __init__(self,woodNum,wood,itemList,empty,images):
       self.imgI        = "images/inventOpen.png"
       self.imgC        = "images/inventCrafting.png"
-      for img in [[self.imgI,300],[self.imgC,150]]:
+      self.imgCh       = "images/chestInvent.png"
+      for img in [[self.imgI,300],[self.imgC,150],[self.imgCh,200]]:
           image        = pygame.image.load(img[0])
           images[img[0]]  = pygame.transform.scale(image,(img[1],img[1]))
       self.woodNum     = woodNum
+      self.timerO      = 0
       self.window      = False
       self.placeBlock  = 0
       self.place       = False
@@ -24,6 +26,7 @@ class invetory:
       self.craftTable  = []
       self.pageNum     = 1
       self.maxPage     = 0
+      self.chest       = False
       for item in itemList:
           if self.maxPage < item.pageNum:
              self.maxPage = item.pageNum
@@ -32,7 +35,8 @@ class invetory:
          for y in range(3):
             self.craftTable[x].append([empty,580-x*50,580-y*50])
 
-   def open(self,screen,keys,player,place,maze,craftRList):
+   def open(self,screen,keys,player,place,maze,craftRList,itemDict,emptyI):
+       self.chestOpen(screen,player,place,maze,craftRList,keys,itemDict,emptyI)
        if keys[pygame.K_q] or self.window or self.table:
           screen.screen.blit(screen.images[self.imgI],(screen.width/2-150,screen.height/2-150))
           self.window = True
@@ -42,6 +46,7 @@ class invetory:
        if keys[pygame.K_c]:
           self.window = False
           self.table  = False
+          self.chest  = False
 
    def craft(self,screen,player,place,maze,craftRList,keys):
       for item in self.itemList:
@@ -100,16 +105,49 @@ class invetory:
             if len(craftR) == 2:
                self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,keys)
 
-   def chestOpen(self,place):
-      Mpos   = pygame.mouse.get_Pos()
+   def chestOpen(self,screen,player,place,maze,craftRList,keys,itemDict,emptyI):
+      self.timerO += 1
+      
+      Mpos   = pygame.mouse.get_pos()
       Mpress = pygame.mouse.get_pressed()
-      if Mpress[1]:
-         kX   = Mpos[0]//58
-         kY   = MPos[1]//58
-         key  = place.genKeyC(kX,kY)
-         tile = place.map_dic2[key]
-         
-         
+      x,y    = screen.convertSTW(Mpos[0],Mpos[1])
+      if Mpress[2] and not self.chest:
+         kX        = x//58
+         kY        = y//58
+         key       = place.genKeyC(kX,kY)
+         self.tile = place.map_dic2[int(key)]
+         if not self.tile.chestList == [0] and player.LOSWH(10,self.tile,place,10,10,screen):
+            self.window = True
+            self.chest  = True
+            self.craft(screen,player,place,maze,craftRList,keys)
+      if self.chest:
+         screen.screen.blit(screen.images[self.imgCh],(0,380)) 
+         x = 0
+         for item in self.tile.chestList:
+             num          = pygame.font.SysFont("I don't think this dose anything",40)
+             num          = num.render(f"{item[1]}",False,(0,0,0))
+             screen.screen.blit(screen.images[item[0].image],(20+x,515))
+             screen.screen.blit(num,(60+x,555))
+             if player.isHitXYXY(Mpos[0],Mpos[1],1,1,20+x,515,50,50):
+                if Mpress[0]:
+                   if self.holding[0] == item[0].name:
+                     item[1]      += 1
+                     self.holding  = ["none",0]
+                   if item[0].name == "empty" and not self.holding[0] == "none":
+                     item[1] += 1
+                     item[0]  = itemDict[self.holding[0]]
+                     self.holding  = ["none",0]
+                if Mpress[2] and item[1] > 0 and self.timerO > 0:
+                   holding               = self.holding.copy()
+                   item[1]              -= 1
+                   self.timerO           = -40
+                   self.holding          = [item[0].name,item[0].image]
+                   if not holding[0] == "none" and not holding[0] == "empty":
+                      itemDict[holding[0]].amount += 1
+                   if item[1] == 0:
+                      item[0] = emptyI
+             x += 55
+                    
    def pickUp(self,w,h,place,maze,player,items):
       Mpos     = pygame.mouse.get_pos()
       Mpressed = pygame.mouse.get_pressed()
@@ -128,6 +166,7 @@ class invetory:
                item.amount += 1
       if hit:
          self.holding = holding
+
 
    def pickUpCraft(self,w,h,place,maze,player,item,craft = False,addList = False,crafted = 0):
       Mpos     = pygame.mouse.get_pos()

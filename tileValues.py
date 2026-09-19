@@ -1,7 +1,7 @@
 import pygame
 
 class tileValues:
-   def __init__(self,image,soild,breakable,w,h,images,sound,noise = [],toolList = [],item = [],change = [],bounce = 0.95,portal = False,aW = 58,aH = 58,chestList = []):
+   def __init__(self,image,soild,breakable,w,h,images,sound,noise = [],toolList = [],item = [],change = [],bounce = 0.95,portal = False,aW = 58,aH = 58,chestList = [0]):
       self.image = []
       for img in image:
          self.image.append("images/"+img)

@@ -253,11 +253,15 @@ class sprite:
             return
 
    def LOS(self,radius,target,place,screen = 0,maze = False):
-      distanceX     = self.x - target.x
-      distanceY     = self.y - target.y
-      totalDistance = abs(distanceX) + abs(distanceY)
+      self.LOS(radius,target,place,self.w,self.h,screen,maze)
 
-      if abs(distanceX) >= radius*58 or abs(distanceY) >= radius*58:
+   def LOSWH(self,radius,target,place,w,h,screen = 0,maze = False):
+      distanceX      = self.x - target.x
+      distanceY      = self.y - target.y
+      totalDistance  = abs(distanceX) + abs(distanceY)
+      totalDistanceC = abs(distanceX)**2 + abs(distanceY)**2
+
+      if totalDistanceC >= (radius*58)**2:
          return False
       if totalDistance == 0:
          return True
@@ -280,7 +284,7 @@ class sprite:
                   Y = int(Y)
                   thing = maze.get_cell(X, Y)
 
-                  if thing.isHitXY(posX,posY,self.w,self.h,thing,screen) and thing.soild:
+                  if thing.isHitXY(posX,posY,w,h,thing,screen) and thing.soild:
                      return False
          else:
             for y in range(-2, 3):
@@ -292,7 +296,8 @@ class sprite:
                      return False
                   thing = place.map_dic2[key]
 
-                  if thing.isHitXY(posX,posY,self.w,self.h,thing,screen) and thing.soild:
+                  if thing.isHitXY(posX,posY,w,h,thing,screen) and thing.soild and not thing == target:
+                     print("in2")
                      return False
       return True
 

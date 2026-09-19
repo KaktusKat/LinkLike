@@ -1,6 +1,6 @@
 import random
 import pygame
-from tile import tile
+from tileC import tileC
 
 class Cave:
 
@@ -27,7 +27,7 @@ class Cave:
             if not keyX in self.tileList:
                self.tileList[keyX] = {}
             if not keyY in self.tileList[keyX]:
-               self.tileList[keyX][keyY] = tile(["CaveBackground.png"],(player.x//29)*29+x*29,(player.y//29)*29+y*29,29,29,screen.images,True,numRow = 1)
+               self.tileList[keyX][keyY] = tileC(["CaveBackground.png"],(player.x//29)*29+x*29,(player.y//29)*29+y*29,29,29,screen.images,True,numRow = 1)
                self.tileList[keyX][keyY].randomPlace(self.images[1],self.images[0])
                if not out:
                   new.append(self.tileList[keyX][keyY])

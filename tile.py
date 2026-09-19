@@ -8,6 +8,7 @@ class tile(sprite):
        super().__init__(img, posX, posY, w, h,images, soild=soild)
        self.numRow       = numRow
        self.bounce       = 0.95
+       self.chestList    = [0]
        self.made         = False
        self.connectS     = {-1:False,1:False}
        self.connectU     = {-1:False,1:False}
