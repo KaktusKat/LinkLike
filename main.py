@@ -112,6 +112,7 @@ grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,sound)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,sound)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images,sound)
+chest      = tileValues(["chest.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
 tree       = tileValues(["tree.png"],True,True,25,30,screen.images,sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,sound,portal = True)
 rock       = tileValues(["rock.png"],True,False,20,20,screen.images,sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
@@ -132,11 +133,11 @@ fenceS     = placeObject(woodS,"fenceSP.png",screen.images,7,40,58,58,[["fenceSS
 placeList  = [fence,fenceS]
 
 C4         = connecter([2,-116,0,1],[1])
-testSL4    = [[[fence],   [fence],[fence]],
+testSL4    = [[[fence],     [fence],[fence]],
               [[empty,[C4]],[empty],[empty]],
-              [[fence],   [fence],[fence]]]
+              [[fence],     [fence],[fence]]]
 
-testSL3    = [[[fence],[empty],[fence]],
+testSL3    = [[[fence],[chest],[fence]],
               [[fence],[empty],[empty]],
               [[fence],[fence],[fence]]]
 
@@ -242,9 +243,6 @@ while running:
    gob.draw(screen)
    gob.weponChange(keys)
 
-   for rect in testS.rectList:
-      x,y = rect[0]+290-gob.x,rect[1]+290-gob.y
-      pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,rect[2],rect[3]),2)
 
    for objectP in placeList:
        objectP.draw(screen)
@@ -275,7 +273,6 @@ while running:
       time.sleep(0.15)
 
    invet.open(screen,keys,gob,place,cave,craftRList)
-   invet.make(place,screen,gob)
 
    if gob.roll < 0:
       gob.checkMoveE(enemy_list,screen)
@@ -294,6 +291,9 @@ while running:
        enemy.x += enemy.velocityX
        enemy.y += enemy.velocityY
 
+   for rect in testS.rectList:
+      x,y = screen.convertWTS(rect[0],rect[1])
+      pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,rect[2],rect[3]),2)
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT or gob.health <= 0:

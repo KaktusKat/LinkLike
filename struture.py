@@ -10,17 +10,24 @@ class structure:
       self.rarity   = rartiy
       self.rectList = []
       self.roomHitL = []
+      self.addx     = 0
 
    def place(self,images,place,xPos,yPos,biomeList,roomNum,xA = 1,yA = 1):
       x    = 0
       y    = 0
       if self.roomList[roomNum] == []:
          return
-      w    = len(self.roomList[roomNum][0]) * 58 + 58
-      h    = len(self.roomList[roomNum])    * 58 + 58
+      w     = (len(self.roomList[roomNum][0]) * 58)
+      h     = (len(self.roomList[roomNum])    * 58)
+      xPosC = xPos
+      yPosC = yPos
+      if xA == -1:
+         xPosC = xPos - w + 58
+      if yA == -1:
+         yPosC = yPos - h + 58
       for room in self.roomHitL:
-         if self.isHit([xPos,yPos,w,h],room):
-            self.rectList.append([xPos,yPos,w-58,h-58])
+         self.addx += 15
+         if self.isHit([xPosC,yPosC,w,h],room):
             return
       for a in range(len(self.roomList[roomNum])):
          if yA == -1:
@@ -66,6 +73,7 @@ class structure:
          y += yA
          x  = 0
       self.roomHitL.append([xPos,yPos,w,h])
+
 
    def isHit(self,room1,room2):
       room1TopX = room1[0]+room1[2]

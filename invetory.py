@@ -99,20 +99,17 @@ class invetory:
                self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,keys,craftR[2])
             if len(craftR) == 2:
                self.craftPickUp = self.carftMake(craftR[0],craftR[1],player,screen,keys)
-         
-   def make(self,place,screen,player):
-      self.timer  -= 1 
-#      x,y          = pygame.mouse.get_pos()
- #     Mpress       = pygame.mouse.get_pressed()
-  #    if (Mpress[2] and place.treesCut < 0 and self.timer < 1 and not player.inMaze):
-   #      image = pygame.image.load("woodPlanks.png")
-    #     x,y   = screen.convertSTW(x,y)
-     #    key   = place.genKeyP(x,y)
-      #   place.map_dic[key].image[0] = pygame.transform.scale(image,(58,58))
-       #  place.map_dic[key].soild    = True
-        # place.treesCut -= 1
-         #self.timer = 20
 
+   def chestOpen(self,place):
+      Mpos   = pygame.mouse.get_Pos()
+      Mpress = pygame.mouse.get_pressed()
+      if Mpress[1]:
+         kX   = Mpos[0]//58
+         kY   = MPos[1]//58
+         key  = place.genKeyC(kX,kY)
+         tile = place.map_dic2[key]
+         
+         
    def pickUp(self,w,h,place,maze,player,items):
       Mpos     = pygame.mouse.get_pos()
       Mpressed = pygame.mouse.get_pressed()
