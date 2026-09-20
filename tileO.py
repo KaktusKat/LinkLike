@@ -1,11 +1,22 @@
-import tile
+from tile import tile
 
 class tileO(tile):
-   def __int__(self,img,posX,posY,w,h,images,biomes):
-      super().__init__(img,posX,posY,w,h,images)
-      self.nextTo = []
-      self.made   = False
-      
+   def __init__(self,img,posX,posY,w,h,images,solid,biomes,justMade = True):
+      super().__init__(img,posX,posY,w,h,images,solid)
+      self.nextTo       = []
+      self.justMade     = justMade
+      self.made         = False
+      self.connectS     = {-1:False,1:False}
+      self.connectU     = {-1:False,1:False}
+      self.nameList     = []
+      self.numbList     = []
+      self.biomes       = biomes
+      self.portal       = False
+      self.rarity       = 0
+      self.biomeNear    = {}
+      self.maxProb      = 0
+      self.biome        = 0
+      self.connector    = False
       a = -1
       for biome in self.biomes:
          a += 1

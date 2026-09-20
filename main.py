@@ -138,7 +138,7 @@ testSL4    = [[[fence],     [fence],[fence]],
               [[fence],     [fence],[fence]]]
 
 testSL3    = [[[fence],[chest],[fence]],
-              [[fence],[empty],[empty]],
+              [[fence],[portal],[empty]],
               [[fence],[fence],[fence]]]
 
 
@@ -245,7 +245,8 @@ while running:
 
 
    for objectP in placeList:
-       objectP.draw(screen)
+       if not gob.inPortal(place):
+          objectP.draw(screen)
 
    for projectile in projectileList:
       projectile.draw(screen)

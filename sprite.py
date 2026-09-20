@@ -297,7 +297,6 @@ class sprite:
                   thing = place.map_dic2[key]
 
                   if thing.isHitXY(posX,posY,w,h,thing,screen) and thing.soild and not thing == target:
-                     print("in2")
                      return False
       return True
 

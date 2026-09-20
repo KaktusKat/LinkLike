@@ -1,7 +1,7 @@
 import pygame
 import copy
 import random
-from tile import tile
+from tileO import tileO
 from enemy import enemy
 import numpy as np
 
@@ -125,8 +125,8 @@ class place:
                      xpos = player.x + keyX * 58 - (player.x % 58)
                      ypos = player.y + keyY * 58 - (player.y % 58)
                      if not key2 in self.map_dic:
-                        self.map_dic[key2] = tile(["flower.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
-                        self.map_dic2[key2] = tile(["empty.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
+                        self.map_dic[key2] = tileO(["flower.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
+                        self.map_dic2[key2] = tileO(["empty.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
                for keyX in range(-8,8):
                   for keyY in range(-8,8):
                      map_x = keyX + player.x // 58

@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 import math
 from placeObject import placeObject
-from tile        import tile
+from tileO        import tileO
 
 class structure:
    def __init__(self,roomList,rartiy):
@@ -48,8 +48,8 @@ class structure:
             if key in place.map_dic2:
                tileL2 = place.map_dic2[key]
             else:
-               place.map_dic[key]  = tile(["grass2.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
-               place.map_dic2[key] = tile(["tree.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
+               place.map_dic[key]  = tileO(["grass2.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
+               place.map_dic2[key] = tileO(["tree.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
                tileL2 = place.map_dic2[key]
             if type(tileV) is placeObject:
                tileV.change(place,key)
@@ -66,6 +66,7 @@ class structure:
                tileL2.h         = tileV.h
                tileL2.made      = True
                tileL2.bounce    = tileV.bounce
+               tileL2.portal    = tileV.portal
             if len(tileVL) >= 2:
                Mx     = math.ceil(i.index(tileVL)/len(i))*2-1
                My     = math.ceil(self.roomList[roomNum].index(i)/len(self.roomList[roomNum]))*2-1

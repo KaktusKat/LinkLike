@@ -166,10 +166,10 @@ class player(sprite):
        mapY = self.y//58
        key  = place.genKeyC(mapX,mapY)
        if key in place.map_dic:
-          if place.map_dic[key].portal:
+          if place.map_dic2[key].portal:
              self.x = 70
              self.y = 70
-          if place.map_dic[key].portal:
+          if place.map_dic2[key].portal:
              self.inMaze = True
              return True
        if self.inMaze:
