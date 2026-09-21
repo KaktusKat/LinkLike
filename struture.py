@@ -1,4 +1,5 @@
 import pygame
+import copy
 import numpy as np
 import math
 from placeObject import placeObject
@@ -56,7 +57,7 @@ class structure:
             else:
                tileL2.soild     = tileV.soild
                tileL2.image     = tileV.image
-               tileL2.chestList = tileV.chestList
+               tileL2.chestList = copy.deepcopy(tileV.chestList)
                tileL2.toolList  = tileV.toolList
                tileL2.bounce    = tileV.bounce
                tileL2.noise     = tileV.noise

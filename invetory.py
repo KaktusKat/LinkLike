@@ -115,8 +115,9 @@ class invetory:
          kX        = x//58
          kY        = y//58
          key       = place.genKeyC(kX,kY)
-         self.tile = place.map_dic2[int(key)]
-         if not self.tile.chestList == [0] and player.LOSWH(10,self.tile,place,10,10,screen):
+         tile      = place.map_dic2[int(key)]
+         if not tile.chestList == [0] and player.LOSWH(10,tile,place,10,10,screen):
+            self.tile   = tile
             self.window = True
             self.chest  = True
             self.craft(screen,player,place,maze,craftRList,keys)
