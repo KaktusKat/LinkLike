@@ -36,60 +36,6 @@ class sprite:
       screen.blit(img, self.x, self.y)
 
 
-   def isHitSide_(self, other, direct):
-
-       self_pos   = Vector((self.x, self.y))
-       self_size  = Vector((self.w, self.h))
-       self_vel   = Vector((self.velocityX, self.velocityY))
-       other_pos  = Vector((other.x, other.y))
-       other_size = Vector((other.w, other.h))
-       other_vel  = Vector((other.velocityX, other.velocityY))
-
-       self_bl  = self_pos + self_vel * direct
-       self_tr  = self_bl  + self_size
-       other_bl = other_pos + other_vel * direct
-       other_tr = other_bl  + other_size
-
-       return (other_bl.x < self_tr.x) and (other_tr.x > self_bl.x) and \
-              (other_bl.y < self_tr.y) and (other_tr.y > self_bl.y)
-
-   def isHitSide2(self, other):
-
-       self_pos   = Vector((self.x, self.y))
-       self_size  = Vector((self.w, self.h))
-       other_pos  = Vector((other.x, other.y))
-       other_size = Vector((other.w, other.h))
-
-       self_bl  = self_pos
-       self_tr  = self_bl  + self_size
-       other_bl = other_pos
-       other_tr = other_bl  + other_size
-
-       if (other_bl.x < self_tr.x) and (other_tr.x > self_bl.x) and \
-          (other_bl.y < self_tr.y) and (other_tr.y > self_bl.y):
-          return "BAD"
-
-       self_bl  = self_pos + Vector((self.velocityX, 0))
-       self_tr  = self_bl  + self_size
-       other_bl = other_pos + Vector((other.velocityX, 0))
-       other_tr = other_bl  + other_size
-
-       if (other_bl.x < self_tr.x) and (other_tr.x > self_bl.x) and \
-          (other_bl.y < self_tr.y) and (other_tr.y > self_bl.y):
-          return "x"
-
-       self_bl  = self_pos + Vector((0, self.velocityY))
-       self_tr  = self_bl  + self_size
-       other_bl = other_pos + Vector((0, other.velocityY))
-       other_tr = other_bl  + other_size
-
-       if (other_bl.x < self_tr.x) and (other_tr.x > self_bl.x) and \
-          (other_bl.y < self_tr.y) and (other_tr.y > self_bl.y):
-          return "y"
-
-       return None
-
-
    def isHitSide(self,other,screen,rect = False):
 
       moveList = [ [ [0, 0],
@@ -113,19 +59,12 @@ class sprite:
 
          playerX = self.x + move[0][0]
          playerY = self.y + move[1][0]
-         top_x   = playerX + self.w
-         top_y   = playerY + self.h
 
          otherX      = other.x + move[0][1]+offsetX
          otherY      = other.y + move[1][1]+offsetY
-         other_top_x = otherX + other.w
-         other_top_y = otherY + other.h
 
-
-         if (otherX < top_x) and (other_top_x > playerX) and \
-            (otherY < top_y) and (other_top_y > playerY):
-            return move[2]
-               
+         if self.isHitXYXY(playerX,playerY,self.w,self.h,otherX,otherY,other.w,other.h):
+            return move[2]   
    
    def isHitXY(self,playerX,playerY,playerW,playerH, other,screen = 0,offsetX = 0,offsetY = 0):
 
@@ -135,14 +74,10 @@ class sprite:
       if not screen == 0:
          x,y = screen.convertWTS(playerX,playerY)
          pygame.draw.rect(screen.screen,(250,0,0),pygame.Rect(x,y,playerW,playerH),2)
-      top_x    = playerX + playerW
-      top_y    = playerY + playerH
 
-      other_top_x = other.x + other.w
-      other_top_y = other.y + other.h
+      return self.isHitXYXY(self.x,self.y,self.w,self.h,playerX,playerY,playerW,playerH)
 
-      return (other.x < top_x) and (other_top_x > playerX) and \
-             (other.y < top_y) and (other_top_y > playerY)
+
    
    def isHitXYXY(self,playerX,playerY,playerW,playerH, otherX,otherY,otherW,otherH):
 
@@ -159,16 +94,8 @@ class sprite:
 
       if self == other:
          return False
-
-      top_x = self.x + self.w
-      top_y = self.y + self.h
-
-      other_top_x = other.x + other.w
-      other_top_y = other.y + other.h
-
-
-      return (other.x < top_x) and (other_top_x > self.x) and \
-             (other.y < top_y) and (other_top_y > self.y)
+      
+      return self.isHitXYXY(self.x,self.y,self.w,self.h,other.x,other.y,other.w,other.h)
 
    def isHitC(self, Ox,Oy,Ow,Oh):
       top_x = self.x + self.w
