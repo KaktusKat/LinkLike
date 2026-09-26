@@ -76,7 +76,7 @@ class enemy(sprite):
       else:
          self.attacking = False
 
-      if (self.isHit(weaponList[player.tool[player.wep]]) and weaponList[player.tool[player.wep]].attacking) and not self.iframes:
+      if (self.hitBox.isHit(weaponList[player.tool[player.wep]].hitBox) and weaponList[player.tool[player.wep]].attacking) and not self.iframes:
          x    = self.x
          y    = self.y
          tool = weaponList[player.tool[player.wep]]

@@ -1,4 +1,5 @@
 from weapon import weapon
+from hitBox import hitBox
 import math
 import pygame
 
@@ -7,6 +8,7 @@ class meleeWeapon(weapon):
       super().__init__(Aspeed,damage,kBack)
       self.frameList   = frameList
       self.frameIndex  = 0
+      self.hitBox      = hitBox(self,[[0,0,0,0]])
       self.comboTimer  = 0
       self.hit         = False
       self.comboSpeed  = comboSpeed
@@ -29,10 +31,11 @@ class meleeWeapon(weapon):
             user.velocityY  -= (self.kback*math.sin(frame.KBangle))/2.5
  
          self.frameList[self.frameIndex].draw(screen,user)
-         self.x = self.frameList[self.frameIndex].x
-         self.y = self.frameList[self.frameIndex].y
-         self.w = self.frameList[self.frameIndex].w
-         self.h = self.frameList[self.frameIndex].h
+         self.x      = self.frameList[self.frameIndex].x
+         self.y      = self.frameList[self.frameIndex].y
+         self.w      = self.frameList[self.frameIndex].w
+         self.h      = self.frameList[self.frameIndex].h
+         self.hitBox = self.frameList[self.frameIndex].hitBox
       else:
          self.attacking = False
 
