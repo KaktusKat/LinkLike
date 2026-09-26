@@ -3,8 +3,8 @@ import pygame
 import math
 
 class fireF(frame):
-   def __init__(self,img,w,h,images,d,numMove,lenImage,ratio = 1,dx = 1,dy = 1,x = -100, y = -100):
-      super().__init__(img,w,h,images,d,numMove,ratio,dx,dy,x,y)
+   def __init__(self,img,w,h,images,hitBoxL,d,numMove,lenImage,ratio = 1,dx = 1,dy = 1,x = -100, y = -100):
+      super().__init__(img,w,h,images,hitBoxL,d,numMove,ratio,dx,dy,x,y)
       self.lenImage   = lenImage
       self.numRound   = 0
 

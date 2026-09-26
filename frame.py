@@ -3,8 +3,8 @@ import math
 from sprite import sprite
 
 class frame(sprite):
-   def __init__(self,image,w,h,images,d,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
-      super().__init__(image,x,y,w*ratio,h*ratio,images)
+   def __init__(self,image,w,h,images,hitBoxL,d,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
+      super().__init__(image,x,y,w*ratio,h*ratio,images,hitBoxL)
       self.distance    = d
       self.dSave       = d
       self.dX          = dx

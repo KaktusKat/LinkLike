@@ -3,8 +3,8 @@ import random
 from tile import tile
 
 class tileC(tile):
-   def __init__(self,img,posX,posY,w,h,images,soild,numRow = 0):
-      super().__init__(img,posX,posY,w,h,images,soild)
+   def __init__(self,img,posX,posY,w,h,images,hitBoxL,soild,numRow = 0):
+      super().__init__(img,posX,posY,w,h,images,hitBoxL,soild)
       self.reducedNoise = False
       self.numRow       = numRow
       self.type         = 0

@@ -49,11 +49,11 @@ class structure:
             if key in place.map_dic2:
                tileL2 = place.map_dic2[key]
             else:
-               place.map_dic[key]  = tileO(["grass2.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
-               place.map_dic2[key] = tileO(["tree.png"],xPos+x*58,yPos+y*58,58,58,images,False,biomeList,justMade = True)
+               place.map_dic[key]  = tileO(["grass2.png"],xPos+x*58,yPos+y*58,58,58,images,[[0,0,58,58]],False,biomeList,justMade = True)
+               place.map_dic2[key] = tileO(["tree.png"],xPos+x*58,yPos+y*58,58,58,images,[[0,0,58,58]],False,biomeList,justMade = True)
                tileL2 = place.map_dic2[key]
             if type(tileV) is placeObject:
-               tileV.change(place,key)
+               tileV.change(place,key,images,biomeList)
             else:
                tileL2.soild     = tileV.soild
                tileL2.image     = tileV.image

@@ -1,13 +1,12 @@
 from tile import tile
 
 class tileO(tile):
-   def __init__(self,img,posX,posY,w,h,images,solid,biomes,justMade = True):
-      super().__init__(img,posX,posY,w,h,images,solid)
+   def __init__(self,img,posX,posY,w,h,images,hitBoxL,solid,biomes,justMade = True):
+      super().__init__(img,posX,posY,w,h,images,hitBoxL,solid)
       self.nextTo       = []
       self.justMade     = justMade
       self.made         = False
-      self.connectS     = {-1:False,1:False}
-      self.connectU     = {-1:False,1:False}
+      self.fence        = False
       self.nameList     = []
       self.numbList     = []
       self.biomes       = biomes

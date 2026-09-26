@@ -4,8 +4,8 @@ import time
 from frame import frame
 
 class slashF(frame):
-   def __init__(self,image,w,h,images,d,slashMove,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
-      super().__init__(image,w,h,images,d,numMove,ratio,dx,dy,x,y)
+   def __init__(self,image,w,h,images,hitBoxL,d,slashMove,numMove,ratio = 1,dx = 1,dy = 1,x = -100,y = -100):
+      super().__init__(image,w,h,images,hitBoxL,d,numMove,ratio,dx,dy,x,y)
       self.slashMove  = slashMove
       self.slashMoved = -slashMove
       self.MposSaved  = 0

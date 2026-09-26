@@ -3,8 +3,8 @@ import math
 from sprite import sprite
 
 class projectile(sprite):
-   def __init__(self,img,x,y,w,h,images,item,damage,hitNoise,sound,Range,bounce,offset = 0):
-      super().__init__(img,x,y,w,h,images)
+   def __init__(self,img,x,y,w,h,images,hitBoxL,item,damage,hitNoise,sound,Range,bounce,offset = 0):
+      super().__init__(img,x,y,w,h,images,hitBoxL)
       self.damage   = damage
       self.item     = item
       self.bounce   = bounce

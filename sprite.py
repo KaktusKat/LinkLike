@@ -1,12 +1,15 @@
 import pygame
 import math
+import copy
+from hitBox import hitBox
 from Vector import Vector
 
 class sprite:
-   def __init__(self, img, posX, posY, w, h,images, count = 1, soild = False):
+   def __init__(self, img, posX, posY, w, h,images,hitBoxL, count = 1, soild = False):
       self.x      = posX
       self.y      = posY
       self.image  = []
+      self.hitBox = hitBox(self,copy.deepcopy(hitBoxL))
       for i in range(len(img)):
          self.image.append("images/"+img[i])
          image = pygame.image.load("images/"+img[i])
@@ -97,15 +100,15 @@ class sprite:
       
       return self.isHitXYXY(self.x,self.y,self.w,self.h,other.x,other.y,other.w,other.h)
 
-   def isHitC(self, Ox,Oy,Ow,Oh):
-      top_x = self.x + self.w
-      top_y = self.y + self.h
-
-      other_top_x = Ox + Ow
-      other_top_y = Oy + Oh
-
-      return (Ox < top_x) and (other_top_x > self.x) and \
-             (Oy < top_y) and (other_top_y > self.y)
+##   def isHitC(self, Ox,Oy,Ow,Oh):
+  #    top_x = self.x + self.w
+   #   top_y = self.y + self.h
+#
+ #     other_top_x = Ox + Ow
+  #    other_top_y = Oy + Oh
+#
+ #     return (Ox < top_x) and (other_top_x > self.x) and \
+  #           (Oy < top_y) and (other_top_y > self.y)
 
    def checkMove(self,place,screen):
       for y in range(-2, 3):
@@ -117,7 +120,7 @@ class sprite:
             if key in place.map_dic:
                thing = place.map_dic2[key]
                if thing.soild:
-                  side = self.isHitSide(thing,screen)
+                  side = self.isHitSide(thing,screen,True)
                   if side == "x":
                      self.velocityX = -self.velocityX*thing.bounce
                      return
@@ -240,6 +243,5 @@ class sprite:
             ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
             if ab <= radius**2:
                self.circleTiles.append(tile)
-#               pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(tile.x+290-player.x,tile.y-player.y+290,40,40),2)
 
 

@@ -1,10 +1,15 @@
+from tileF import tileF
 import pygame
 
 class placeObject:
-   def __init__(self,item,img,images,w,h,aW,aH,imagesC,name,noise,toolList,bounce = 0.95):
+   def __init__(self,item,img,images,change,hitBoxL,hitBoxLC,w,h,aW,aH,imagesC,name,noise,toolList,bounce = 0.95):
       self.item       = item
+      self.changeI    = change
       self.soild      = True
       self.w          = w
+      self.check      = False
+      self.hitBoxL    = hitBoxL
+      self.hitBoxLC   = hitBoxLC
       self.h          = h
       self.name       = name
       self.objectList = []
@@ -12,7 +17,8 @@ class placeObject:
       self.noise      = noise
       self.timer      = 0
       self.bounce     = bounce
-      self.image = ["images/"+img]
+      self.image      = ["images/"+img]
+      self.img        = [img]
       image = pygame.image.load("images/"+img)
       images[self.image[0]] = pygame.transform.scale(image,(aW,aH))
       self.imagesC = []
@@ -22,7 +28,7 @@ class placeObject:
          images[self.imagesC[i]] = pygame.transform.scale(image,(imagesC[i][1],imagesC[i][2]))
 
 
-   def place(self,itemDict,place,screen):
+   def place(self,itemDict,place,screen,biomeList):
       self.timer += 1
       Mpress = pygame.mouse.get_pressed()
       Mpos   = pygame.mouse.get_pos()
@@ -35,49 +41,56 @@ class placeObject:
          key = place.genKeyC(x,y)
          if not place.map_dic2[key].soild:
             itemDict[self.item.name].amount -= 1
-            self.change(place,key)
+            self.change(place,key,screen.images,biomeList)
 
-   def change(self,place,key):
-            tile          = place.map_dic2[key]
-            tile.image    = self.image
-            tile.soild    = True
-            tile.toolList = self.toolList
-            tile.noise    = self.noise
-            tile.item     = self.item
-            tile.w        = self.w
-            tile.h        = self.h
-            tile.bounce   = self.bounce
-            tile.made     = True
-            self.load(tile)
+   def change(self,place,key,images,biomeList):
+            x = place.map_dic2[key].x
+            y = place.map_dic2[key].y
+
+            place.map_dic2[key]    = tileF(self.img,x,y,58,58,images,self.hitBoxL,True,biomeList)
+            tile                   = place.map_dic2[key]
+            tile.toolList          = self.toolList
+            tile.justMade          = place.map_dic[key].justMade
+            tile.noise             = self.noise
+            tile.item              = self.item
+            tile.bounce            = self.bounce
+            tile.made              = True
+            tile.fence             = True
+            self.loadN(tile,place)
             self.objectList.append(tile)
       
 
-   def unload(self,tile):
-       for tiles in self.objectList:
-           if tile.y - tiles.y == 0:
-              tile.connectS[(tile.x-tiles.x)//58]         = False
-              tiles.connectS[((tile.x-tiles.x)//58) * -1] = False
-           if tile.x - tiles.x == 0:
-              tile.connectU[(tile.y-tiles.y)//58]         = False
-              tiles.connectU[((tile.y-tiles.y)//58) * -1] = False
+   def unloadN(self,tile,place):
+      tile.fence = False
+      for x in range(-1,2):
+         for y in range(-1,2):
 
-   def load(self,tile):
-       for tiles in self.objectList:
-           if tile.y - tiles.y == 0:
-              tile.connectS[(tile.x-tiles.x)//58]         = True
-              tiles.connectS[((tile.x-tiles.x)//58) * -1] = True
-           if tile.x - tiles.x == 0:
-              tile.connectU[(tile.y-tiles.y)//58]         = True
-              tiles.connectU[((tile.y-tiles.y)//58) * -1] = True
+            if not abs(x) + abs(y) == 2 and not abs(x) + abs(y) == 0:
 
-   def draw(self,screen):
-      for tile in self.objectList:
-         if tile.connectS[-1]:
-            screen.blit(screen.images[self.imagesC[0]],tile.x+58/2,tile.y)
-         if tile.connectS[1]:
-            screen.blit(screen.images[self.imagesC[0]],tile.x,tile.y)
-         if tile.connectU[-1]:
-            screen.blit(screen.images[self.imagesC[1]],tile.x,tile.y+58/2)
-         if tile.connectU[1]:
-            screen.blit(screen.images[self.imagesC[1]],tile.x,tile.y)
+               key   = place.genKeyP(x * 58+tile.x,y * 58+tile.y)
+               if key in place.map_dic2:
+                  tileC = place.map_dic2[key]
+                  if tileC.fence and self.hitBoxLC[str(x)+str(y)] in tile.hitBox.hitBoxList:
+                     tile.hitBox.hitBoxList.remove(self.hitBoxLC[str(x)+str(y)])
+                     tile.fenceDraw.remove(self.changeI[str(x)+str(y)])
+
+                     tileC.hitBox.hitBoxList.remove(self.hitBoxLC[str(-x)+str(-y)])
+                     tileC.fenceDraw.remove(self.changeI[str(-x)+str(-y)])
+   
+   def loadN(self,tile,place):
+      for x in range(-1,2):
+         for y in range(-1,2):
+
+            if not abs(x) + abs(y) == 2 and not abs(x) + abs(y) == 0:
+
+               key   = place.genKeyP(x * 58+tile.x,y * 58+tile.y)
+               if key in place.map_dic2:
+                  tileC = place.map_dic2[key]
+                  if tileC.fence:
+                     tile.hitBox.hitBoxList.append(self.hitBoxLC[str(x)+str(y)])
+                     tile.fenceDraw.append(self.changeI[str(x)+str(y)])
+
+                     tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
+                     tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
+
 

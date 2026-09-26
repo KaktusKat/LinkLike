@@ -116,7 +116,7 @@ class invetory:
          kY        = y//58
          key       = place.genKeyC(kX,kY)
          tile      = place.map_dic2[int(key)]
-         if not tile.chestList == [0] and player.LOSWH(10,tile,place,10,10,screen):
+         if not tile.chestList == [0] and player.hitBox.LOSWH(10,tile.hitBox,place,20,20,screen):
             self.tile   = tile
             self.window = True
             self.chest  = True

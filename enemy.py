@@ -5,8 +5,8 @@ import random
 import time
 
 class enemy(sprite):
-   def __init__(self,image,x,y,w,h,images,sound,hitS,ha,item):
-      super().__init__(image,x,y,w,h,images)
+   def __init__(self,image,x,y,w,h,images,hitBoxL,sound,hitS,ha,item):
+      super().__init__(image,x,y,w,h,images,hitBoxL)
       self.a         = -10
       self.hitS      = sound.loadS(hitS)
       self.ha        = ha
@@ -39,7 +39,7 @@ class enemy(sprite):
       if weaponList[player.tool[player.wep]].attacking == False:
          self.iframes = False
 
-      if self.isHitXY(self.x+self.velocityX,self.y+self.velocityY,self.w+self.velocityX,self.h+self.velocityY,player) and self.attacking and not player.iFrames:
+      if self.hitBox.isHit(player.hitBox) and self.attacking and not player.iFrames:
          player.health     -= 1
          player.hit         = True
          player.image_index = 1
@@ -68,7 +68,7 @@ class enemy(sprite):
             self.y         += 0
          self.animate = -10
 
-      if self.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
+      if self.hitBox.LOS(8,player,place) and self.attackT > 300 and random.randint(0,100) == 1:
          self.attackT = 0
          self.attack(player)
       if self.attackT < 100:
@@ -97,15 +97,15 @@ class enemy(sprite):
    def idle(self,player,screen,place):
       self.animate   += 0.5
       self.circle(3.5,screen,place,player)
-      if self.LOS(8,player,place):
+      if self.hitBox.LOS(8,player,place):
          self.chasing = True
       for tile in self.circleTiles:
          if tile in player.circleTiles:
-            if player.LOS(8,tile,place):
+            if player.hitBox.LOS(8,tile,place) and self.hitBox.LOS(8,tile,place):
                self.chasing = True
 
    def chase(self,player,screen,place):
-      if self.LOS(8,player,place):
+      if self.hitBox.LOS(8,player,place):
          distanceX       = self.x - player.x
          distanceY       = self.y - player.y
          totalDistance   = abs(distanceX) + abs(distanceY)
@@ -117,9 +117,7 @@ class enemy(sprite):
          self.circle(3.5,screen,place,player)
          for tile in self.circleTiles:
             if tile in player.circleTiles:
-               if player.LOS(8,tile,place) and self.LOS(8,tile,place):
- #                 x,y = screen.convertWTS(tile.x,tile.y)
-#                  pygame.draw.rect(screen.screen,(250,250,250),pygame.Rect(x,y,58,58),2)
+               if player.hitBox.LOS(8,tile,place) and self.hitBox.LOS(8,tile,place):
                   distanceX       = self.x - tile.x
                   distanceY       = self.y - tile.y
                   totalDistance   = abs(distanceX) + abs(distanceY)

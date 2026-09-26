@@ -5,8 +5,8 @@ import time
 import math
 
 class player(sprite):
-   def __init__(self,img,posX,posY,w,h,images,tool,heath,spear,sound,footsteps,healthBar,placeList):
-      super().__init__(img,posX,posY,w,h,images)
+   def __init__(self,img,posX,posY,w,h,images,hitBoxL,tool,heath,spear,sound,footsteps,healthBar,placeList):
+      super().__init__(img,posX,posY,w,h,images,hitBoxL)
       self.tool         = tool
       self.placeList    = placeList
       self.placeIndex   = 0
@@ -30,7 +30,7 @@ class player(sprite):
       self.roll         = 0
       self.rotated      = 0
 
-   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound,placeDict):
+   def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound,placeDict,biomeList):
       self.healthDraw(screen)
       for key in range(len(self.placeList)):
          self.placeList[key] = placeDict[self.placeList[key].name]
@@ -56,7 +56,7 @@ class player(sprite):
       if mousePress[2] and self.inMaze:
          craft = maze.get_cell(int(((Mpos[0]+self.x)//70)-4),int(((Mpos[1]+self.y)//70)-4))
          if not invetory.window:
-            if self.isHitXY(Mpos[0]+self.x-290,Mpos[1]+self.y-290,1,1,craft):
+            if self.hitBox.isHitXY(Mpos[0]+self.x-290,Mpos[1]+self.y-290,1,1,craft):
                if craft.craft:
                   self.table   = True
                   invetory.table = True
@@ -75,7 +75,7 @@ class player(sprite):
       if len(ballList) > 0:
          delList = []
          for ball in ballList:
-             if ball.isHit(self):
+             if ball.hitBox.isHit(self):
                 self.health -= 1
                 delList.append(ball)
          for ball in delList:
@@ -129,9 +129,9 @@ class player(sprite):
             self.placeIndex = 0
       self.animated = False
       if self.inMaze:
-         self.checkMoveM(maze,screen)
+         self.hitBox.checkMoveM(maze,screen)
       if not self.inMaze:
-         self.checkMove(place,screen)
+         self.hitBox.checkMove(place,screen)
       if keys[pygame.K_r] and self.inMaze:
          self.inMaze = False
          self.x      = 0
@@ -148,7 +148,7 @@ class player(sprite):
      #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
       #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
        #  self.b = False
-      placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen)
+      placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen,biomeList)
       weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList,itemDict)
       if self.iFrames > 0:
          self.image_index = 4
@@ -191,50 +191,6 @@ class player(sprite):
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
 
-   def LOST(self,radius,target,place,maze = False):
-      distanceX     = self.x - target.x
-      distanceY     = self.y - target.y
-      totalDistance = distanceX + distanceY
-
-      if distanceX >= radius or distanceY >= radius:
-         return False
-
-      travelX = (20/totalDistance)*distanceX
-      travelX = (20/totalDistance)*distanceY
-      posX    = self.x
-      posY    = self.y
-
-      for i in range(math.ceil(totalDistance/20)):
-         posX += travelX
-         posY += travelY
-
-         if maze:
-            for oy in range(-2, 3):
-               for ox in range(-2, 3):
-                  X   = ox + posX//29
-                  Y   = oy + posY//29
-                  X = int(X)
-                  Y = int(Y)
-                  thing = place.get_cell(X, Y)
-
-                  if thing.isHitXY(posX,posY,self.w,self.h):
-                     if thing.soild:
-                        return False
-                     else:
-                        thing.LOS = True
-         else:
-            for y in range(-2, 3):
-               for x in range(-2, 3):
-                  X   = x + posX//58
-                  Y   = y + posY//58
-                  key = place.genKeyC(X, Y)
-
-                  if thing.isHitXY(posX,posY,self.w,self.h):
-                     if thing.soild:
-                        return False
-                     else:
-                        thing.LOS = True
-      return True
 
    def healthDraw(self,screen):
       x,y = screen.convertSTW(0,0)

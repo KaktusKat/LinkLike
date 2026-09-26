@@ -107,7 +107,7 @@ class place:
                               self.map_dic2[key].connectU     = {-1:False,1:False}
                               if self.map_dic2[key] in player.placeList[player.placeIndex].objectList:
                                  player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
-                                 player.placeList[player.placeIndex].unload(self.map_dic2[key])
+                                 player.placeList[player.placeIndex].unloadN(self.map_dic2[key],self)
                               self.map_dic2[key].image        = ["images/empty.png"]
                               self.map_dic2[key].toolList     = []
                               
@@ -125,8 +125,8 @@ class place:
                      xpos = player.x + keyX * 58 - (player.x % 58)
                      ypos = player.y + keyY * 58 - (player.y % 58)
                      if not key2 in self.map_dic:
-                        self.map_dic[key2] = tileO(["flower.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
-                        self.map_dic2[key2] = tileO(["empty.png"],xpos,ypos,58,58,screen.images,False,biomeList,justMade = True)
+                        self.map_dic[key2] = tileO(["flower.png"],xpos,ypos,58,58,screen.images,[[0,0,58,58]],False,biomeList,justMade = True)
+                        self.map_dic2[key2] = tileO(["empty.png"],xpos,ypos,58,58,screen.images,[[0,0,58,58]],False,biomeList,justMade = True)
                for keyX in range(-8,8):
                   for keyY in range(-8,8):
                      map_x = keyX + player.x // 58
@@ -159,35 +159,37 @@ class place:
                   self.map_dic[change].justMade  = False
                   imageValues                 = np.random.choice(self.images1[self.map_dic[change].biome],p = self.prob1[self.map_dic[change].biome])   
                   imageValues2                = np.random.choice(self.images2[self.map_dic[change].biome],p = self.prob2[self.map_dic[change].biome])
-                  change1.image     = imageValues.image.copy()
-                  change1.w         = imageValues.w
-                  change1.h         = imageValues.h
-                  change1.soild     = imageValues.soild
-                  change1.breakable = imageValues.breakable
-                  change1.toolList  = imageValues.toolList.copy()
-                  change1.item      = imageValues.item
-                  change1.change    = imageValues.change.copy()
-                  change1.justMade  = False
-                  change1.health    = 0
-                  change1.noise     = imageValues.noise
+                  change1.image             = imageValues.image.copy()
+                  change1.w                 = imageValues.w
+                  change1.h                 = imageValues.h
+                  change1.soild             = imageValues.soild
+                  change1.breakable         = imageValues.breakable
+                  change1.toolList          = imageValues.toolList.copy()
+                  change1.item              = imageValues.item
+                  change1.change            = imageValues.change.copy()
+                  change1.justMade          = False
+                  change1.hitBox.hitBoxList = imageValues.hitBoxL
+                  change1.health            = 0
+                  change1.noise             = imageValues.noise
                   if not change2.made:
-                     change2.bounce    = imageValues2.bounce
-                     change2.image     = imageValues2.image.copy()
-                     change2.w         = imageValues2.w
-                     change2.h         = imageValues2.h
-                     change2.soild     = imageValues2.soild
-                     change2.breakable = imageValues2.breakable
-                     change2.toolList  = imageValues2.toolList.copy()
-                     change2.item      = imageValues2.item
+                     change2.hitBox.hitBoxList = imageValues2.hitBoxL
+                     change2.bounce            = imageValues2.bounce
+                     change2.image             = imageValues2.image.copy()
+                     change2.w                 = imageValues2.w
+                     change2.h                 = imageValues2.h
+                     change2.soild             = imageValues2.soild
+                     change2.breakable         = imageValues2.breakable
+                     change2.toolList          = imageValues2.toolList.copy()
+                     change2.item              = imageValues2.item
 #                    change2.change    = imageValues2.change.copy()
-                     change2.health    = 0
-                     change2.noise     = imageValues2.noise
-                  change2.justMade  = False
+                     change2.health            = 0
+                     change2.noise             = imageValues2.noise
+                  change2.justMade             = False
                   struct = np.random.choice(self.structDict[change1.biome],p = self.structPDict[change1.biome])
                   self.structList.append([change1.x,change1.y,struct,0])
                   if random.randint(0,400) == 1 and not change2.soild:
-                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,sound,"enemyHit.wav",12,slime)
-#              b       enemy_list.append(e)
+                     e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],change1.x,change1.y,60,54,screen.images,[[0,0,60,54]],sound,"enemyHit.wav",12,slime)
+                     enemy_list.append(e)
          for struct in self.structList:
             struct[2].place(screen.images,self,struct[0],struct[1],biomeList,struct[3])
          self.structList = []

@@ -4,8 +4,8 @@ import random
 from sprite import sprite
 
 class tile(sprite):
-   def __init__(self, img, posX, posY, w, h,images,soild):
-       super().__init__(img, posX, posY, w, h,images, soild=soild)
+   def __init__(self, img, posX, posY, w, h,images,hitBoxL,soild):
+       super().__init__(img, posX, posY, w, h,images,hitBoxL, soild=soild)
        self.numRow       = 0
        self.bounce       = 0.95
        self.chestList    = [0]
