@@ -161,9 +161,10 @@ testSL1    = [[[fence],[empty,[C1]],[fence]],
 testS      = structure([testSL1,testSL2,testSL3,testSL4],0.5)
 emptyS     = structure([[]],100)
 
-forest    = biome("forest",[[1,0]],[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[testS,emptyS])
-sand      = biome("sand",[[0,-1]],[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[emptyS])
-biomeList = [sand,forest]
+forest    = biome("forest",[[1,0.05]],[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[testS,emptyS])
+sand      = biome("sand",[[-0.05,-1]],[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[emptyS])
+FCS       = biome("FCS",[[0.05,-0.05]],[[GCD,1],[GCD2,1]],[[empty,1]],[emptyS])
+biomeList = [sand,forest,FCS]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)

@@ -92,7 +92,7 @@ class place:
                      
                   if len(self.map_dic2[key].toolList) > 0:
                      for tool in self.map_dic2[key].toolList:
-                        if self.map_dic2[key].hitBox.isHit(weaponList[tool[0]].hitBox,screen) and weaponList[tool[0]].attacking and not self.map_dic2[key].iframes:
+                        if self.map_dic2[key].hitBox.isHit(weaponList[tool[0]].hitBox) and weaponList[tool[0]].attacking and not self.map_dic2[key].iframes:
                            self.map_dic2[key].health += 1
                            sound.playS(self.map_dic2[key].noise)
                            weaponList[tool[0]].hit   = True
