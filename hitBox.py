@@ -67,7 +67,7 @@ class hitBox:
       return(otherX < top_x) and (other_top_x > playerX) and \
             (otherY < top_y) and (other_top_y > playerY)
 
-   def isHit(self, other):
+   def isHit(self, other,screen = 0):
 
       if self == other:
          return False
@@ -80,7 +80,13 @@ class hitBox:
             xO = other.sprite.x + hitBoxO[0]
             yO = other.sprite.y + hitBoxO[1]
             
-            if self.isHitXYXY(x,y,hitBox[2],hitBox[3],xO,yO,hitBox[2],hitBox[3]):
+            if not screen == 0:
+               xR,yR = screen.convertWTS(xO,yO)
+               pygame.draw.rect(screen.screen,(0,0,255),pygame.Rect(xR,yR,hitBoxO[2],hitBoxO[3]),2)
+               xR,yR = screen.convertWTS(x,y)
+               pygame.draw.rect(screen.screen,(0,0,255),pygame.Rect(xR,yR,hitBox[2],hitBox[3]),2)
+
+            if self.isHitXYXY(x,y,hitBox[2],hitBox[3],xO,yO,hitBoxO[2],hitBoxO[3]):
               return True
 
       return False

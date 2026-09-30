@@ -1,17 +1,15 @@
 import pygame
 
 class biome:
-   def __init__(self,name,size,rarity,images1,images2,connectors,strutures):
+   def __init__(self,name,maxMin,images1,images2,strutures):
       self.strutures  = strutures
+      self.maxMin     = maxMin
       self.name       = name
-      self.size       = size
-      self.rarity     = rarity
       self.images1    = []
       self.images2    = []
       self.prob1      = []
       self.prob2      = []
       self.probS      = []
-      self.connectors = connectors
       total           = 0
       for struct in strutures:
          total += struct.rarity

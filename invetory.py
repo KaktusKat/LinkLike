@@ -116,7 +116,7 @@ class invetory:
          kY        = y//58
          key       = place.genKeyC(kX,kY)
          tile      = place.map_dic2[int(key)]
-         if not tile.chestList == [0] and player.hitBox.LOSWH(10,tile.hitBox,place,20,20,screen):
+         if not tile.chestList == [0] and player.hitBox.LOSWH(3,tile.hitBox,place,20,20,screen):
             self.tile   = tile
             self.window = True
             self.chest  = True
@@ -129,7 +129,7 @@ class invetory:
              num          = num.render(f"{item[1]}",False,(0,0,0))
              screen.screen.blit(screen.images[item[0].image],(20+x,515))
              screen.screen.blit(num,(60+x,555))
-             if player.isHitXYXY(Mpos[0],Mpos[1],1,1,20+x,515,50,50):
+             if player.hitBox.isHitXYXY(Mpos[0],Mpos[1],1,1,20+x,515,50,50):
                 if Mpress[0]:
                    if self.holding[0] == item[0].name:
                      item[1]      += 1
@@ -156,7 +156,7 @@ class invetory:
       holding  = ""
       count    = []
       for item in items:
-         if Mpressed[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item.x,item.y,item.w,item.h):
+         if Mpressed[0] and player.hitBox.isHitXYXY(Mpos[0],Mpos[1],1,1,item.x,item.y,item.w,item.h):
             if item.amount > 0 and not self.holding[0] == item.name and self.pageNum == item.pageNum:
                holding      = [item.name,item.image]
                item.amount -= 1
@@ -174,7 +174,7 @@ class invetory:
       Mpressed = pygame.mouse.get_pressed()
       hit      = False
       holding  = ""
-      if Mpressed[2] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,item[1],item[2],item[0].w,item[0].h):
+      if Mpressed[2] and player.hitBox.isHitXYXY(Mpos[0],Mpos[1],1,1,item[1],item[2],item[0].w,item[0].h):
          if not self.holding[0] == item[0].name:
             holding  = [item[0].name,item[0].image]
             item     = [self.empty,item[1],item[2]]
@@ -191,7 +191,7 @@ class invetory:
       Mpos   = pygame.mouse.get_pos()
       Mpress = pygame.mouse.get_pressed()
       for item in items:
-         if Mpress[0] and player.isHitXYXY(Mpos[0],Mpos[1],1,1,x,y,w,h) and self.holding[0] == item.name:
+         if Mpress[0] and player.hitBox.isHitXYXY(Mpos[0],Mpos[1],1,1,x,y,w,h) and self.holding[0] == item.name:
             self.holding = ["none",0]
             return [item,x,y]
       return "bob"

@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from perlinNoise    import perlinNoise
 from connecter      import connecter
 from struture       import structure
 from placeObject    import placeObject
@@ -107,6 +108,9 @@ bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1)
 
 weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
+temp       = perlinNoise(50,100000,100000)
+perlinList = [temp]
+
 grass      = tileValues(["grass.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
@@ -157,9 +161,9 @@ testSL1    = [[[fence],[empty,[C1]],[fence]],
 testS      = structure([testSL1,testSL2,testSL3,testSL4],0.5)
 emptyS     = structure([[]],100)
 
-forest    = biome("forest",20,1,[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[GCD,GCD2,GCD3],[testS,emptyS])
-sand      = biome("sand",20,1,[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[GCD,GCD2],[emptyS])
-biomeList = [forest,sand]
+forest    = biome("forest",[[1,0]],[[grass,1],[grass2,1],[flower,1]],[[flint,0.25],[tree,0.4],[rock,0.15],[empty,3]],[testS,emptyS])
+sand      = biome("sand",[[0,-1]],[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[emptyS])
+biomeList = [sand,forest]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
@@ -168,7 +172,7 @@ gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIfr
 cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
 
 enemy_list = []
-for i in range(1):
+for i in range(0):
    e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,[[0,0,60,54]],sound,"enemyHit.wav",12,slime)
    enemy_list.append(e)
    Ex = random.randint(0,450)
@@ -221,7 +225,6 @@ while running:
 
    keys = pygame.key.get_pressed()
    if keys[pygame.K_t]:
-      print(f"gobX:{gob.x//1},gobY:{gob.y//1}")
       with open("save.plk","wb") as file:
          saveList = [gob,invet,place,cave,enemy_list]
          for item in itemList:
@@ -238,7 +241,7 @@ while running:
       enemy_list = []
       cave.update(screen,gob,pickaxe,itemDict[iron.name])
    else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,sound,slime)
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime)
 
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict,biomeList)
    gob.draw(screen)
@@ -262,7 +265,7 @@ while running:
          enmy.iFrames     = False
          enmy.image_index = 3
       enmy.draw(screen)
-      enmy.checkMoveE(enemy_list,screen)
+      enmy.hitBox.checkMoveE(enemy_list,screen)
    if hit and enemyHit < 0:
       enemyHit = 50
       sound.playS(enemy.hitS)

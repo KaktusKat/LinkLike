@@ -89,7 +89,7 @@ class enemy(sprite):
          self.iframes     = tool.damage
          self.ha         -= weaponList[player.tool[player.wep]].damage
       
-      self.checkMove(place,screen)
+      self.hitBox.checkMove(place,screen)
       self.Acooldown -= 1
       self.wait -= 1 
       self.timer -= 1

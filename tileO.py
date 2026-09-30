@@ -22,7 +22,7 @@ class tileO(tile):
          self.biomeNear[biome.name] = 0
          self.nameList.append(biome.name)
          self.numbList.append(a)
-         self.rarity += biome.rarity
+#         self.rarity += biome.rarity
 
    def near(self,titleList,place):
       self.biomeNear = {}
