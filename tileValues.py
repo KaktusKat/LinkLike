@@ -1,3 +1,4 @@
+import copy
 import pygame
 
 class tileValues:
@@ -21,3 +22,18 @@ class tileValues:
       self.w         = w
       self.h         = h
       self.portal    = portal
+
+   def makeTile(self,tile):
+       tile.image             = self.image.copy()
+       tile.w                 = self.w
+       tile.h                 = self.h
+       tile.soild             = self.soild
+       tile.breakable         = self.breakable
+       tile.toolList          = self.toolList.copy()
+       tile.item              = self.item
+       tile.change            = self.change.copy()
+       tile.justMade          = False
+       tile.hitBox.hitBoxList = self.hitBoxL.copy()
+       tile.health            = 0
+       tile.noise             = self.noise
+       tile.chestList         = copy.deepcopy(self.chestList)

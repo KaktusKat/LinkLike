@@ -1,26 +1,23 @@
+from tileO import tileO
 from tileF import tileF
 import pygame
 
 class placeObject:
-   def __init__(self,item,img,images,change,hitBoxL,hitBoxLC,w,h,aW,aH,imagesC,name,noise,toolList,bounce = 0.95):
-      self.item       = item
+   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,imagesC,tileV,connector = True):
       self.changeI    = change
-      self.soild      = True
+      self.connector  = connector
+      self.item       = item
+      self.tileV      = tileV
       self.w          = w
-      self.check      = False
-      self.hitBoxL    = hitBoxL
+      self.name       = name
       self.hitBoxLC   = hitBoxLC
       self.h          = h
-      self.name       = name
       self.objectList = []
-      self.toolList   = toolList
-      self.noise      = noise
       self.timer      = 0
-      self.bounce     = bounce
-      self.image      = ["images/"+img]
-      self.img        = [img]
-      image = pygame.image.load("images/"+img)
-      images[self.image[0]] = pygame.transform.scale(image,(aW,aH))
+#      self.image      = ["images/"+img]4dd
+ #     self.img        = [img]
+  #    image = pygame.image.load("images/"+img)
+   #   images[self.image[0]] = pygame.transform.scale(image,(aW,aH))
       self.imagesC = []
       for i in range(len(imagesC)):
          self.imagesC.append("images/"+imagesC[i][0])
@@ -47,15 +44,14 @@ class placeObject:
             x = place.map_dic2[key].x
             y = place.map_dic2[key].y
 
-            place.map_dic2[key]    = tileF(self.img,x,y,58,58,images,self.hitBoxL,True,biomeList)
+            if self.connector:
+               place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,biomeList)
+               tile                   = place.map_dic2[key]
+               tile.fence = True
+            else:
+               place.map_dic2[key]    = tileO(["empty.png"],x,y,58,58,images,[],True,biomeList)
             tile                   = place.map_dic2[key]
-            tile.toolList          = self.toolList
-            tile.justMade          = place.map_dic[key].justMade
-            tile.noise             = self.noise
-            tile.item              = self.item
-            tile.bounce            = self.bounce
-            tile.made              = True
-            tile.fence             = True
+            self.tileV.makeTile(tile)
             self.loadN(tile,place)
             self.objectList.append(tile)
       
