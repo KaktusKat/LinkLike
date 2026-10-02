@@ -18,6 +18,7 @@ class player(sprite):
       self.t            = -10
       self.wep          = 0
       self.a            = 0
+      self.changeO      = 0
       self.inMaze       = False
       self.health       = heath
       self.table        = True
@@ -32,6 +33,7 @@ class player(sprite):
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound,placeDict,biomeList):
       self.healthDraw(screen)
+      self.changeO += 1
       for key in range(len(self.placeList)):
          self.placeList[key] = placeDict[self.placeList[key].name]
       if invetory.table:
@@ -123,8 +125,9 @@ class player(sprite):
             self.animated = True
       if keys[pygame.K_m]:
          sound.loadM("bossM.wav")
-      if keys[pygame.K_b]:
+      if keys[pygame.K_b] and self.changeO > 0:
          self.placeIndex += 1
+         self.changeO     = -20
          if self.placeIndex >= len(self.placeList):
             self.placeIndex = 0
       self.animated = False
@@ -140,14 +143,7 @@ class player(sprite):
          self.move(1,3)
          sound.playS(self.footsteps)
          self.animate = -10
-#      if Mpos[0] < self.x and not self.b:
- #        self.image[0] = pygame.transform.flip(self.image[0],True,False)
-  #       self.image[1] = pygame.transform.flip(self.image[1],True,False)
-   #      self.b = True
-    #  if Mpos[0] > self.x and self.b:         
-     #    self.image[0] = pygame.transform.flip(self.image[0],True,False)
-      #   self.image[1] = pygame.transform.flip(self.image[1],True,False)
-       #  self.b = False
+      placeDict[self.placeList[self.placeIndex].name].draw(screen)
       placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen,biomeList)
       weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList,itemDict)
       if self.iFrames > 0:

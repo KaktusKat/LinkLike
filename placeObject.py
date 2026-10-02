@@ -3,7 +3,7 @@ from tileF import tileF
 import pygame
 
 class placeObject:
-   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,imagesC,tileV,connector = True):
+   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,imagesC,tileV,imageI,connector = True):
       self.changeI    = change
       self.connector  = connector
       self.item       = item
@@ -14,10 +14,12 @@ class placeObject:
       self.h          = h
       self.objectList = []
       self.timer      = 0
-#      self.image      = ["images/"+img]4dd
- #     self.img        = [img]
-  #    image = pygame.image.load("images/"+img)
-   #   images[self.image[0]] = pygame.transform.scale(image,(aW,aH))
+      self.imageI     = "images/"+imageI
+      image = pygame.image.load("images/"+imageI)
+      images[self.imageI] = pygame.transform.scale(image,(75,75))
+      self.select     = "images/select.png"
+      image = pygame.image.load(self.select)
+      images[self.select] = pygame.transform.scale(image,(75,75))
       self.imagesC = []
       for i in range(len(imagesC)):
          self.imagesC.append("images/"+imagesC[i][0])
@@ -88,5 +90,9 @@ class placeObject:
 
                      tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
                      tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
+
+   def draw(self,screen):
+      screen.screen.blit(screen.images[self.select],(110,10))
+      screen.screen.blit(screen.images[self.imageI],(110,10))
 
 

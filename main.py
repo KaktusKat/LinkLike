@@ -137,9 +137,9 @@ fenceSV    = tileValues(["fenceSP.png"],True,False,58,58,screen.images,[[25,9,7,
 
 hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,5,29]}
 imagesC    = {"-10":["fenceS.png",0,0],"10":["fenceS.png",29,0],"0-1":["fenceU.png",0,0],"01":["fenceU.png",0,29]}
-fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],fenceV)
-chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],chestE,False)
-fenceS     = placeObject("fenceS",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],fenceSV)
+fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],fenceV,"fenceI.png")
+chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],chestE,"chestVI.png",False)
+fenceS     = placeObject("fenceS",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],fenceSV,"fenceSI.png")
 placeList  = [fence,fenceS,chest]
 
 C4         = connecter([2,-116,0,1],[1])
