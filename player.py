@@ -8,6 +8,7 @@ class player(sprite):
    def __init__(self,img,posX,posY,w,h,images,hitBoxL,tool,heath,spear,sound,footsteps,healthBar,placeList):
       super().__init__(img,posX,posY,w,h,images,hitBoxL)
       self.tool         = tool
+      self.lastSwitch   = "tool"
       self.placeList    = placeList
       self.placeIndex   = 0
       self.footsteps    = sound.loadS(footsteps)
@@ -127,6 +128,7 @@ class player(sprite):
          sound.loadM("bossM.wav")
       if keys[pygame.K_b] and self.changeO > 0:
          self.placeIndex += 1
+         self.lastSwitch  = "place"
          self.changeO     = -20
          if self.placeIndex >= len(self.placeList):
             self.placeIndex = 0
@@ -143,7 +145,10 @@ class player(sprite):
          self.move(1,3)
          sound.playS(self.footsteps)
          self.animate = -10
-      placeDict[self.placeList[self.placeIndex].name].draw(screen)
+      if self.lastSwitch == "tool":
+         weaponList[self.tool[self.wep]].draw(screen)
+      else:
+         placeDict[self.placeList[self.placeIndex].name].draw(screen)
       placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen,biomeList)
       weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList,itemDict)
       if self.iFrames > 0:
@@ -152,8 +157,9 @@ class player(sprite):
    def weponChange(self,keys):
       self.a -= 1
       if keys[pygame.K_e] and self.a < 0:
-         self.wep += 1
-         self.a = 100
+         self.wep += 1 
+         self.lastSwitch = "tool"
+         self.a = 20
       if self.wep == len(self.tool):
          self.wep = 0
 

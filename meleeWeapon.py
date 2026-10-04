@@ -4,14 +4,20 @@ import math
 import pygame
 
 class meleeWeapon(weapon):
-   def __init__(self,Aspeed,damage,kBack,frameList,comboSpeed):
+   def __init__(self,Aspeed,damage,kBack,frameList,comboSpeed,image,images):
       super().__init__(Aspeed,damage,kBack)
-      self.frameList   = frameList
-      self.frameIndex  = 0
-      self.hitBox      = hitBox(self,[[0,0,0,0]])
-      self.comboTimer  = 0
-      self.hit         = False
-      self.comboSpeed  = comboSpeed
+      self.frameList      = frameList
+      self.image          = "images/"+image
+      img                 = pygame.image.load(self.image)
+      images[self.image]  = pygame.transform.scale(img,(75,75))
+      self.select         = "images/select.png"
+      img                 = pygame.image.load(self.select)
+      images[self.select] = pygame.transform.scale(img,(75,75))
+      self.frameIndex     = 0
+      self.hitBox         = hitBox(self,[[0,0,0,0]])
+      self.comboTimer     = 0
+      self.hit            = False
+      self.comboSpeed     = comboSpeed
 
    def attack(self,screen,user,sound,useless,useless2):
 
@@ -57,4 +63,8 @@ class meleeWeapon(weapon):
          self.attackTimer = 0
          self.attacking   = True
 
+
+   def draw(self,screen):
+      screen.screen.blit(screen.images[self.select],(110,10))
+      screen.screen.blit(screen.images[self.image],(110,10))
 

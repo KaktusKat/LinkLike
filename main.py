@@ -61,24 +61,24 @@ ballList = []
 tileList = {}
 
 spear1     = stabF(["spear.png"],122,22,screen.images,[[0,0,122,22]],20,10,4)
-spear      = meleeWeapon(50,1.5,5,[spear1],50)
+spear      = meleeWeapon(50,1.5,5,[spear1],50,"spearV.png",screen.images)
 
 pickaxe1   = slashF(["pickaxeSwing.png","pickaxe.png"],124,199,screen.images,[[0,0,124,199]],25,0.6,5)
-pickaxe    = meleeWeapon(80,0.5,5,[pickaxe1],30)
+pickaxe    = meleeWeapon(80,0.5,5,[pickaxe1],30,"pickaxeV.png",screen.images)
 
 fist1      = stabF(["fist.png"],50,100,screen.images,[[0,0,58,100]],20,5,5)
-fist       = meleeWeapon(40,0.2,5,[fist1],30)
+fist       = meleeWeapon(40,0.2,5,[fist1],30,"fistV.png",screen.images)
 
 axe1       = slashF(["battle_axeSwing.png","battle_axe.png"],98,150,screen.images,[[0,0,98,150]],25,0.6,5)
-war_hammar = meleeWeapon(80,1,5,[axe1],100)
+war_hammar = meleeWeapon(80,1,5,[axe1],100,"axeV.png",screen.images)
 
 sword1     = slashF(["swordSwing1.png","sword1.png"],136,180,screen.images,[[0,0,136,280]],50,0.6,5)
 sword2     = slashF(["swordSwing2.png","sword2.png"],136,180,screen.images,[[0,0,136,180]],50,-0.6,5)
 sword3     = stabF(["sword3.png"],160,30,screen.images,[[0,0,160,30]],50,5,5)
-sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70)
+sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70,"swordV.png",screen.images)
  
 hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,screen.images,[[0,0,120,120]],25,0.6,5)
-hammer     = meleeWeapon(75,1.5,40,[hammer1],1)
+hammer     = meleeWeapon(75,1.5,40,[hammer1],1,"hammerV.png",screen.images)
 
 rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
 flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
