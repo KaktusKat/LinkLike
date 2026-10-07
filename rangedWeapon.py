@@ -4,8 +4,8 @@ import math
 from weapon import weapon
 
 class rangedWeapon(weapon):
-   def __init__(self,Aspeed,damage,Kback,projectileL,frame):
-      super().__init__(Aspeed,damage,Kback)
+   def __init__(self,Aspeed,damage,Kback,projectileL,frame,image,images):
+      super().__init__(Aspeed,damage,Kback,image,images)
       self.projectileL = projectileL
       self.projectileI = 0
       self.frame       = frame

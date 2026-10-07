@@ -127,7 +127,8 @@ class player(sprite):
       if keys[pygame.K_m]:
          sound.loadM("bossM.wav")
       if keys[pygame.K_b] and self.changeO > 0:
-         self.placeIndex += 1
+         if self.lastSwitch == "place":
+            self.placeIndex += 1
          self.lastSwitch  = "place"
          self.changeO     = -20
          if self.placeIndex >= len(self.placeList):
@@ -157,7 +158,8 @@ class player(sprite):
    def weponChange(self,keys):
       self.a -= 1
       if keys[pygame.K_e] and self.a < 0:
-         self.wep += 1 
+         if self.lastSwitch == "tool":
+            self.wep += 1 
          self.lastSwitch = "tool"
          self.a = 20
       if self.wep == len(self.tool):

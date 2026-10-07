@@ -105,7 +105,7 @@ itemList    = [wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spear
 arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],"arrow",1,"treeF.wav",sound,1000,False,45)
 arrowS     = projectile(["arrowSlime.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],"arrowS",1,"treeF.wav",sound,1000,True,45)
 bow1       = fireF(["bow.png","bow1.png","bowF.png"],140,140,screen.images,[[0,0,140,140]],20,50,20)
-bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1)
+bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1,"bowV.png",screen.images)
 
 weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
@@ -208,7 +208,7 @@ for objectP in placeList:
    
 for objectP in placeList:
    for tile in objectP.objectList:
-      objectP.load(tile)
+      objectP.loadN(tile,place)
 
 
 chestR     = [[["wood","wood","wood"],["wood","empty","wood"],["wood","wood","wood"]],[itemDict[chestI.name],2]]

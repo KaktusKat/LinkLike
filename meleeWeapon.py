@@ -5,7 +5,7 @@ import pygame
 
 class meleeWeapon(weapon):
    def __init__(self,Aspeed,damage,kBack,frameList,comboSpeed,image,images):
-      super().__init__(Aspeed,damage,kBack)
+      super().__init__(Aspeed,damage,kBack,image,images)
       self.frameList      = frameList
       self.image          = "images/"+image
       img                 = pygame.image.load(self.image)
@@ -63,8 +63,4 @@ class meleeWeapon(weapon):
          self.attackTimer = 0
          self.attacking   = True
 
-
-   def draw(self,screen):
-      screen.screen.blit(screen.images[self.select],(110,10))
-      screen.screen.blit(screen.images[self.image],(110,10))
 

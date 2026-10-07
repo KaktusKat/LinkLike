@@ -17,13 +17,13 @@ class projectile(sprite):
       self.x     += self.velocityX
       self.y     += self.velocityY
       for enemy in enemyList:
-         if self.isHit(enemy):
+         if self.hitBox.isHit(enemy):
             enemy.ha     -= self.damage
             enemy.iFrames = True
             enemy.iframes = self.damage
             sound.playS(self.hitNoise)
             self.range    = 0
-      if self.checkMoveTF(place,screen):
+      if self.hitBox.checkMoveTF(place,screen):
          if not self.bounce:
             self.range = 0
          else:
