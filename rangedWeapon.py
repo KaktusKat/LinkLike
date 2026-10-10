@@ -8,6 +8,7 @@ class rangedWeapon(weapon):
       super().__init__(Aspeed,damage,Kback,image,images)
       self.projectileL = projectileL
       self.projectileI = 0
+      self.indexT      = 0
       self.frame       = frame
 
    def attack(self,screen,user,sound,projectileList,itemDict):
@@ -18,6 +19,7 @@ class rangedWeapon(weapon):
       self.rotateImg    = screen.images[self.projectile.image[0]]
 
       self.AspeedTimer += 1
+      self.indexT      += 1
 
       Mpress = pygame.mouse.get_pressed()
 
@@ -48,7 +50,17 @@ class rangedWeapon(weapon):
 
    def switchIndex(self):
       keys = pygame.key.get_pressed()
-      if keys[pygame.K_t]:
+      if keys[pygame.K_t] and self.indexT > 0:
         self.projectileI += 1
+        self.indexT = -20
         if self.projectileI >= len(self.projectileL):
           self.projectileI = 0
+
+   def draw(self,screen):
+      screen.screen.blit(screen.images[self.select],(110,10))
+      screen.screen.blit(screen.images[self.image],(110,10))
+
+      screen.screen.blit(screen.images[self.select],(10,110))
+      screen.screen.blit(screen.images[self.projectileL[self.projectileI].imageV],(10,110))
+      
+

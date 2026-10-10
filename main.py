@@ -55,6 +55,7 @@ b        = 0
 enemyHit = 0
 objectList = []
 projectileList = []
+nightT   = 0
 load     = input("do you want to reload?")
 
 ballList = []
@@ -102,8 +103,8 @@ hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",2)
 itemList    = [wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
 
 
-arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],"arrow",1,"treeF.wav",sound,1000,False,45)
-arrowS     = projectile(["arrowSlime.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],"arrowS",1,"treeF.wav",sound,1000,True,45)
+arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],arrowI,1,"treeF.wav",sound,1000,False,45)
+arrowS     = projectile(["arrowSlime.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],arrowSI,1,"treeF.wav",sound,1000,True,45)
 bow1       = fireF(["bow.png","bow1.png","bowF.png"],140,140,screen.images,[[0,0,140,140]],20,50,20)
 bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1,"bowV.png",screen.images)
 
@@ -228,7 +229,7 @@ craftRList = [spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pick
 running = True
 while running:
 
-
+   nightT += 1
 
    keys = pygame.key.get_pressed()
    if keys[pygame.K_t]:
@@ -301,6 +302,11 @@ while running:
    for rect in testS.rectList:
       x,y = screen.convertWTS(rect[0],rect[1])
       pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,rect[2],rect[3]),2)
+
+   night = pygame.Surface((580,580))
+   night.set_alpha(int(place.darkness))
+   night.fill((0,0,0))
+   screen.screen.blit(night,(0,0))
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT or gob.health <= 0:

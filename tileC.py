@@ -42,11 +42,4 @@ class tileC(tile):
       self.soild  = False
       if numWall >= 5:
          self.type   = "wall"
-         a           = np.random.choice(blocks,p = [0.95,0.05])
-         self.soild  = True
-         if a == "stone":
-            self.image = [block[0]]
-         else:
-            self.image = [block[1]]
-            self.iron  = True
 

@@ -6,11 +6,16 @@ class projectile(sprite):
    def __init__(self,img,x,y,w,h,images,hitBoxL,item,damage,hitNoise,sound,Range,bounce,offset = 0):
       super().__init__(img,x,y,w,h,images,hitBoxL)
       self.damage   = damage
-      self.item     = item
+      self.item     = item.name
       self.bounce   = bounce
       self.range    = Range
       self.offset   = offset
       self.hitNoise = sound.loadS(hitNoise)
+
+      
+      self.imageV         = item.image+"V"
+      img                 = pygame.image.load(item.image)
+      images[self.imageV] = pygame.transform.scale(img,(75,75))
 
    def update(self,screen,sound,enemyList,projectileList,place):
       self.range -= abs(self.velocityX)+abs(self.velocityY)
