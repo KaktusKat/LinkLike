@@ -3,12 +3,13 @@ from tileF import tileF
 import pygame
 
 class placeObject:
-   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,imagesC,tileV,imageI,connector = True):
+   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,tileV,imageI,connector = True,connect2 = True):
       self.changeI    = change
       self.connector  = connector
       self.item       = item
       self.tileV      = tileV
       self.w          = w
+      self.connect2   = connect2
       self.name       = name
       self.hitBoxLC   = hitBoxLC
       self.h          = h
@@ -21,10 +22,9 @@ class placeObject:
       image = pygame.image.load(self.select)
       images[self.select] = pygame.transform.scale(image,(75,75))
       self.imagesC = []
-      for i in range(len(imagesC)):
-         self.imagesC.append("images/"+imagesC[i][0])
-         image = pygame.image.load("images/"+imagesC[i][0])
-         images[self.imagesC[i]] = pygame.transform.scale(image,(imagesC[i][1],imagesC[i][2]))
+      for img in change:
+         image = pygame.image.load("images/"+change[img][0])
+         images[change[img][0]] = pygame.transform.scale(image,(change[img][3],change[img][4]))
 
 
    def place(self,itemDict,place,screen,biomeList):
@@ -71,25 +71,28 @@ class placeObject:
                   if tileC.fence and self.hitBoxLC[str(x)+str(y)] in tile.hitBox.hitBoxList:
                      tile.hitBox.hitBoxList.remove(self.hitBoxLC[str(x)+str(y)])
                      tile.fenceDraw.remove(self.changeI[str(x)+str(y)])
-
+                     
                      tileC.hitBox.hitBoxList.remove(self.hitBoxLC[str(-x)+str(-y)])
                      tileC.fenceDraw.remove(self.changeI[str(-x)+str(-y)])
    
    def loadN(self,tile,place):
+       self.loadN_lambda(tile,place,lambda t: t.fence == True)
+
+   def loadN_lambda(self,tile,place, code):
       for x in range(-1,2):
          for y in range(-1,2):
 
             if not abs(x) + abs(y) == 2 and not abs(x) + abs(y) == 0:
 
-               key   = place.genKeyP(x * 58+tile.x,y * 58+tile.y)
-               if key in place.map_dic2:
-                  tileC = place.map_dic2[key]
-                  if tileC.fence:
+               tileC = place.getCell(tile.x,tile.y,x,y)
+               if tileC:
+                  if code(tileC):
                      tile.hitBox.hitBoxList.append(self.hitBoxLC[str(x)+str(y)])
                      tile.fenceDraw.append(self.changeI[str(x)+str(y)])
 
-                     tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
-                     tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
+                     if self.connect2:
+                        tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
+                        tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
 
    def draw(self,screen):
       screen.screen.blit(screen.images[self.select],(110,10))

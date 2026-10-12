@@ -37,12 +37,16 @@ class place:
 
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
+
+   def getCell(self,x,y,xA = 0,yA = 0):
+       if self.genKeyP(x + xA * 58,y + yA * 58) in self.map_dic:
+          return self.map_dic2[self.genKeyP(x + xA * 58,y + yA * 58)]
+       return None
     
    def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,perlinNoiseL,sound,slime):
 
       self.time += 1
       time = self.time % self.daySpeed
-      print(time)
 
       if time > self.daySpeed / 2 - 160 and time < self.daySpeed / 2 + 160:
         self.darkness += 0.5
@@ -79,30 +83,11 @@ class place:
                   self.map_dic[key].connector = True
                   self.map_dic[key].draw(screen)
                   self.map_dic2[key].draw(screen)
+                  self.map_dic2[key].checkMined(weaponList,player,sound)
                      
-                  if len(self.map_dic2[key].toolList) > 0:
-                     for tool in self.map_dic2[key].toolList:
-                        if self.map_dic2[key].hitBox.isHit(weaponList[tool[0]].hitBox) and weaponList[tool[0]].attacking and not self.map_dic2[key].iframes:
-                           self.map_dic2[key].health += 1
-                           sound.playS(self.map_dic2[key].noise)
-                           weaponList[tool[0]].hit   = True
-                           self.map_dic2[key].iframes = True
-                           if len(tool) == 4:
-                              tool[2].amount += tool[3]
-                           self.map_dic2[key].toolHit = tool[0]
-                           if self.map_dic2[key].health >= tool[1]:
-                              self.map_dic2[key].item.amount += 1
-                              self.map_dic2[key].soild        = False
-                              self.map_dic2[key].connectS     = {-1:False,1:False}
-                              self.map_dic2[key].connectU     = {-1:False,1:False}
-                              if self.map_dic2[key] in player.placeList[player.placeIndex].objectList:
-                                 player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
-                                 player.placeList[player.placeIndex].unloadN(self.map_dic2[key],self)
-                              self.map_dic2[key].change[0].makeTile(self.map_dic2[key])
-                              
 
-         for x in range(-20,21):
-            for y in range(-20,21):
+         for x in range(-15,16):
+            for y in range(-15,16):
                xK  = x + player.x // 58
                yK  = y + player.y // 58
                key = self.genKeyC(xK,yK)

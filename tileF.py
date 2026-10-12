@@ -14,5 +14,5 @@ class tileF(tileO):
       screen.blit(img, self.x, self.y)
 
       for draw in self.fenceDraw:
-         screen.blit(screen.images["images/"+draw[0]], self.x+draw[1], self.y+draw[2])
+         screen.blit(screen.images[draw[0]], self.x+draw[1], self.y+draw[2])
       

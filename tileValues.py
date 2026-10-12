@@ -2,12 +2,12 @@ import copy
 import pygame
 
 class tileValues:
-   def __init__(self,image,soild,breakable,w,h,images,hitBoxL,sound,noise = [],toolList = [],item = [],change = [],bounce = 0.95,portal = False,chestList = [0]):
+   def __init__(self,image,soild,breakable,w,h,images,hitBoxL,sound,noise = [],toolList = [],item = [],change = [],bounce = 0.95,portal = False,chestList = [0],Ttype = ""):
       self.image = []
       for img in image:
          self.image.append("images/"+img)
          image = pygame.image.load("images/"+img)
-         images["images/"+img] = pygame.transform.scale(image,(58,58))
+         images["images/"+img] = pygame.transform.scale(image,(w,h))
       self.noise = []
       for n in noise:
           self.noise = sound.loadS(n)
@@ -21,6 +21,7 @@ class tileValues:
       self.change    = change
       self.w         = w
       self.h         = h
+      self.type      = Ttype
       self.portal    = portal
 
    def makeTile(self,tile):
@@ -37,3 +38,4 @@ class tileValues:
        tile.health            = 0
        tile.noise             = self.noise
        tile.chestList         = copy.deepcopy(self.chestList)
+       tile.fenceDraw         = []

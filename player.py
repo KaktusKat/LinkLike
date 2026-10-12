@@ -70,10 +70,11 @@ class player(sprite):
             X   = x-3 + self.x//58
             Y   = y-3 + self.y//58
             key = place.genKeyC(X, Y)
-            tile = place.map_dic[key]
-            ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
-            if ab <= 3.5**2:
-               self.circleTiles.append(tile)
+            if key in place.map_dic:
+               tile = place.map_dic[key]
+               ab   = ((tile.x-self.x)//58)**2+((tile.y-self.y)//58)**2
+               if ab <= 3.5**2:
+                  self.circleTiles.append(tile)
               
       if len(ballList) > 0:
          delList = []

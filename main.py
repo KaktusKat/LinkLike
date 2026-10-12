@@ -6,6 +6,8 @@ import pygame
 import time
 import sys
 import copy
+from outLine        import outLine
+from biomeC         import biomeC
 from perlinNoise    import perlinNoise
 from connecter      import connecter
 from struture       import structure
@@ -111,6 +113,9 @@ bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1,"bowV.png",screen.images
 weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
 temp       = perlinNoise(50,100000,100000)
+
+tempC      = perlinNoise(50,100000,100000)
+perlinListC = [tempC]
 perlinList = [temp]
 
 grass      = tileValues(["grass.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
@@ -118,11 +123,11 @@ grass2     = tileValues(["grass2.png"],False,True,58,58,screen.images,[[0,0,58,5
 flower     = tileValues(["flower.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 flint      = tileValues(["flints.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["fist",1,"flintF.wav"]],flints,[grass2])
 stump      = tileValues(["stump.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
-chestS     = tileValues(["chest.png"],True,True,25,30,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["axe",1]],chestI,chestList = [[wood,2],[flints,1],[slime,3]])
-chestE     = tileValues(["chest.png"],True,True,25,30,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["axe",1]],chestI,chestList = [[emptyI,0],[emptyI,0],[emptyI,0]])
-tree       = tileValues(["tree.png"],True,True,25,30,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
+chestS     = tileValues(["chest.png"],True,True,58,58,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["axe",1]],chestI,chestList = [[wood,2],[flints,1],[slime,3]])
+chestE     = tileValues(["chest.png"],True,True,58,58,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["axe",1]],chestI,chestList = [[emptyI,0],[emptyI,0],[emptyI,0]])
+tree       = tileValues(["tree.png"],True,True,58,58,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["fist",1000000,stick,1],["axe",1,stick,2]],wood,[stump])
 portal     = tileValues(["portal.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound,portal = True)
-rock       = tileValues(["rock.png"],True,False,20,20,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
+rock       = tileValues(["rock.png"],True,False,58,58,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[grass2,portal])
 GCD        = tileValues(["grassCD.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 GCD2       = tileValues(["grassCD2.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 GCD3       = tileValues(["grassCD3.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
@@ -131,16 +136,27 @@ sand2      = tileValues(["sand2.png"],False,True,58,58,screen.images,[[0,0,58,58
 sand3      = tileValues(["sand3.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound)
 catus      = tileValues(["catus.png"],True,True,58,58,screen.images,[[0,0,58,58]],sound)
 sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,[[0,0,58,58]],sound,portal = True)
-sandRocks  = tileValues(["sandRocks.png"],True,False,20,20,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
+sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[sandPortal,sand2])
 empty      = tileValues(["empty.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound)
 fenceV     = tileValues(["fenceP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],wood,[sandPortal,sand2])
 fenceSV    = tileValues(["fenceSP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],woodS,[sandPortal,sand2])
 
+clear      = tileValues(["caveBackground.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
+clear2     = tileValues(["caveBackground2.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
+amethyst   = tileValues(["amethyst.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound)
+wall1      = tileValues(["caveWall.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear],Ttype = "wall")
+wall2      = tileValues(["caveWall2.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear2],Ttype = "wall")
+ironOre    = tileValues(["ironOre.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],iron,[empty])
+
 hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,5,29]}
-imagesC    = {"-10":["fenceS.png",0,0],"10":["fenceS.png",29,0],"0-1":["fenceU.png",0,0],"01":["fenceU.png",0,29]}
-fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],fenceV,"fenceI.png")
-chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceS.png",29,58],["fenceU.png",58,29]],chestE,"chestVI.png",False)
-fenceS     = placeObject("fenceS",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,[["fenceSS.png",29,58],["fenceSU.png",58,29]],fenceSV,"fenceSI.png")
+imagesC    = {"-10":["fenceS.png",0,0,29,58],"10":["fenceS.png",29,0,29,58],"0-1":["fenceU.png",0,0,58,29],"01":["fenceU.png",0,29,58,29]}
+fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png")
+
+imagesC    = {"-10":["caveCR.png",0,0,29,29],"10":["caveCL.png",0,0,29,29],"0-1":["caveCU.png",0,0,29,29],"01":["caveCD.png",0,0,29,29]}
+caveOT     = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png",connect2 = False)
+
+chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,chestE,"chestVI.png",False)
+fenceS     = placeObject("caveC",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,fenceSV,"fenceSI.png")
 placeList  = [fence,fenceS,chest]
 
 C4         = connecter([2,-116,0,1],[1])
@@ -171,12 +187,16 @@ forest    = biome("forest",[[1,0.05]],[[grass,1],[grass2,1],[flower,1]],[[flint,
 sand      = biome("sand",[[-0.05,-1]],[[sand,1],[sand2,1],[sand3,1]],[[sandRocks,0.25],[empty,3]],[emptyS])
 FCS       = biome("FCS",[[0.05,-0.05]],[[GCD,1],[GCD2,1]],[[empty,1]],[emptyS])
 biomeList = [sand,forest,FCS]
+
+test       = biomeC("test",[[1,-1]],[[[wall1,1],[wall2,1]],[[clear,1],[clear2,1]]],[[[empty,1],[ironOre,0.1]],[[empty,1],[amethyst,0.1]]],[emptyS])
+biomeListC = [test]
+
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist"]
+wepon    += ["pickaxe","fist"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,[[0,0,54,51]],wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
-cave      = Cave(["caveBackground.png","caveBlock.png","ironOre.png"],screen.images)
+cave      = Cave(biomeListC,caveOT)
 
 enemy_list = []
 for i in range(0):
@@ -247,7 +267,7 @@ while running:
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
       enemy_list = []
-      cave.update(screen,gob,pickaxe,itemDict[iron.name])
+      cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC,testS)
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime)
 

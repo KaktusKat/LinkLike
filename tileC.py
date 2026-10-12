@@ -3,23 +3,23 @@ import random
 from tile import tile
 
 class tileC(tile):
-   def __init__(self,img,posX,posY,w,h,images,hitBoxL,soild,numRow = 0):
+   def __init__(self,img,posX,posY,w,h,images,hitBoxL,soild,row,numRow = 0):
       super().__init__(img,posX,posY,w,h,images,hitBoxL,soild)
       self.reducedNoise = False
+      self.outD         = [0,0]
       self.numRow       = numRow
+      self.fenceDraw    = []
+      self.row          = row
       self.type         = 0
+      self.toolList     = []
       self.iron         = False
       self.nextTo       = []
 
-   def randomPlace(self,img1,img2):
+   def randomPlace(self):
       if random.randint(0,1) == 1:
          self.type  = "wall"
-         self.image = [img1]
-         self.soild = True
       else:
         self.type  = "empty"
-        self.image = [img2]
-        self.soild = False
 
    def nebiors(self,tileList,width):
       posList     = [self.x//29,self.y//29]
@@ -29,7 +29,7 @@ class tileC(tile):
          for y in range(-1,2):
             self.nextTo.append(tileList[(posList[0]+x)][(posList[1]+y)])
 
-   def reduceNoise(self,backG,block,blocks):
+   def reduceNoise(self):
       numWall  = 0
       numEmpty = 0
       for tile in self.nextTo:
@@ -38,8 +38,17 @@ class tileC(tile):
          else:
            numEmpty += 1
       self.type   = "empty"
-      self.image  = [backG]
-      self.soild  = False
       if numWall >= 5:
          self.type   = "wall"
+
+   def draw(self,screen):
+      img = screen.images[self.image[self.image_index]]
+      if self.flipS:
+         img = pygame.transform.flip(img,True,False)
+      if self.flip:
+         img = pygame.transform.flip(img,False,True)
+      screen.blit(img, self.x, self.y)
+
+      for draw in self.fenceDraw:
+         screen.blit(screen.images[draw[0]], self.x+draw[1], self.y+draw[2])
 
