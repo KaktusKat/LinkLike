@@ -148,13 +148,20 @@ wall1      = tileValues(["caveWall.png"],True,False,29,29,screen.images,[[0,0,29
 wall2      = tileValues(["caveWall2.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear2],Ttype = "wall")
 ironOre    = tileValues(["ironOre.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],iron,[empty])
 
+images        = {}
+images["000"] = ["caveOT000.png",29,29]
+images["001"] = ["caveOT001.png",29,29]
+images["011"] = ["caveOT011.png",29,29]
+images["111"] = ["caveOT111.png",29,29]
+images["010"] = ["caveOT010.png",29,29]
+images["100"] = ["caveOT100.png",29,29]
+images["110"] = ["caveOT110.png",29,29]
+images["101"] = ["caveOT101.png",29,29]
+caveOT        = outLine(images,lambda t: t.type == "wall" and not t.out,screen.images)
+
 hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,5,29]}
 imagesC    = {"-10":["fenceS.png",0,0,29,58],"10":["fenceS.png",29,0,29,58],"0-1":["fenceU.png",0,0,58,29],"01":["fenceU.png",0,29,58,29]}
 fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png")
-
-imagesC    = {"-10":["caveCR.png",0,0,29,29],"10":["caveCL.png",0,0,29,29],"0-1":["caveCU.png",0,0,29,29],"01":["caveCD.png",0,0,29,29]}
-caveOT     = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png",connect2 = False)
-
 chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,chestE,"chestVI.png",False)
 fenceS     = placeObject("caveC",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,fenceSV,"fenceSI.png")
 placeList  = [fence,fenceS,chest]

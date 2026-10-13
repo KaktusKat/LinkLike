@@ -77,12 +77,12 @@ class Cave:
       for tile in new:
          self.makeTile(tile.x//29,tile.y//29,images,biomeList,perlinNoiseL)
          if tile.type == "empty" and tile.row == 1:
-            self.outLine.loadN_lambda(tile,self,lambda t: t.type == "wall" and not t.out)
+            self.outLine.load(tile,self)
          if not tile.outD == [0,0]:
             x = tile.x // 29 - tile.outD[0]
             y = tile.y // 29 - tile.outD[1]
             if self.tileList[x][y].type == "empty":
-               self.outLine.loadN_lambda(self.tileList[x][y],self,lambda t: t.type == "wall" and not t.out)
+               self.outLine.load(self.tileList[x][y],self)
 
    def makeTile(self,keyX,keyY,images,biomeList,perlinNoiseL):
       value = []
