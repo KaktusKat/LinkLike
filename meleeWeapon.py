@@ -31,6 +31,7 @@ class meleeWeapon(weapon):
   
          if self.hit:
 
+            self.attacking = False
             self.hit = False
             frame            = self.frameList[self.frameIndex]
             user.velocityX  -= (self.kback*math.cos(frame.KBangle))/2.5
@@ -42,8 +43,9 @@ class meleeWeapon(weapon):
          self.w      = self.frameList[self.frameIndex].w
          self.h      = self.frameList[self.frameIndex].h
          self.hitBox = self.frameList[self.frameIndex].hitBox
+         x,y         = screen.convertWTS(self.x,self.y)
       else:
-         self.attacking = False
+        pass
 
       if not self.AspeedTimer > self.Aspeed:
          return

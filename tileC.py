@@ -52,3 +52,26 @@ class tileC(tile):
       for draw in self.fenceDraw:
          screen.blit(screen.images[draw[0]], self.x+draw[1], self.y+draw[2])
 
+   def checkMined(self,weaponList,player,sound,outLine,place):
+      if len(self.toolList) > 0:
+         for tool in self.toolList:
+            if self.hitBox.isHit(weaponList[tool[0]].hitBox) and weaponList[tool[0]].attacking and not self.iframes:
+               self.health += 1
+               sound.playS(self.noise)
+               weaponList[tool[0]].hit   = True
+               self.iframes = True
+               if len(tool) == 4:
+                  tool[2].amount += tool[3]
+               self.toolHit = tool[0]
+               if self.health >= tool[1]:
+                  self.item.amount += 1
+                  self.soild        = False
+                  self.type         = "empty"
+                  outLine.unload(self,place)
+                  self.connectS     = {-1:False,1:False}
+                  self.connectU     = {-1:False,1:False}
+                  if self in player.placeList[player.placeIndex].objectList:
+                     player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
+                     player.placeList[player.placeIndex].unloadN(self.map_dic2[key],self)
+                  self.change[0].makeTile(self)
+

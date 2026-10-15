@@ -25,7 +25,7 @@ class Cave:
          self.tile2["wall"][biome.name]  = biome.images2W
          self.prob2["wall"][biome.name]  = biome.prob2W
 
-   def update(self,screen,sound,player,weaponList,biomeList,perlinNoiseL,struct):
+   def update(self,screen,sound,player,weaponList,biomeList,perlinNoiseL):
       near = []
       keys = pygame.key.get_pressed()
       new  = []
@@ -60,14 +60,13 @@ class Cave:
                   self.tileList[keyX][keyY].out = False
                   new.append(self.tileList[keyX][keyY])
                near.append(self.tileList[keyX][keyY])
-               if keys[pygame.K_p]:
-                  near.append(self.tileList2[keyX][keyY])
-      self.add(new,keyX,keyY,screen.images,biomeList,perlinNoiseL,struct)
+               near.append(self.tileList2[keyX][keyY])
+      self.add(new,keyX,keyY,screen.images,biomeList,perlinNoiseL)
       for tiles in near:
-          tiles.checkMined(weaponList,player,sound)
+          tiles.checkMined(weaponList,player,sound,self.outLine,self)
           tiles.draw(screen)
 
-   def add(self,new,keyX,keyY,images,biomeList,perlinNoiseL,struct):
+   def add(self,new,keyX,keyY,images,biomeList,perlinNoiseL):
       for tile in new:
              tile.nebiors(self.tileList,580)
       for i in range(5):
@@ -76,12 +75,12 @@ class Cave:
             tile.reducedNoise = True
       for tile in new:
          self.makeTile(tile.x//29,tile.y//29,images,biomeList,perlinNoiseL)
-         if tile.type == "empty" and tile.row == 1:
+         if tile.type == "wall" and tile.row == 1:
             self.outLine.load(tile,self)
          if not tile.outD == [0,0]:
             x = tile.x // 29 - tile.outD[0]
             y = tile.y // 29 - tile.outD[1]
-            if self.tileList[x][y].type == "empty":
+            if self.tileList[x][y].type == "wall":
                self.outLine.load(self.tileList[x][y],self)
 
    def makeTile(self,keyX,keyY,images,biomeList,perlinNoiseL):

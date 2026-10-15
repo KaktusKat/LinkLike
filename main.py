@@ -157,7 +157,7 @@ images["010"] = ["caveOT010.png",29,29]
 images["100"] = ["caveOT100.png",29,29]
 images["110"] = ["caveOT110.png",29,29]
 images["101"] = ["caveOT101.png",29,29]
-caveOT        = outLine(images,lambda t: t.type == "wall" and not t.out,screen.images)
+caveOT        = outLine(images,lambda t: t.type == "empty" and not t.out,lambda t: t.type == "wall",screen.images)
 
 hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,5,29]}
 imagesC    = {"-10":["fenceS.png",0,0,29,58],"10":["fenceS.png",29,0,29,58],"0-1":["fenceU.png",0,0,58,29],"01":["fenceU.png",0,29,58,29]}
@@ -195,7 +195,7 @@ sand      = biome("sand",[[-0.05,-1]],[[sand,1],[sand2,1],[sand3,1]],[[sandRocks
 FCS       = biome("FCS",[[0.05,-0.05]],[[GCD,1],[GCD2,1]],[[empty,1]],[emptyS])
 biomeList = [sand,forest,FCS]
 
-test       = biomeC("test",[[1,-1]],[[[wall1,1],[wall2,1]],[[clear,1],[clear2,1]]],[[[empty,1],[ironOre,0.1]],[[empty,1],[amethyst,0.1]]],[emptyS])
+test       = biomeC("test",[[1,-1]],[[[clear2,1],[clear,1]],[[wall1,1],[wall2,1]]],[[[empty,1],[amethyst,0.1]],[[empty,1],[ironOre,0.1]]],[emptyS])
 biomeListC = [test]
 
 biomeDict = {"forest":forest,"sand":sand}
@@ -274,7 +274,7 @@ while running:
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place):
       enemy_list = []
-      cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC,testS)
+      cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC)
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime)
 

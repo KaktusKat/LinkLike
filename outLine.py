@@ -1,16 +1,16 @@
 import pygame
 
 class outLine:
-   def __init__(self,images,code,imagesS):
+   def __init__(self,images,code,Ucode,imagesS):
       self.images = images
       self.code   = code
+      self.Ucode  = Ucode
       for img in images:
          image   = pygame.image.load("images/"+images[img][0])
          image   = pygame.transform.scale(image,(images[img][1],images[img][2]))
          for x in range(0,2):
             for y in range(0,2):
                imagesS[images[img][0]+str(x)+str(y)] = pygame.transform.flip(image,x,y)
-
 
    def load(self,tile,place):
       a      = 0
@@ -34,6 +34,15 @@ class outLine:
             secondS = placeL[cornerX + (1 - 2 * x)][cornerY]
             thridS  = placeL[cornerX][cornerY + (1 - 2 * y)]
 
-            image    = self.images[corner+secondS+thridS]
-            image    = image[0] + str(x) + str(y)
-            tile.fenceDraw.append([image,0,0])
+            if not corner+secondS+thridS == "000":
+               image    = self.images[corner+secondS+thridS]
+               image    = image[0] + str(x) + str(y)
+               tile.fenceDraw.append([image,0,0])
+   
+   def unload(self,tile,place):
+      for x in range(-1,2):
+         for y in range(-1,2):
+            tileC = place.getCell(tile.x,tile.y,x,y)
+            if self.Ucode(tileC):
+               self.load(tileC,place)
+
