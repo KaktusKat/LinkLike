@@ -3,13 +3,11 @@ from tileF import tileF
 import pygame
 
 class placeObject:
-   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,tileV,imageI,connector = True,connect2 = True):
+   def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,tileV,imageI):
       self.changeI    = change
-      self.connector  = connector
       self.item       = item
       self.tileV      = tileV
       self.w          = w
-      self.connect2   = connect2
       self.name       = name
       self.hitBoxLC   = hitBoxLC
       self.h          = h
@@ -46,12 +44,9 @@ class placeObject:
             x = place.map_dic2[key].x
             y = place.map_dic2[key].y
 
-            if self.connector:
-               place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,self,biomeList)
-               tile                   = place.map_dic2[key]
-               tile.fence             = True
-            else:
-               place.map_dic2[key]    = tileO(["empty.png"],x,y,58,58,images,[],True,biomeList)
+            place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,self,biomeList)
+            tile                   = place.map_dic2[key]
+            tile.fence             = True
             tile                   = place.map_dic2[key]
             self.tileV.makeTile(tile)
             self.loadN(tile,place)
