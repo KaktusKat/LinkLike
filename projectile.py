@@ -22,7 +22,7 @@ class projectile(sprite):
       self.x     += self.velocityX
       self.y     += self.velocityY
       for enemy in enemyList:
-         if self.hitBox.isHit(enemy):
+         if self.hitBox.isHit(enemy.hitBox):
             enemy.ha     -= self.damage
             enemy.iFrames = True
             enemy.iframes = self.damage

@@ -28,10 +28,12 @@ class meleeWeapon(weapon):
       Mpress = pygame.mouse.get_pressed()
 
       if self.attackTimer < 30:
+
+         if self.attackTimer == 5:
+           self.attacking = False
   
          if self.hit:
 
-            self.attacking = False
             self.hit = False
             frame            = self.frameList[self.frameIndex]
             user.velocityX  -= (self.kback*math.cos(frame.KBangle))/2.5
@@ -44,6 +46,7 @@ class meleeWeapon(weapon):
          self.h      = self.frameList[self.frameIndex].h
          self.hitBox = self.frameList[self.frameIndex].hitBox
          x,y         = screen.convertWTS(self.x,self.y)
+
       else:
         pass
 
@@ -59,6 +62,12 @@ class meleeWeapon(weapon):
 
          self.frameList[self.frameIndex].attack(user,screen)
          self.frameList[self.frameIndex].draw(screen,user)
+
+         self.x      = self.frameList[self.frameIndex].x
+         self.y      = self.frameList[self.frameIndex].y
+         self.w      = self.frameList[self.frameIndex].w
+         self.h      = self.frameList[self.frameIndex].h
+         self.hitBox = self.frameList[self.frameIndex].hitBox
 
          self.comboTimer  = 0
          self.AspeedTimer = 0

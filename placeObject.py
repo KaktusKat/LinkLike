@@ -47,9 +47,9 @@ class placeObject:
             y = place.map_dic2[key].y
 
             if self.connector:
-               place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,biomeList)
+               place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,self,biomeList)
                tile                   = place.map_dic2[key]
-               tile.fence = True
+               tile.fence             = True
             else:
                place.map_dic2[key]    = tileO(["empty.png"],x,y,58,58,images,[],True,biomeList)
             tile                   = place.map_dic2[key]
@@ -76,9 +76,6 @@ class placeObject:
                      tileC.fenceDraw.remove(self.changeI[str(-x)+str(-y)])
    
    def loadN(self,tile,place):
-       self.loadN_lambda(tile,place,lambda t: t.fence == True)
-
-   def loadN_lambda(self,tile,place, code):
       for x in range(-1,2):
          for y in range(-1,2):
 
@@ -86,13 +83,12 @@ class placeObject:
 
                tileC = place.getCell(tile.x,tile.y,x,y)
                if tileC:
-                  if code(tileC):
+                  if tileC.fence:
                      tile.hitBox.hitBoxList.append(self.hitBoxLC[str(x)+str(y)])
                      tile.fenceDraw.append(self.changeI[str(x)+str(y)])
 
-                     if self.connect2:
-                        tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
-                        tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
+                     tileC.hitBox.hitBoxList.append(self.hitBoxLC[str(-x)+str(-y)])
+                     tileC.fenceDraw.append(self.changeI[str(-x)+str(-y)])
 
    def draw(self,screen):
       screen.screen.blit(screen.images[self.select],(110,10))

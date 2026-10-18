@@ -17,7 +17,7 @@ class tile(sprite):
        self.iframes      = False
        self.toolHit      = 0
 
-   def checkMined(self,weaponList,player,sound):
+   def checkMined(self,weaponList,player,sound,place):
       if len(self.toolList) > 0:
          for tool in self.toolList:
             if self.hitBox.isHit(weaponList[tool[0]].hitBox) and weaponList[tool[0]].attacking and not self.iframes:
@@ -31,10 +31,5 @@ class tile(sprite):
                if self.health >= tool[1]:
                   self.item.amount += 1
                   self.soild        = False
-                  self.connectS     = {-1:False,1:False}
-                  self.connectU     = {-1:False,1:False}
-                  if self in player.placeList[player.placeIndex].objectList:
-                     player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
-                     player.placeList[player.placeIndex].unloadN(self.map_dic2[key],self)
                   self.change[0].makeTile(self)
 

@@ -10,6 +10,7 @@ class rangedWeapon(weapon):
       self.projectileI = 0
       self.indexT      = 0
       self.frame       = frame
+      self.hitBox       = self.frame.hitBox
 
    def attack(self,screen,user,sound,projectileList,itemDict):
 

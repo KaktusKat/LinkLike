@@ -83,7 +83,7 @@ class place:
                   self.map_dic[key].connector = True
                   self.map_dic[key].draw(screen)
                   self.map_dic2[key].draw(screen)
-                  self.map_dic2[key].checkMined(weaponList,player,sound)
+                  self.map_dic2[key].checkMined(weaponList,player,sound,self)
                      
 
          for x in range(-15,16):

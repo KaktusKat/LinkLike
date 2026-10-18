@@ -10,6 +10,7 @@ class invetory:
           images[img[0]]  = pygame.transform.scale(image,(img[1],img[1]))
       self.woodNum     = woodNum
       self.timerO      = 0
+      self.timer       = 0
       self.window      = False
       self.placeBlock  = 0
       self.place       = False
@@ -36,6 +37,7 @@ class invetory:
             self.craftTable[x].append([empty,580-x*50,580-y*50])
 
    def open(self,screen,keys,player,place,maze,craftRList,itemDict,emptyI):
+       self.timer += 1
        self.chestOpen(screen,player,place,maze,craftRList,keys,itemDict,emptyI)
        if keys[pygame.K_q] or self.window or self.table:
           screen.screen.blit(screen.images[self.imgI],(screen.width/2-150,screen.height/2-150))
@@ -92,10 +94,13 @@ class invetory:
                   screen.screen.blit(newImg,(self.craftTable[y][x][1]+5,self.craftTable[y][x][2]+5))
                   self.craftTable[y][x] = self.pickUpCraft(50,50,place,maze,player,self.craftTable[y][x])
 
-         if keys[pygame.K_l]:
+         
+         if keys[pygame.K_l] and self.timer > 0:
+            self.timer = -20
             if not self.pageNum == self.maxPage:
                self.pageNum += 1
-         if keys[pygame.K_k]:
+         if keys[pygame.K_k] and self.timer > 0:
+            self.timer = -20
             if not self.pageNum == 1:
                self.pageNum -= 1
 
