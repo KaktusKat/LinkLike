@@ -95,6 +95,8 @@ emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
 stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
 amethystI   = item(177,177,50,50,screen.images,"amethyst","amethystI.png",2)
+brewingI    = item(177,267,50,50,screen.images,"brewing","brewingstandI.png",2)
+torchI      = item(267,267,50,50,screen.images,"torch","torchI.png",2)
 lushBerryI  = item(267,177,50,50,screen.images,"lushBerry","lushBerryI.png",2)
 mossI       = item(357,177,50,50,screen.images,"moss","mossI.png",2)
 arrowI      = item(177,177,50,50,screen.images,"arrow","arrowI.png",3)
@@ -106,7 +108,7 @@ pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",3)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",3)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",3)
 
-itemList    = [amethystI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
+itemList    = [torchI,amethystI,brewingI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
 
 
 arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],arrowI,1,"treeF.wav",sound,1000,False,45)
@@ -144,6 +146,8 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,[[0,0,
 sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[empty])
 fenceV     = tileValues(["fenceP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],wood,[empty])
 fenceSV    = tileValues(["fenceSP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],woodS,[empty])
+torchV     = tileValues(["torch.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],torchI,[empty])
+brewingV   = tileValues(["brewingstand.png"],True,False,58,58,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["pickaxe",1]],brewingI,[empty])
 
 clear    = tileValues(["caveBackground.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
 clear2   = tileValues(["caveBackground2.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
@@ -171,16 +175,17 @@ hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,
 imagesC    = {"-10":["fenceS.png",0,0,29,58],"10":["fenceS.png",29,0,29,58],"0-1":["fenceU.png",0,0,58,29],"01":["fenceU.png",0,29,58,29]}
 fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png")
 chest      = placeObjectT(chestI,chestE,"chest",screen.images,"chestVI.png")
-#chest      = placeObject("chest",chestI,screen.images,imagesC,hitBoxL,7,40,58,58,chestE,"chestVI.png",False)
+torch      = placeObjectT(torchI,torchV,"torch",screen.images,"torchV.png")
+brewingP   = placeObjectT(brewingI,brewingV,"brewing",screen.images,"brewingstandV.png")
 fenceS     = placeObject("caveC",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,fenceSV,"fenceSI.png")
-placeList  = [fence,fenceS,chest]
+placeList  = [fence,fenceS,torch,brewingP,chest]
 
 C4         = connecter([2,-116,0,1],[1])
 testSL4    = [[[fence],     [fence],[fence]],
               [[empty,[C4]],[empty],[empty]],
               [[fence],     [fence],[fence]]]
 
-testSL3    = [[[fence],[chestS],[fence]],
+testSL3    = [[[fence],[brewingV],[fence]],
               [[fence],[portal],[empty]],
               [[fence],[fence],[fence]]]
 
@@ -260,7 +265,9 @@ bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["slime","sli
 hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[itemDict[hammerI.name],1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[itemDict[refinedIron.name],1]]
 woodSR     = [[["wood","empty","empty"],["slime","empty","empty"],["empty","empty","empty"]],[itemDict[woodS.name],1]]
-craftRList = [spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR,chestR]
+torchR     = [[["empty","empty","empty"],["iron","stick","empty"],["empty","empty","empty"]],[itemDict[torchI.name],4]]
+brewingR   = [[["refinedIron","empty","rock"],["amethyst","amethyst","rock"],["refinedIron","empty","rock"]],[itemDict[brewingI.name],1]]
+craftRList = [brewingR,torchR,spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR,chestR]
 
 
 running = True

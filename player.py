@@ -56,13 +56,6 @@ class player(sprite):
       self.t    += 1
       Mpos       = pygame.mouse.get_pos()
       mousePress = pygame.mouse.get_pressed()
-      if mousePress[2] and self.inMaze:
-         craft = maze.get_cell(int(((Mpos[0]+self.x)//70)-4),int(((Mpos[1]+self.y)//70)-4))
-         if not invetory.window:
-            if self.hitBox.isHitXY(Mpos[0]+self.x-290,Mpos[1]+self.y-290,1,1,craft):
-               if craft.craft:
-                  self.table   = True
-                  invetory.table = True
 
       self.circleTiles = []
       for x in range(8):
