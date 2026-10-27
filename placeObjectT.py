@@ -18,11 +18,12 @@ class placeObjectT:
       Mpos   = pygame.mouse.get_pos()
       Mpress = pygame.mouse.get_pressed()
       if Mpress[2]:
-        x,y  = screen.convertSTW(Mpos[0],Mpos[1])
-        tile = place.getCell(x,y)
-        if not tile.soild and itemDict[self.item].amount > 0:
+        x,y   = screen.convertSTW(Mpos[0],Mpos[1])
+        tile1 = place.getCell(x,y,level = 1)
+        tile2 = place.getCell(x,y,level = 2)
+        if not tile1.soild and not tile2.soild and itemDict[self.item].amount > 0:
           itemDict[self.item].amount -= 1
-          self.tile.makeTile(tile)
+          self.tile.makeTile(tile2)
 
    def draw(self,screen):
       screen.screen.blit(screen.images[self.select],(110,10))
