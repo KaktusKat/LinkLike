@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+from syring         import syring
 from placeObjectT   import placeObjectT
 from outLine        import outLine
 from biomeC         import biomeC
@@ -64,6 +65,35 @@ load     = input("do you want to reload?")
 ballList = []
 tileList = {}
 
+rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
+flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
+wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
+chestI      = item(357,357,50,50,screen.images,"chest","chestI.png",1)
+iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
+slime       = item(357,177,50,50,screen.images,"slime","slime.png",1)
+woodS       = item(357,267,50,50,screen.images,"woodS","woodS.png",1)
+emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
+refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
+stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
+amethystI   = item(177,177,50,50,screen.images,"amethyst","amethystI.png",2)
+brewingI    = item(177,267,50,50,screen.images,"brewing","brewingstandI.png",2)
+torchI      = item(267,267,50,50,screen.images,"torch","torchI.png",2)
+lushBerryI  = item(267,177,50,50,screen.images,"lushBerry","lushBerryI.png",2,2,1)
+mossI       = item(357,177,50,50,screen.images,"moss","mossI.png",2)
+arrowI      = item(177,177,50,50,screen.images,"arrow","arrowI.png",3)
+bowI        = item(357,177,50,50,screen.images,"bow","bowI.png",3)
+arrowSI     = item(357,267,50,50,screen.images,"arrowS","arrowSlimeI.png",3)
+spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",3)
+swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",3)
+pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",3)
+axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",3)
+hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",3)
+
+itemList    = [torchI,amethystI,brewingI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
+
+syring1    = stabF(["syring.png"],92,72,screen.images,[[0,0,92,72]],20,10,4)
+syring     = syring(50,1.5,5,[syring1],50,"syringV.png",screen.images,rocks)
+
 spear1     = stabF(["spear.png"],122,22,screen.images,[[0,0,122,22]],20,10,4)
 spear      = meleeWeapon(50,1.5,5,[spear1],50,"spearV.png",screen.images)
 
@@ -84,39 +114,12 @@ sword      = meleeWeapon(50,1,5,[sword1,sword2,sword3],70,"swordV.png",screen.im
 hammer1    = slashF(["hammerSwing.png","hammer.png"],120,120,screen.images,[[0,0,120,120]],25,0.6,5)
 hammer     = meleeWeapon(75,1.5,40,[hammer1],1,"hammerV.png",screen.images)
 
-rocks       = item(177,267,50,50,screen.images,"rock","rock_invent.png",1)
-flints      = item(267,177,50,50,screen.images,"flint","flintInvent.png",1)
-wood        = item(177,177,50,50,screen.images,"wood","wood.png",1)
-chestI      = item(357,357,50,50,screen.images,"chest","chestI.png",1)
-iron        = item(267,267,50,50,screen.images,"iron","iron_invent.png",1)
-slime       = item(357,177,50,50,screen.images,"slime","slime.png",1)
-woodS       = item(357,267,50,50,screen.images,"woodS","woodS.png",1)
-emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
-refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
-stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
-amethystI   = item(177,177,50,50,screen.images,"amethyst","amethystI.png",2)
-brewingI    = item(177,267,50,50,screen.images,"brewing","brewingstandI.png",2)
-torchI      = item(267,267,50,50,screen.images,"torch","torchI.png",2)
-lushBerryI  = item(267,177,50,50,screen.images,"lushBerry","lushBerryI.png",2)
-mossI       = item(357,177,50,50,screen.images,"moss","mossI.png",2)
-arrowI      = item(177,177,50,50,screen.images,"arrow","arrowI.png",3)
-bowI        = item(357,177,50,50,screen.images,"bow","bowI.png",3)
-arrowSI     = item(357,267,50,50,screen.images,"arrowS","arrowSlimeI.png",3)
-spearI      = item(177,267,50,50,screen.images,"spearI","spearInvent.png",3)
-swordI      = item(267,177,50,50,screen.images,"swordI","swordInvent.png",3)
-pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",3)
-axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",3)
-hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",3)
-
-itemList    = [torchI,amethystI,brewingI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
-
-
 arrow      = projectile(["arrow.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],arrowI,1,"treeF.wav",sound,1000,False,45)
 arrowS     = projectile(["arrowSlime.png"],-100,-100,48,48,screen.images,[[0,0,48,48]],arrowSI,1,"treeF.wav",sound,1000,True,45)
 bow1       = fireF(["bow.png","bow1.png","bowF.png"],140,140,screen.images,[[0,0,140,140]],20,50,20)
 bow        = rangedWeapon(75,1.5,20,[arrow,arrowS],bow1,"bowV.png",screen.images)
 
-weaponList = {"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
+weaponList = {"syring":syring,"hammer":hammer,"sword":sword,"axe":war_hammar,"fist":fist,"pickaxe":pickaxe,"spear":spear,"bow":bow}
 
 temp       = perlinNoise(50,100000,100000)
 
@@ -147,28 +150,27 @@ sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,screen.images,[[19,19
 fenceV     = tileValues(["fenceP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],wood,[empty])
 fenceSV    = tileValues(["fenceSP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],woodS,[empty])
 torchV     = tileValues(["torch.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],torchI,[empty])
-brewingV   = tileValues(["brewingstand.png"],True,False,58,58,screen.images,[[17,14,25,30]],sound,["treeF.wav"],[["pickaxe",1]],brewingI,[empty])
 
-clear    = tileValues(["caveBackground.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
-clear2   = tileValues(["caveBackground2.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,Ttype = "empty")
-amethyst = tileValues(["amethyst.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],amethystI,[empty])
-wall1    = tileValues(["caveWall.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear])
-wall2    = tileValues(["caveWall2.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear2])
-ironOre  = tileValues(["ironOre.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],iron,[empty])
-lushB    = tileValues(["lushBackground.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound)
-moss     = tileValues(["moss.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],mossI,[clear])
-lushBy   = tileValues(["lushberry.png"],False,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],lushBerryI,[empty])
-lushW    = tileValues(["lushWall.png"],True,False,29,29,screen.images,[[0,0,29,29]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[empty])
+clear    = tileValues(["caveBackground.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,Ttype = "empty")
+clear2   = tileValues(["caveBackground2.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,Ttype = "empty")
+amethyst = tileValues(["amethyst.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],amethystI,[empty])
+wall1    = tileValues(["caveWall.png"],True,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear])
+wall2    = tileValues(["caveWall2.png"],True,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[clear2])
+ironOre  = tileValues(["ironOre.png"],True,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],iron,[empty])
+lushB    = tileValues(["lushBackground.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound)
+moss     = tileValues(["moss.png"],True,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],mossI,[clear])
+lushBy   = tileValues(["lushberry.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],lushBerryI,[empty])
+lushW    = tileValues(["lushWall.png"],True,False,58,58,screen.images,[[0,0,58,58]],sound,["flintF.wav"],[["pickaxe",1]],rocks,[empty])
 
 images        = {}
-images["000"] = ["caveOT000.png",29,29]
-images["001"] = ["caveOT001.png",29,29]
-images["011"] = ["caveOT011.png",29,29]
-images["111"] = ["caveOT111.png",29,29]
-images["010"] = ["caveOT010.png",29,29]
-images["100"] = ["caveOT100.png",29,29]
-images["110"] = ["caveOT110.png",29,29]
-images["101"] = ["caveOT101.png",29,29]
+images["000"] = ["caveOT000.png",58,58]
+images["001"] = ["caveOT001.png",58,58]
+images["011"] = ["caveOT011.png",58,58]
+images["111"] = ["caveOT111.png",58,58]
+images["010"] = ["caveOT010.png",58,58]
+images["100"] = ["caveOT100.png",58,58]
+images["110"] = ["caveOT110.png",58,58]
+images["101"] = ["caveOT101.png",58,58]
 caveOT        = outLine(images,lambda t: t.type == "empty" and not t.out,lambda t: t.type == "wall",screen.images)
 
 hitBoxL    = {"10":[29,29,29,5],"-10":[0,29,29,5],"01":[29,29,5,29],"0-1":[29,0,5,29]}
@@ -176,16 +178,15 @@ imagesC    = {"-10":["fenceS.png",0,0,29,58],"10":["fenceS.png",29,0,29,58],"0-1
 fence      = placeObject("fence",wood,screen.images,imagesC,hitBoxL,7,40,58,58,fenceV,"fenceI.png")
 chest      = placeObjectT(chestI,chestE,"chest",screen.images,"chestVI.png")
 torch      = placeObjectT(torchI,torchV,"torch",screen.images,"torchV.png")
-brewingP   = placeObjectT(brewingI,brewingV,"brewing",screen.images,"brewingstandV.png")
 fenceS     = placeObject("caveC",woodS,screen.images,imagesC,hitBoxL,7,40,58,58,fenceSV,"fenceSI.png")
-placeList  = [fence,fenceS,torch,brewingP,chest]
+placeList  = [fence,fenceS,torch,chest]
 
 C4         = connecter([2,-116,0,1],[1])
 testSL4    = [[[fence],     [fence],[fence]],
               [[empty,[C4]],[empty],[empty]],
               [[fence],     [fence],[fence]]]
 
-testSL3    = [[[fence],[brewingV],[fence]],
+testSL3    = [[[fence],[chestS],[fence]],
               [[fence],[portal],[empty]],
               [[fence],[fence],[fence]]]
 
@@ -216,9 +217,10 @@ biomeListC = [normal,lush]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["pickaxe","axe","fist"]
+wepon    += ["fist"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,[[0,0,54,51]],wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
 cave      = Cave(biomeListC,caveOT)
+gob.inPortal(place,cave)
 
 enemy_list = []
 for i in range(0):
@@ -289,7 +291,7 @@ while running:
    a += 1   
 
    screen.clear(gob.x, gob.y)
-   if gob.inPortal(place):
+   if gob.inPortal(place,cave):
       enemy_list = []
       cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC)
    else:

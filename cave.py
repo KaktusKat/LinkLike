@@ -29,14 +29,14 @@ class Cave:
       near = []
       keys = pygame.key.get_pressed()
       new  = []
-      for x in range (-14,14):
-         for y in range(-14,14):
-            keyX   = x+(player.x//29)
-            keyY   = y+(player.y//29)
+      for x in range (-8,9):
+         for y in range(-8,9):
+            keyX   = x+(player.x//58)
+            keyY   = y+(player.y//58)
             inList = True
             out    = False
             noise  = []
-            for value in [-14,13]:
+            for value in [-8,8]:
                if x == value:
                   out = [value / abs(value),0]
                if y == value:
@@ -45,8 +45,8 @@ class Cave:
                self.tileList[keyX]  = {}
                self.tileList2[keyX] = {}
             if not keyY in self.tileList[keyX]:
-               self.tileList[keyX][keyY]  = tileC(["CaveWall.png"],keyX*29,keyY*29,29,29,screen.images,[[0,0,29,29]],True,1,numRow = 1)
-               self.tileList2[keyX][keyY] = tileC(["CaveWall.png"],keyX*29,keyY*29,29,29,screen.images,[[0,0,29,29]],True,2,numRow = 1)
+               self.tileList[keyX][keyY]  = tileC(["CaveWall.png"],keyX*58,keyY*58,58,58,screen.images,[[0,0,58,58]],True,1,numRow = 1)
+               self.tileList2[keyX][keyY] = tileC(["CaveWall.png"],keyX*58,keyY*58,58,58,screen.images,[[0,0,58,58]],True,2,numRow = 1)
                self.tileList[keyX][keyY].randomPlace()
                if out:
                   self.tileList[keyX][keyY].outD = out
@@ -74,12 +74,12 @@ class Cave:
             tile.reduceNoise()
             tile.reducedNoise = True
       for tile in new:
-         self.makeTile(tile.x//29,tile.y//29,images,biomeList,perlinNoiseL)
+         self.makeTile(tile.x//58,tile.y//58,images,biomeList,perlinNoiseL)
          if tile.type == "wall" and tile.row == 1:
             self.outLine.load(tile,self)
          if not tile.outD == [0,0]:
-            x = tile.x // 29 - tile.outD[0]
-            y = tile.y // 29 - tile.outD[1]
+            x = tile.x // 58 - tile.outD[0]
+            y = tile.y // 58 - tile.outD[1]
             if self.tileList[x][y].type == "wall":
                self.outLine.load(self.tileList[x][y],self)
 
@@ -104,5 +104,9 @@ class Cave:
    def get_cell(self,x,y):
       return self.tileList[x][y]
 
-   def getCell(self,x,y,xA = 0,yA = 0):
-      return self.tileList[x//29 + xA][y//29 + yA]
+   def getCell(self,x,y,xA = 0,yA = 0,level = 1):
+      if level == 1:
+         return self.tileList[x//58 + xA][y//58 + yA]
+      if level == 2:
+         return self.tileList2[x//58 + xA][y//58 + yA]
+

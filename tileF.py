@@ -1,18 +1,14 @@
-from tileO import tileO
+from tile import tile
 
-class tileF(tileO):
-   def __init__(self,img,posX,posY,w,h,images,hitBoxL,solid,fenceO,biomes = []):
-      super().__init__(img,posX,posY,w,h,images,hitBoxL,solid,biomes)
+class tileF(tile):
+   def __init__(self,img,posX,posY,w,h,images,hitBoxL,solid,fenceO,**args):
+      super().__init__(img,posX,posY,w,h,images,hitBoxL,solid,**args)
       self.fenceDraw = []
+      self.fence     = True
       self.fenceO    = fenceO
 
    def draw(self,screen):
-      img = screen.images[self.image[self.image_index]]
-      if self.flipS:
-         img = pygame.transform.flip(img,True,False)
-      if self.flip:
-         img = pygame.transform.flip(img,False,True)
-      screen.blit(img, self.x, self.y)
+      super().draw(screen)
 
       for draw in self.fenceDraw:
          screen.blit(screen.images[draw[0]], self.x+draw[1], self.y+draw[2])

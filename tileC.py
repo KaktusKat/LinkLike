@@ -8,6 +8,7 @@ class tileC(tile):
       self.reducedNoise = False
       self.outD         = [0,0]
       self.numRow       = numRow
+      self.fence        = False
       self.fenceDraw    = []
       self.row          = row
       self.type         = 0
@@ -22,7 +23,7 @@ class tileC(tile):
         self.type  = "empty"
 
    def nebiors(self,tileList,width):
-      posList     = [self.x//29,self.y//29]
+      posList     = [self.x//58,self.y//58]
       posList     = [int(posList[0]),int(posList[1])]
       self.nextTo = []
       for x in range(-1,2):
@@ -68,10 +69,5 @@ class tileC(tile):
                   self.soild        = False
                   self.type         = "empty"
                   outLine.unload(self,place)
-                  self.connectS     = {-1:False,1:False}
-                  self.connectU     = {-1:False,1:False}
-                  if self in player.placeList[player.placeIndex].objectList:
-                     player.placeList[player.placeIndex].objectList.remove(self.map_dic2[key])
-                     player.placeList[player.placeIndex].unloadN(self.map_dic2[key],self)
                   self.change[0].makeTile(self)
 

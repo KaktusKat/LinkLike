@@ -1,6 +1,9 @@
 from tileO import tileO
-from tileF import tileF
+from tileFO import tileFO
+from tileFC import tileFC
 import pygame
+from place import place as Place
+from cave  import Cave
 
 class placeObject:
    def __init__(self,name,item,images,change,hitBoxLC,w,h,aW,aH,tileV,imageI):
@@ -32,25 +35,27 @@ class placeObject:
 
       if Mpress[2] and self.timer > 0 and itemDict[self.item.name].amount > 0:
          self.timer = -15
-         x,y = screen.convertSTW(Mpos[0],Mpos[1])
-         x   = x // 58
-         y   = y // 58
-         key = place.genKeyC(x,y)
-         if not place.map_dic2[key].soild:
-            itemDict[self.item.name].amount -= 1
-            self.change(place,key,screen.images,biomeList)
+         x,y  = screen.convertSTW(Mpos[0],Mpos[1])
+         tile  = place.getCell(x,y,level = 1)
+         tile2 = place.getCell(x,y,level = 2)
+         if tile:
+            if not tile.soild and not tile2.soild:
+               itemDict[self.item.name].amount -= 1
+               self.change(tile,place,screen.images,biomeList)
 
-   def change(self,place,key,images,biomeList):
-            x = place.map_dic2[key].x
-            y = place.map_dic2[key].y
+   def change(self,tile,place,images,biomeList):
+      x   = tile.x
+      y   = tile.y
 
-            place.map_dic2[key]    = tileF(["empty.png"],x,y,58,58,images,[],True,self,biomeList)
-            tile                   = place.map_dic2[key]
-            tile.fence             = True
-            tile                   = place.map_dic2[key]
-            self.tileV.makeTile(tile)
-            self.loadN(tile,place)
-            self.objectList.append(tile)
+      if type(place) is Place:
+         tile = tileFO(["empty.png"],x,y,58,58,images,[],True,biomeList,self)
+         place.map_dic2[place.genKeyP(tile.x,tile.y)] = tile
+      else:
+         tile = tileFC(["empty.png"],x,y,58,58,images,[],True,self,1)
+         place.tileList2[tile.x//58][tile.y//58] = tile
+      self.tileV.makeTile(tile)
+      self.loadN(tile,place)
+      self.objectList.append(tile)
       
 
    def unloadN(self,tile,place):
@@ -60,10 +65,9 @@ class placeObject:
 
             if not abs(x) + abs(y) == 2 and not abs(x) + abs(y) == 0:
 
-               key   = place.genKeyP(x * 58+tile.x,y * 58+tile.y)
-               if key in place.map_dic2:
-                  tileC = place.map_dic2[key]
-                  if tileC.fence and self.hitBoxLC[str(x)+str(y)] in tile.hitBox.hitBoxList:
+               tileC  = place.getCell(tile.x,tile.y,x,y,2)
+               if tileC:
+                  if tileC.fence:
                      tile.hitBox.hitBoxList.remove(self.hitBoxLC[str(x)+str(y)])
                      tile.fenceDraw.remove(self.changeI[str(x)+str(y)])
                      
@@ -76,7 +80,7 @@ class placeObject:
 
             if not abs(x) + abs(y) == 2 and not abs(x) + abs(y) == 0:
 
-               tileC = place.getCell(tile.x,tile.y,x,y)
+               tileC = place.getCell(tile.x,tile.y,x,y,2)
                if tileC:
                   if tileC.fence:
                      tile.hitBox.hitBoxList.append(self.hitBoxLC[str(x)+str(y)])

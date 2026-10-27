@@ -129,23 +129,21 @@ class hitBox:
       return False
 
    def checkMoveM(self,maze,screen):
-    #  self.velocityX *= 0.95
-     # self.velocityY *= 0.95
       for oy in range(-2, 3):
          for ox in range(-2, 3):
-            X   = ox + self.sprite.x//29
-            Y   = oy + self.sprite.y//29
-            X = int(X)
-            Y = int(Y)
-            thing = maze.get_cell(X, Y)
-            if thing and thing.soild:
-               side = self.isHitSide(thing.hitBox,screen)
-               if side == "x":
-                  self.sprite.velocityX = -self.sprite.velocityX*thing.bounce
-                  return
-               if side == "y":
-                  self.sprite.velocityY = -self.sprite.velocityY*thing.bounce
-                  return
+            X   = self.sprite.x
+            Y   = self.sprite.y
+            thing  = maze.getCell(X, Y,ox,oy,1)
+            thing2 = maze.getCell(X, Y,ox,oy,2)
+            for tile in [thing,thing2]:
+               if tile and tile.soild:
+                  side = self.isHitSide(tile.hitBox,screen)
+                  if side == "x":
+                     self.sprite.velocityX = -self.sprite.velocityX*thing.bounce
+                     return
+                  if side == "y":
+                     self.sprite.velocityY = -self.sprite.velocityY*thing.bounce
+                     return
 
    def checkMoveE(self,enemyList,screen):
       for i in range(len(enemyList)):
@@ -189,8 +187,8 @@ class hitBox:
          if maze:
             for oy in range(-2, 3):
                for ox in range(-2, 3):
-                  X   = ox + posX//29
-                  Y   = oy + posY//29
+                  X   = ox + posX//58
+                  Y   = oy + posY//58
                   X = int(X)
                   Y = int(Y)
                   thing = maze.get_cell(X, Y)

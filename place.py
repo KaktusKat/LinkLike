@@ -38,9 +38,12 @@ class place:
    def genKeyP(self, x, y):
        return self.genKeyC(x // 58, y // 58)
 
-   def getCell(self,x,y,xA = 0,yA = 0):
+   def getCell(self,x,y,xA = 0,yA = 0,level = 1):
        if self.genKeyP(x + xA * 58,y + yA * 58) in self.map_dic:
-          return self.map_dic2[self.genKeyP(x + xA * 58,y + yA * 58)]
+          if level == 1:
+             return self.map_dic[self.genKeyP(x + xA * 58,y + yA * 58)]
+          if level == 2:
+             return self.map_dic2[self.genKeyP(x + xA * 58,y + yA * 58)]
        return None
     
    def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,perlinNoiseL,sound,slime):

@@ -7,33 +7,37 @@ import math
 class player(sprite):
    def __init__(self,img,posX,posY,w,h,images,hitBoxL,tool,heath,spear,sound,footsteps,healthBar,placeList):
       super().__init__(img,posX,posY,w,h,images,hitBoxL)
-      self.tool         = tool
-      self.lastSwitch   = "tool"
-      self.placeList    = placeList
-      self.placeIndex   = 0
-      self.footsteps    = sound.loadS(footsteps)
-      self.b            = False
-      self.healthBar    = healthBar
-      img               = pygame.image.load("images/"+self.healthBar)
-      images[healthBar] = pygame.transform.scale(img,(100,100))
-      self.t            = -10
-      self.wep          = 0
-      self.a            = 0
-      self.changeO      = 0
-      self.inMaze       = False
-      self.health       = heath
-      self.table        = True
-      self.iFrames      = 1
-      self.iFrameTime   = 40
-      self.hit          = False
-      self.animate      = 0
-      self.animated     = False
-      self.lastMove     = [0,0]
-      self.roll         = 0
-      self.rotated      = 0
+      self.tool               = tool
+      self.place              = ""
+      self.lastSwitch         = "tool"
+      self.placeList          = placeList
+      self.placeIndex         = 0
+      self.footsteps          = sound.loadS(footsteps)
+      self.b                  = False
+      self.Glevel             = 5
+      self.glucoseBar         = "glucoseBar.png"
+      img                     = pygame.image.load("images/"+self.glucoseBar)
+      images[self.glucoseBar] = pygame.transform.scale(img,(200,64))
+      self.healthBar          = healthBar
+      img                     = pygame.image.load("images/"+self.healthBar)
+      images[healthBar]       = pygame.transform.scale(img,(100,100))
+      self.t                  = -10
+      self.wep                = 0
+      self.a                  = 0
+      self.changeO            = 0
+      self.inMaze             = False
+      self.health             = heath
+      self.table              = True
+      self.iFrames            = 1
+      self.iFrameTime         = 40
+      self.hit                = False
+      self.animate            = 0
+      self.animated           = False
+      self.lastMove           = [0,0]
+      self.roll               = 0
+      self.rotated            = 0
 
    def update(self,keys,screen,place,maze,invetory,ballList,enemyList,weaponList,projectileList,itemDict,sound,placeDict,biomeList):
-      self.healthDraw(screen)
       self.changeO += 1
       for key in range(len(self.placeList)):
          self.placeList[key] = placeDict[self.placeList[key].name]
@@ -137,6 +141,7 @@ class player(sprite):
          self.x      = 0
          self.y      = 0
       if self.animate > 0:
+         self.Glevel -= 0.01
          self.move(1,3)
          sound.playS(self.footsteps)
          self.animate = -10
@@ -144,7 +149,7 @@ class player(sprite):
          weaponList[self.tool[self.wep]].draw(screen)
       else:
          placeDict[self.placeList[self.placeIndex].name].draw(screen)
-      placeDict[self.placeList[self.placeIndex].name].place(itemDict,place,screen,biomeList)
+      placeDict[self.placeList[self.placeIndex].name].place(itemDict,self.place,screen,biomeList)
       weaponList[self.tool[self.wep]].attack(screen,self,sound,projectileList,itemDict)
       if self.iFrames > 0:
          self.image_index = 4
@@ -159,24 +164,28 @@ class player(sprite):
       if self.wep == len(self.tool):
          self.wep = 0
 
-   def inPortal(self,place):
+   def inPortal(self,place,maze):
        mapX = self.x//58
        mapY = self.y//58
        key  = place.genKeyC(mapX,mapY)
        if key in place.map_dic:
-          #print(place.map_dic[key].biome)
           if place.map_dic2[key].portal:
              self.x = 70
              self.y = 70
           if place.map_dic2[key].portal:
              self.inMaze = True
+             self.place = maze
              return True
        if self.inMaze:
+          self.place = maze
           return True
+       self.place = place
        return False
 
 
    def draw(self, screen):
+      self.healthDraw(screen)
+      self.glucoseDraw(screen)
       if self.image_index >= len(self.image):
          return
       img = screen.images[self.image[self.image_index]]
@@ -190,6 +199,10 @@ class player(sprite):
          img = pygame.transform.flip(img,False,True)
       screen.blit(img, self.x, self.y)
 
+
+   def glucoseDraw(self,screen):
+      pygame.draw.rect(screen.screen,(255,255,255),pygame.Rect(380,0,self.Glevel*8,52))
+      screen.screen.blit(screen.images[self.glucoseBar],(380,0))
 
    def healthDraw(self,screen):
       x,y = screen.convertSTW(0,0)

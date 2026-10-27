@@ -42,7 +42,7 @@ class invetory:
        if keys[pygame.K_q] or self.window or self.table:
           screen.screen.blit(screen.images[self.imgI],(screen.width/2-150,screen.height/2-150))
           self.window = True
-          self.craft(screen,player,place,maze,craftRList,keys)
+          self.craft(screen,player,place,maze,craftRList,keys,itemDict)
           if player.table:
              self.table = True
        if keys[pygame.K_c]:
@@ -50,7 +50,7 @@ class invetory:
           self.table  = False
           self.chest  = False
 
-   def craft(self,screen,player,place,maze,craftRList,keys):
+   def craft(self,screen,player,place,maze,craftRList,keys,itemDict):
       for item in self.itemList:
          if item.pageNum == self.pageNum:
             num          = pygame.font.SysFont("I don't think this dose anything",40)
@@ -69,6 +69,11 @@ class invetory:
       self.pickUp(50,50,place,maze,player,self.itemList)
       if not self.holding[0] == "none":
          screen.blit(pygame.transform.scale(screen.images[self.holding[1]],(25,25)),Mpos[0]-290+player.x,Mpos[1]-290+player.y) 
+         if keys[pygame.K_e] and itemDict[self.holding[0]].health:
+            player.Glevel += itemDict[self.holding[0]].level
+            if player.health < 4:
+               player.health += itemDict[self.holding[0]].health
+            self.holding   = ["none",0]
       if self.table:
          screen.screen.blit(screen.images[self.imgC],(0,0))
          if self.first:
@@ -125,7 +130,7 @@ class invetory:
             self.tile   = tile
             self.window = True
             self.chest  = True
-            self.craft(screen,player,place,maze,craftRList,keys)
+            self.craft(screen,player,place,maze,craftRList,keys,itemDict)
       if self.chest:
          screen.screen.blit(screen.images[self.imgCh],(0,380)) 
          x = 0

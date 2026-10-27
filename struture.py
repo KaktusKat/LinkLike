@@ -53,7 +53,7 @@ class structure:
                place.makeTile(key,images,biomeList,perlinNoiseL)
                tileL2 = place.map_dic2[key]
             if type(tileV) is placeObject:
-               tileV.change(place,key,images,biomeList)
+               tileV.change(place.map_dic2[key],place,images,biomeList)
             else:
                tileL2.soild     = tileV.soild
                tileL2.image     = tileV.image
