@@ -37,9 +37,6 @@ class syring(meleeWeapon):
          self.hitBox = self.frameList[self.frameIndex].hitBox
          x,y         = screen.convertWTS(self.x,self.y)
 
-      else:
-        pass
-
       if not self.AspeedTimer > self.Aspeed:
          return
 

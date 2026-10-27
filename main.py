@@ -6,6 +6,7 @@ import pygame
 import time
 import sys
 import copy
+import math
 from syring         import syring
 from placeObjectT   import placeObjectT
 from outLine        import outLine
@@ -61,6 +62,17 @@ objectList = []
 projectileList = []
 nightT   = 0
 load     = input("do you want to reload?")
+
+caveDark = pygame.Surface((580,580))
+caveDark = caveDark.convert_alpha()
+
+for x in range(580):
+   for y in range(580):
+      distance = math.sqrt((x-317) ** 2 + (y-317) ** 2)
+      alpha    = int(distance*2)
+      if alpha > 255:
+         alpha = 255
+      caveDark.set_at((x,y),(0,0,0,alpha))
 
 ballList = []
 tileList = {}
@@ -297,18 +309,18 @@ while running:
    else:
       place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime)
 
-   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict,biomeList)
-   gob.draw(screen)
-   gob.weponChange(keys)
+   if gob.inMaze:
+      screen.screen.blit(caveDark,(0,0))
+   else:
+      night = pygame.Surface((580,580))
+      night.set_alpha(int(place.darkness))
+      night.fill((0,0,0))
+      screen.screen.blit(night,(0,0))
 
    for projectile in projectileList:
       projectile.draw(screen)
       projectile.update(screen,sound,enemy_list,projectileList,place)
-
-   if len(ballList) > 0:
-      for ball in ballList:
-          ball.update(gob,screen)
-
+   
    hit = False
    for enmy in enemy_list:
       enmy.update(gob,noHit,enemy_list,keys,place,screen,weaponList,itemDict,sound)
@@ -325,6 +337,15 @@ while running:
       sound.playS(enemy.hitS)
       pygame.display.update()
       time.sleep(0.15)
+   
+   gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict,biomeList)
+   gob.draw(screen)
+   gob.weponChange(keys)
+   
+
+   if len(ballList) > 0:
+      for ball in ballList:
+          ball.update(gob,screen)
 
    invet.open(screen,keys,gob,place,cave,craftRList,itemDict,emptyI)
 
@@ -349,10 +370,6 @@ while running:
       x,y = screen.convertWTS(rect[0],rect[1])
       pygame.draw.rect(screen.screen,(0,250,0),pygame.Rect(x,y,rect[2],rect[3]),2)
 
-   night = pygame.Surface((580,580))
-   night.set_alpha(int(place.darkness))
-   night.fill((0,0,0))
-   screen.screen.blit(night,(0,0))
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT or gob.health <= 0:
