@@ -25,7 +25,7 @@ class Cave:
          self.tile2["wall"][biome.name]  = biome.images2W
          self.prob2["wall"][biome.name]  = biome.prob2W
 
-   def update(self,screen,sound,player,weaponList,biomeList,perlinNoiseL):
+   def update(self,screen,sound,player,weaponList,biomeList,perlinNoiseL,background):
       near = []
       keys = pygame.key.get_pressed()
       new  = []
@@ -63,6 +63,10 @@ class Cave:
                near.append(self.tileList2[keyX][keyY])
       self.add(new,keyX,keyY,screen.images,biomeList,perlinNoiseL)
       for tiles in near:
+          if tiles.lightSource:
+             light = tiles.lightSource
+             xL,yL = screen.convertWTS(tiles.x+29-(light.get_width()/2),tiles.y+29-(light.get_height()/2))
+             background.blit(light,(xL,yL),special_flags = pygame.BLEND_RGBA_SUB)
           tiles.checkMined(weaponList,player,sound,self.outLine,self)
           tiles.draw(screen)
 

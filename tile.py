@@ -9,9 +9,8 @@ class tile(sprite):
        self.numRow       = 0
        self.bounce       = 0.95
        self.chestList    = [0]
-       self.connectS     = {-1:False,1:False}
-       self.connectU     = {-1:False,1:False}
        self.nextTo       = []
+       self.lightSource  = False
        self.emptyNear    = 0
        self.health       = 0
        self.iframes      = False

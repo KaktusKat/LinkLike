@@ -7,6 +7,7 @@ import time
 import sys
 import copy
 import math
+import copy
 from syring         import syring
 from placeObjectT   import placeObjectT
 from outLine        import outLine
@@ -63,8 +64,20 @@ projectileList = []
 nightT   = 0
 load     = input("do you want to reload?")
 
+torchL   = pygame.Surface((350,350))
+torchL   = torchL.convert_alpha()
+
+for x in range(350):
+   for y in range(350):
+      distance = math.sqrt((x-175) ** 2 + (y-175) ** 2)
+      alpha    = 255-int(distance*1.5)
+      if alpha < 0:
+         alpha = 0
+      torchL.set_at((x,y),(0,0,0,alpha))
+
 caveDark = pygame.Surface((580,580))
 caveDark = caveDark.convert_alpha()
+
 
 for x in range(580):
    for y in range(580):
@@ -73,6 +86,8 @@ for x in range(580):
       if alpha > 255:
          alpha = 255
       caveDark.set_at((x,y),(0,0,0,alpha))
+
+background = caveDark
 
 ballList = []
 tileList = {}
@@ -161,7 +176,7 @@ sandPortal = tileValues(["sandportal.png"],False,True,58,58,screen.images,[[0,0,
 sandRocks  = tileValues(["sandRocks.png"],True,False,58,58,screen.images,[[19,19,20,20]],sound,["treeF.wav"],[["pickaxe",1]],rocks,[empty])
 fenceV     = tileValues(["fenceP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],wood,[empty])
 fenceSV    = tileValues(["fenceSP.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],woodS,[empty])
-torchV     = tileValues(["torch.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],torchI,[empty])
+torchV     = tileValues(["torch.png"],True,False,58,58,screen.images,[[25,9,7,40]],sound,["treeF.wav"],[["axe",1]],torchI,[empty],lightSource = torchL)
 
 clear    = tileValues(["caveBackground.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,Ttype = "empty")
 clear2   = tileValues(["caveBackground2.png"],False,False,58,58,screen.images,[[0,0,58,58]],sound,Ttype = "empty")
@@ -279,7 +294,7 @@ bowR       = [[["empty","stick","empty"],["stick","empty","stick"],["slime","sli
 hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","flint","empty"]],[itemDict[hammerI.name],1],[gob.tool,"hammer"]]
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[itemDict[refinedIron.name],1]]
 woodSR     = [[["wood","empty","empty"],["slime","empty","empty"],["empty","empty","empty"]],[itemDict[woodS.name],1]]
-torchR     = [[["empty","empty","empty"],["iron","stick","empty"],["empty","empty","empty"]],[itemDict[torchI.name],4]]
+torchR     = [[["empty","empty","empty"],["empty","stick","empty"],["empty","empty","empty"]],[itemDict[torchI.name],4]]
 brewingR   = [[["refinedIron","empty","rock"],["amethyst","amethyst","rock"],["refinedIron","empty","rock"]],[itemDict[brewingI.name],1]]
 craftRList = [brewingR,torchR,spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR,chestR]
 
@@ -304,18 +319,18 @@ while running:
 
    screen.clear(gob.x, gob.y)
    if gob.inPortal(place,cave):
+      caveDarkC = caveDark.copy()
+      background = caveDarkC
       enemy_list = []
-      cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC)
-   else:
-      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime)
-
-   if gob.inMaze:
-      screen.screen.blit(caveDark,(0,0))
+      cave.update(screen,sound,gob,weaponList,biomeListC,perlinListC,background)
    else:
       night = pygame.Surface((580,580))
-      night.set_alpha(int(place.darkness))
+      night.set_alpha(place.darkness)
       night.fill((0,0,0))
-      screen.screen.blit(night,(0,0))
+      background = night
+      place.create(screen,gob,enemy_list,war_hammar,pickaxe,fist,keys,invet,biomeList,biomeDict,weaponList,perlinList,sound,slime,background)
+
+   screen.screen.blit(background,(0,0))
 
    for projectile in projectileList:
       projectile.draw(screen)

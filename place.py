@@ -46,7 +46,7 @@ class place:
              return self.map_dic2[self.genKeyP(x + xA * 58,y + yA * 58)]
        return None
     
-   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,perlinNoiseL,sound,slime):
+   def create(self, screen, player, enemy_list,tool1,tool2,tool3,keys,invet,biomeList,biomeDict,weaponList,perlinNoiseL,sound,slime,background):
 
       self.time += 1
       time = self.time % self.daySpeed
@@ -74,7 +74,7 @@ class place:
 
 
             if key in self.map_dic:
-               if not self.map_dic2[key].justMade and (not self.map_dic[key].biome == 0 or True):
+               if not self.map_dic2[key].justMade:
                   timesIn += 1
                   
 
@@ -87,6 +87,11 @@ class place:
                   self.map_dic[key].draw(screen)
                   self.map_dic2[key].draw(screen)
                   self.map_dic2[key].checkMined(weaponList,player,sound,self)
+
+                  if self.map_dic2[key].lightSource:
+                     light = self.map_dic2[key].lightSource
+                     xL,yL = screen.convertWTS(self.map_dic2[key].x-(light.get_width()/2)+29,self.map_dic2[key].y-(light.get_height()/2)+29)
+                     background.blit(light,(xL,yL),special_flags = pygame.BLEND_RGBA_SUB)
                      
 
          for x in range(-15,16):
@@ -123,31 +128,10 @@ class place:
        self.map_dic[key].justMade  = False
        imageValues                 = np.random.choice(self.images1[self.map_dic[key].biome],p = self.prob1[self.map_dic[key].biome])   
        imageValues2                = np.random.choice(self.images2[self.map_dic[key].biome],p = self.prob2[self.map_dic[key].biome])
-       change1.image             = imageValues.image.copy()
-       change1.w                 = imageValues.w
-       change1.h                 = imageValues.h
-       change1.soild             = imageValues.soild
-       change1.breakable         = imageValues.breakable
-       change1.toolList          = imageValues.toolList.copy()
-       change1.item              = imageValues.item
-       change1.change            = imageValues.change.copy()
+       imageValues.makeTile(change1)
        change1.justMade          = False
-       change1.hitBox.hitBoxList = imageValues.hitBoxL
-       change1.health            = 0
-       change1.noise             = imageValues.noise
        if not change2.made:
-          change2.hitBox.hitBoxList = imageValues2.hitBoxL
-          change2.bounce            = imageValues2.bounce
-          change2.image             = imageValues2.image.copy()
-          change2.w                 = imageValues2.w
-          change2.h                 = imageValues2.h
-          change2.change            = imageValues2.change.copy()
-          change2.soild             = imageValues2.soild
-          change2.breakable         = imageValues2.breakable
-          change2.toolList          = imageValues2.toolList.copy()
-          change2.item              = imageValues2.item
-          change2.health            = 0
-          change2.noise             = imageValues2.noise
+          imageValues2.makeTile(change2)
           change2.justMade          = False
 
    def spawnEnemy(self,x,y,images,sound,item,enemy_list):
