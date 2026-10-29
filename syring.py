@@ -23,8 +23,10 @@ class syring(meleeWeapon):
 
          if self.hit:
 
+            if not self.item in self.hit.syringed:
+               item.amount     += 1
+               self.hit.syringed.append(self.item)
             self.hit = False
-            item.amount     += 1
             frame            = self.frameList[self.frameIndex]
             user.velocityX  -= (self.kback*math.cos(frame.KBangle))/2.5
             user.velocityY  -= (self.kback*math.sin(frame.KBangle))/2.5

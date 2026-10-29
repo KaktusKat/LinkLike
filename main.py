@@ -250,7 +250,7 @@ cave      = Cave(biomeListC,caveOT)
 gob.inPortal(place,cave)
 
 enemy_list = []
-for i in range(1):
+for i in range(0):
    e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,[[0,0,60,54],[-5,-5,70,64,False]],sound,"enemyHit.wav",12,slime)
    enemy_list.append(e)
    Ex = random.randint(0,450)
@@ -349,7 +349,9 @@ while running:
    if hit and enemyHit < 0:
       enemyHit = 50
       sound.playS(enemy.hitS)
+   if enemyHit == 49:
       time.sleep(0.15)
+   
    
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict,biomeList)
    gob.draw(screen)

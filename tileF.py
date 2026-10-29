@@ -19,7 +19,7 @@ class tileF(tile):
             if self.hitBox.isHit(weaponList[tool[0]].hitBox) and weaponList[tool[0]].attacking and not self.iframes:
                self.health += 1
                sound.playS(self.noise)
-               weaponList[tool[0]].hit   = True
+               weaponList[tool[0]].hit   = self
                self.iframes = True
                if len(tool) == 4:
                   tool[2].amount += tool[3]

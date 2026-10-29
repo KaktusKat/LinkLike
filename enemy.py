@@ -9,6 +9,7 @@ class enemy(sprite):
       super().__init__(image,x,y,w,h,images,hitBoxL)
       self.a         = -10
       self.hitS      = sound.loadS(hitS)
+      self.syringed  = []
       self.ha        = ha
       self.item      = item.name
       self.big       = False
@@ -81,7 +82,7 @@ class enemy(sprite):
          x    = self.x
          y    = self.y
          tool = weaponList[player.tool[player.wep]]
-         tool.hit         = True
+         tool.hit         = self
          self.velocityX  += tool.kback*math.cos(tool.frameList[tool.frameIndex].KBangle)
          self.velocityY  += tool.kback*math.sin(tool.frameList[tool.frameIndex].KBangle)
          self.a          += 1
