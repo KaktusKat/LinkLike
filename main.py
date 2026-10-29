@@ -103,7 +103,7 @@ emptyI      = item(-100,-100,0,0,screen.images,"empty","empty.png",1)
 refinedIron = item(177,357,50,50,screen.images,"refinedIron","refinedIron.png",1)
 stick       = item(267,357,50,50,screen.images,"stick","stick.png",1)
 amethystI   = item(177,177,50,50,screen.images,"amethyst","amethystI.png",2)
-brewingI    = item(177,267,50,50,screen.images,"brewing","brewingstandI.png",2)
+insulinI    = item(177,267,50,50,screen.images,"insulin","insulin.png",2,0,-1)
 torchI      = item(267,267,50,50,screen.images,"torch","torchI.png",2)
 lushBerryI  = item(267,177,50,50,screen.images,"lushBerry","lushBerryI.png",2,2,1)
 mossI       = item(357,177,50,50,screen.images,"moss","mossI.png",2)
@@ -116,10 +116,10 @@ pickaxeI    = item(267,267,50,50,screen.images,"pickaxeI","pickaxeInvent.png",3)
 axeI        = item(177,357,50,50,screen.images,"axeI","axeInvent.png",3)
 hammerI     = item(267,357,50,50,screen.images,"hammerI","hammerInvent.png",3)
 
-itemList    = [torchI,amethystI,brewingI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
+itemList    = [torchI,amethystI,insulinI,lushBerryI,mossI,wood,chestI,rocks,iron,slime,woodS,refinedIron,stick,flints,spearI,arrowI,bowI,swordI,pickaxeI,axeI,hammerI,arrowSI]
 
 syring1    = stabF(["syring.png"],92,72,screen.images,[[0,0,92,72]],20,10,4)
-syring     = syring(50,1.5,5,[syring1],50,"syringV.png",screen.images,rocks)
+syring     = syring(50,1.5,5,[syring1],50,"syringV.png",screen.images,insulinI)
 
 spear1     = stabF(["spear.png"],122,22,screen.images,[[0,0,122,22]],20,10,4)
 spear      = meleeWeapon(50,1.5,5,[spear1],50,"spearV.png",screen.images)
@@ -244,14 +244,14 @@ biomeListC = [normal,lush]
 biomeDict = {"forest":forest,"sand":sand}
 invet     = invetory(0,"wood.png",itemList,emptyI,screen.images)
 place     = place(biomeList,wood,rocks,flints)
-wepon    += ["fist"]
+wepon    += ["syring","fist"]
 gob       = player(["gob.png","gobWalk.png","gobWalk2.png","gobHurt.png","gobIframes.png","gobRoll.png"],0,0,54,51,screen.images,[[0,0,54,51]],wepon,4,spear,sound,"footsteps.wav","healthBar.png",placeList)
 cave      = Cave(biomeListC,caveOT)
 gob.inPortal(place,cave)
 
 enemy_list = []
-for i in range(0):
-   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,[[0,0,60,54]],sound,"enemyHit.wav",12,slime)
+for i in range(1):
+   e = enemy(["blob.png","blobM.png","blobAttacking.png","blobHurt.png"],Ex,Ey,60,54,screen.images,[[0,0,60,54],[-5,-5,70,64,False]],sound,"enemyHit.wav",12,slime)
    enemy_list.append(e)
    Ex = random.randint(0,450)
    Ey = random.randint(0,450)
@@ -295,8 +295,7 @@ hammerR    = [[["flint","flint","empty"],["flint","stick","stick"],["flint","fli
 refineR    = [[["iron","iron","empty"],["iron","iron","empty"],["empty","empty","empty"]],[itemDict[refinedIron.name],1]]
 woodSR     = [[["wood","empty","empty"],["slime","empty","empty"],["empty","empty","empty"]],[itemDict[woodS.name],1]]
 torchR     = [[["empty","empty","empty"],["empty","stick","empty"],["empty","empty","empty"]],[itemDict[torchI.name],4]]
-brewingR   = [[["refinedIron","empty","rock"],["amethyst","amethyst","rock"],["refinedIron","empty","rock"]],[itemDict[brewingI.name],1]]
-craftRList = [brewingR,torchR,spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR,chestR]
+craftRList = [torchR,spearR,refineR,woodSR,arrowSR,arrowR,bowR,hammerR,axeR,swordR,pickaxeR,chestR]
 
 
 running = True
@@ -350,7 +349,6 @@ while running:
    if hit and enemyHit < 0:
       enemyHit = 50
       sound.playS(enemy.hitS)
-      pygame.display.update()
       time.sleep(0.15)
    
    gob.update(keys,screen,place,cave,invet,ballList,enemy_list,weaponList,projectileList,itemDict,sound,placeDict,biomeList)

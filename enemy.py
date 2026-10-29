@@ -39,12 +39,13 @@ class enemy(sprite):
       if weaponList[player.tool[player.wep]].attacking == False:
          self.iframes = False
 
-      if self.hitBox.isHit(player.hitBox) and self.attacking and not player.iFrames:
-         player.health     -= 1
-         player.hit         = True
-         player.image_index = 1
-         self.attackT       = 300
-         self.attacking     = False
+      if self.hitBox.isHit(player.hitBox):
+         if self.attacking and not player.iFrames:
+            player.health     -= 1
+            player.hit         = True
+            player.image_index = 1
+            self.attackT       = 300
+            self.attacking     = False
 
       else:
          self.lastmove = [0,0]

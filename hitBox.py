@@ -22,19 +22,20 @@ class hitBox:
 
          for hitBox in self.hitBoxList:
             for hitBoxO in other.hitBoxList:
+               if len(hitBox) == 4 and len(hitBoxO) == 4:
              
-               playerX = self.sprite.x + move[0][0] + hitBox[0]
-               playerY = self.sprite.y + move[1][0] + hitBox[1]
+                  playerX = self.sprite.x + move[0][0] + hitBox[0]
+                  playerY = self.sprite.y + move[1][0] + hitBox[1]
 
-               otherX  = other.sprite.x + move[0][1] + hitBoxO[0]
-               otherY  = other.sprite.y + move[1][1] + hitBoxO[1]
-
-               if rect:
-                  x,y = screen.convertWTS(otherX,otherY)
-                  pygame.draw.rect(screen.screen,(0,0,255),pygame.Rect(x,y,hitBoxO[2],hitBoxO[3]),2)
-         
-               if self.isHitXYXY(playerX,playerY,hitBox[2],hitBox[3],otherX,otherY,hitBoxO[2],hitBoxO[3]):
-                  return move[2]
+                  otherX  = other.sprite.x + move[0][1] + hitBoxO[0]
+                  otherY  = other.sprite.y + move[1][1] + hitBoxO[1]
+  
+                  if rect:
+                     x,y = screen.convertWTS(otherX,otherY)
+                     pygame.draw.rect(screen.screen,(0,0,255),pygame.Rect(x,y,hitBoxO[2],hitBoxO[3]),2)
+          
+                  if self.isHitXYXY(playerX,playerY,hitBox[2],hitBox[3],otherX,otherY,hitBoxO[2],hitBoxO[3]):
+                     return move[2]
 
    def isHitXY(self,playerX,playerY,playerW,playerH,screen = 0,offsetX = 0,offsetY = 0):
 
@@ -151,7 +152,7 @@ class hitBox:
          selfVelocityX = self.sprite.velocityX
          selfVelocityY = self.sprite.velocityY
 
-         side = self.isHitSide(enemyList[i].hitBox,screen)
+         side = self.isHitSide(enemyList[i].hitBox,screen,True)
          if side == "x":
             self.sprite.velocityX  = enemyList[i].velocityX
             enemyList[i].velocityX = selfVelocityX
